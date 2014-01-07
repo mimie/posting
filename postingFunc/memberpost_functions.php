@@ -54,6 +54,7 @@ function displayBillings(array $members){
     $billingId = $details["billing_id"];
     $membershipId = $details["membership_id"];
     $memberName = $details["member_name"];
+    $memberName = mb_convert_encoding($memberName, "UTF-8");
     $email = $details["email"];
     $org = $details["organization_name"];
     $amount = $details["fee_amount"];

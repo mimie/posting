@@ -1,6 +1,7 @@
 <html lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="refresh" content="5">
   <title>Membership Posting</title>
   <link rel="stylesheet" type="text/css" href="../billingStyle.css">
   <link rel="stylesheet" type="text/css" href="../menu.css">
@@ -64,7 +65,8 @@ $(function() {
   <input type="submit" value="Show Billings"><br>
  </form>
  
- <form method="POST" action=""> 
+
+ <form method="POST" action="membershipIndividualPosting.php?year=<?=$_POST['year']?>">
  <input type="checkbox" id="check">Check All
  <input type="submit" value="Post to Weberp" name="post"><br><br>
 
@@ -84,6 +86,13 @@ $(function() {
 
   }
 
+  elseif(isset($_GET["year"])){
+     $yearSelected = $_GET["year"];
+     $members = getTransactionsPerYear($dbh,$yearSelected);
+     $displayBillings = displayBillings($members);
+     echo $displayBillings;
+  }
+
   else{
     $members = getMemberNonPosted($dbh);
     $displayBillings = displayBillings($members);
@@ -96,6 +105,7 @@ $(function() {
 
   if(isset($_POST["post"])){
     $billingIds = $_POST["billingIds"];
+    updateMembershipPost($dbh,$billingIds);
   }
 
 ?>

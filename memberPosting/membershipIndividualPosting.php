@@ -26,9 +26,11 @@ $(function() {
 <?php
   include '../login_functions.php';
   include '../pdo_conn.php';
+  include '../billing_functions.php';
   include '../postingFunc/memberpost_functions.php';
   
   $dbh = civicrmConnect();
+  $weberp = weberpConnect();
   $logout = logoutDiv($dbh);
   echo $logout;
 
@@ -58,8 +60,12 @@ $(function() {
 ?>
   </select>
   <input type="submit" value="Show Billings"><br>
-  <input type="checkbox" id="check">Check All
  </form>
+ 
+ <form method="POST" action=""> 
+ <input type="checkbox" id="check">Check All
+ <input type="submit" value="Post to Weberp" name="post"><br><br>
+
 <?php
   if(isset($_POST["year"])){
     $yearSelected = $_POST["year"];
@@ -82,6 +88,8 @@ $(function() {
     echo $displayBillings;
   }
 ?>
+<!--end form for posting the bill -->
+</form>
 </body>
 
 <script type="text/javascript">

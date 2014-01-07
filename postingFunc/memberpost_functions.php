@@ -30,7 +30,7 @@ function getTransactionsPerYear($dbh,$year){
 
 function displayBillings(array $members){
 
-  $html = "<table>"
+  $html = "<table><thead>"
         . "<tr>"
         . "<th>Select Bill</th>"
         . "<th>Member Name</th>"
@@ -43,7 +43,9 @@ function displayBillings(array $members){
         . "<th>Billing Reference No.</th>"
         . "<th>Billing Date</th>"
         . "<th>Billing Address</th>"
-        . "</tr>";
+        . "</tr></thead>";
+
+  $html = $html."<tbody>";
 
   foreach($members as $details){
 
@@ -73,6 +75,7 @@ function displayBillings(array $members){
 
  }
 
+  $html = $html."</tbody>";
   $html = $html."</table>";
 
   return $html;

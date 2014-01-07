@@ -57,13 +57,17 @@ function displayBillings(array $members){
     $org = $details["organization_name"];
     $amount = $details["fee_amount"];
     $paymentStatus = $details["paid_bill"];
+    $postBill = $details["post_bill"];
     $billingNo = $details["billing_no"];
     $billDate = $details["bill_date"];
     $billAddress = $details["bill_address"];
     $status = $details["status_type"];
 
+    $disabled = $postBill == 1 ? 'disabled' : '';
+    $checkbox = $postBill == 1 ? '' : 'class=checkbox';
+
     $html = $html."<tr>"
-          . "<td><input type='checkbox' value=$membershipId></td>"
+          . "<td><input type='checkbox' value='$membershipId' name='membershipIds[]' $checkbox $disabled></td>"
           . "<td>$memberName<td>"
           . "<td>$email</td>"   
           . "<td>$org</td>"

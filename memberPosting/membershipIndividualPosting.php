@@ -13,7 +13,7 @@ $(function() {
         $( "#tabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
         $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
         $('table').jPaginate({
-                'max': 50,
+                'max': 14,
                 'page': 1,
                 'links': 'buttons'
         });
@@ -66,9 +66,8 @@ $(function() {
 
   else{
     $members = getMemberNonPosted($dbh);
-    echo "<pre>";
-    print_r($members);
-    echo "</pre>";
+    $displayBillings = displayBillings($members);
+    echo $displayBillings;
   }
 ?>
 </body>

@@ -67,6 +67,7 @@ $(function() {
     <tr>
      <td align='center' bgcolor="white"><a href='membershipIndividualBilling.php?&user=<?=$userId?>'>INDIVIDUAL BILLING</a></td>
      <td align='center' bgcolor='#084B8A'><a href='membershipCompanyBilling.php?&user=<?=$userId?>'>COMPANY BILLING</td>
+     <td align='center' bgcolor='#084B8A'><a href='membershipCompanyBilling.php?&user=<?=$userId?>'>INDIVIDUAL POSTING</td>
     </tr>
    </table><br>
 

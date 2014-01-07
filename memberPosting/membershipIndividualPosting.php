@@ -61,6 +61,10 @@ $(function() {
  </form>
 <?php
   if(isset($_POST["year"])){
+    $yearSelected = $_POST["year"];
+    $members = getTransactionsPerYear($dbh,$yearSelected);
+    $displayBillings = displayBillings($members);
+    echo $displayBillings;
 
   }
 

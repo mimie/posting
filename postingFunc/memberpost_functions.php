@@ -30,6 +30,20 @@ function getTransactionsPerYear($dbh,$year){
   
 }
 
+function getBillingInfoById($dbh,$billingId){
+
+  $sql = $dbh->prepare("SELECT contact_id,member_name,street,city,email,year,fee_amount
+                        FROM billing_membership
+                        WHERE id = ?
+                       ");
+  $sql->bindParam(1,$billingId,PDO::PARAM_INT);
+  $sql->execute();
+  $details = $sql->fetch(PDO::FETCH_ASSOC);
+
+  return $details;
+  
+}
+
 function displayBillings(array $members){
 
   $html = "<table><thead>"
@@ -97,5 +111,6 @@ function updateMembershipPost($dbh,array $billingIds){
     $sql->execute();
   }
 }
+
 
 ?>

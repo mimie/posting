@@ -28,4 +28,54 @@ function getTransactionsPerYear($dbh,$year){
   
 }
 
+function displayBillings(array $members){
+
+  $html = "<table>"
+        . "<tr>"
+        . "<th>Select Bill</th>"
+        . "<th>Member Name</th>"
+        . "<th>Email</th>"
+        . "<th>Membership Status</th>"
+        . "<th>Organization Name</th>"
+        . "<th>Member Fee Amount</th>"
+        . "<th>Print Bill</th>"
+        . "<th>Payment Status</th>"
+        . "<th>Billing Reference No.</th>"
+        . "<th>Billing Date</th>"
+        . "<th>Billing Address</th>"
+        . "</tr>";
+
+  foreach($members as $details){
+
+    $membershipId = $details["membership_id"];
+    $memberName = $details["member_name"];
+    $email = $details["email"];
+    $org = $details["organization_name"];
+    $amount = $details["fee_amount"];
+    $paymentStatus = $details["paid_bill"];
+    $billingNo = $details["billing_no"];
+    $billDate = $details["bill_date"];
+    $billAddress = $details["bill_address"];
+    $status = $details["status_type"];
+
+    $html = $html."<tr>"
+          . "<td><input type='checkbox' value=$membershipId></td>"
+          . "<td>$memberName<td>"
+          . "<td>$email</td>"   
+          . "<td>$org</td>"
+          . "<td>$amount</td>"
+          . "<td>Print</td>"
+          . "<td>Payment Status</td>"
+          . "<td>$billingNo</td>"
+          . "<td>$billDate</td>"
+          . "<td>$billAddress</td>"
+          . "</tr>";
+
+ }
+
+  $html = $html."</table>";
+
+  return $html;
+}
+
 ?>

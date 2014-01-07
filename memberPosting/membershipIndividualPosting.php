@@ -57,7 +57,8 @@ $(function() {
    }
 ?>
   </select>
-  <input type="submit" value="Show Billings">
+  <input type="submit" value="Show Billings"><br>
+  <input type="checkbox" id="check">Check All
  </form>
 <?php
   if(isset($_POST["year"])){
@@ -82,4 +83,16 @@ $(function() {
   }
 ?>
 </body>
+
+<script type="text/javascript">
+  $("#check").click(function(){
+
+    if($(this).is(":checked")){
+      $("body input[type=checkbox][class=checkbox]").prop("checked",true);
+    }else{
+      $("body input[type=checkbox][class=checkbox]").prop("checked",false);
+    }
+
+  });
+</script>
 </html>

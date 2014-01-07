@@ -28,6 +28,8 @@ $(function() {
   include '../pdo_conn.php';
   include '../billing_functions.php';
   include '../postingFunc/memberpost_functions.php';
+  include '../weberp_functions.php';
+  include '../../weberpdev/postFunction.php';
   
   $dbh = civicrmConnect();
   $weberp = weberpConnect();
@@ -90,6 +92,15 @@ $(function() {
 ?>
 <!--end form for posting the bill -->
 </form>
+<?php
+
+  if(isset($_POST["post"])){
+    $billingIds = $_POST["billingIds"];
+  }
+
+?>
+
+
 </body>
 
 <script type="text/javascript">

@@ -63,8 +63,15 @@ $(function() {
   if(isset($_POST["year"])){
     $yearSelected = $_POST["year"];
     $members = getTransactionsPerYear($dbh,$yearSelected);
-    $displayBillings = displayBillings($members);
-    echo $displayBillings;
+
+    if($members){
+      $displayBillings = displayBillings($members);
+      echo $displayBillings;
+    }
+
+    else{
+      echo "<div style='border-style:solid;width:30%;'><font color='red'><i><b>No available transactions for the selected year.</i></b></font></div>";
+    }
 
   }
 

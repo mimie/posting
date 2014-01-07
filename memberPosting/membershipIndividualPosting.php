@@ -41,5 +41,35 @@ $(function() {
      <td align='center' bgcolor='white'><a href='memberPosting/membershipIndividualPosting.php'>INDIVIDUAL POSTING</td>
     </tr>
    </table><br>
+<?php
+
+?>
+  <form method="POST" action="">
+   <select name="year">
+<?php 
+   $year = 2014;
+   echo "<option>- Select transaction year -</option>";
+   echo "<option></option>";
+ 
+   for($i=0;$i<=30;$i++){
+     echo "<option>$year</option>";
+     $year++;
+   }
+?>
+  </select>
+  <input type="submit" value="Show Billings">
+ </form>
+<?php
+  if(isset($_POST["year"])){
+
+  }
+
+  else{
+    $members = getMemberNonPosted($dbh);
+    echo "<pre>";
+    print_r($members);
+    echo "</pre>";
+  }
+?>
 </body>
 </html>

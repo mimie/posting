@@ -2,7 +2,7 @@
 
 function getMemberNonPosted($dbh){
 
-  $sql = $dbh->prepare("SELECT membership_id, bm.contact_id,member_name, email, organization_name, fee_amount, paid_bill, post_bill, billing_no, bill_date, bill_address,street,city,cm.status_id, cms.label AS status_type
+  $sql = $dbh->prepare("SELECT bm.id as billing_id,membership_id, bm.contact_id,member_name, email, organization_name, fee_amount, paid_bill, post_bill, billing_no, bill_date, bill_address,street,city,cm.status_id, cms.label AS status_type
                         FROM billing_membership bm, civicrm_membership cm, civicrm_membership_status cms
                         WHERE bm.membership_id = cm.id
                         AND cm.status_id = cms.id
@@ -15,7 +15,7 @@ function getMemberNonPosted($dbh){
 
 function getTransactionsPerYear($dbh,$year){
 
-  $sql = $dbh->prepare("SELECT membership_id, bm.contact_id,member_name, email, organization_name, fee_amount, paid_bill, post_bill, billing_no, bill_date, bill_address,street,city,cm.status_id, cms.label AS status_type
+  $sql = $dbh->prepare("SELECT bm.id as billing_id,membership_id, bm.contact_id,member_name, email, organization_name, fee_amount, paid_bill, post_bill, billing_no, bill_date, bill_address,street,city,cm.status_id, cms.label AS status_type
                         FROM billing_membership bm, civicrm_membership cm, civicrm_membership_status cms
                         WHERE bm.membership_id = cm.id
                         AND cm.status_id = cms.id
@@ -51,6 +51,7 @@ function displayBillings(array $members){
 
   foreach($members as $details){
 
+    $billingId = $details["billing_id"];
     $membershipId = $details["membership_id"];
     $memberName = $details["member_name"];
     $email = $details["email"];
@@ -67,7 +68,7 @@ function displayBillings(array $members){
     $checkbox = $postBill == 1 ? '' : 'class=checkbox';
 
     $html = $html."<tr>"
-          . "<td><input type='checkbox' value='$membershipId' name='membershipIds[]' $checkbox $disabled></td>"
+          . "<td><input type='checkbox' value='$billingId' name='billingIds[]' $checkbox $disabled></td>"
           . "<td>$memberName<td>"
           . "<td>$email</td>"   
           . "<td>$org</td>"
@@ -86,5 +87,7 @@ function displayBillings(array $members){
 
   return $html;
 }
+
+//function updateMembershipPost($dbh,)
 
 ?>

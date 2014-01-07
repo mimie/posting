@@ -88,6 +88,13 @@ function displayBillings(array $members){
   return $html;
 }
 
-//function updateMembershipPost($dbh,)
+function updateMembershipPost($dbh,array $billingIds){
+
+  foreach($billingIds as $id){
+    $sql = $dbh->prepare("UPDATE billing_membership SET post_bill='1' WHERE id=?");
+    $sql->bindParam(1,$id,PDO::PARAM_INT);
+    $sql->execute();
+  }
+}
 
 ?>

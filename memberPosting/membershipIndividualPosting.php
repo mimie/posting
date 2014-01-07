@@ -1,7 +1,7 @@
 <html lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta http-equiv="refresh" content="5">
+  <!--<meta http-equiv="refresh" content="5">-->
   <title>Membership Posting</title>
   <link rel="stylesheet" type="text/css" href="../billingStyle.css">
   <link rel="stylesheet" type="text/css" href="../menu.css">
@@ -106,6 +106,30 @@ $(function() {
   if(isset($_POST["post"])){
     $billingIds = $_POST["billingIds"];
     updateMembershipPost($dbh,$billingIds);
+
+    foreach($billingIds as $id){
+      $billingDetails = getBillingInfoById($dbh,$id);
+      echo "<pre>";
+      print_r($billingDetails);
+      echo "</pre>";
+      $contactId = $billingDetails['contact_id'];
+      $memberId = getMemberId($dbh,$contactId);
+
+      $customerDetails = array();
+      $customerDetails["contact_id"] = $billingDetails["contact_id"];
+      $customerDetails["participant_name"] = $billingDetails["member_name"];
+      $customerDetails["street"] = $billingDetails["street"];
+      $customerDetails["city"] = $billingDetails["city"];
+      $customerDetails["member_id"] = $memberId;
+      $customerDetails["email"] = $billingDetails["email"];
+
+      $membershipYear = $billingDetails["year"];
+      $amount = $billingDetails["fee_amount"];
+      $description = "Membership $membershipYear";
+    
+      insertCustomer($weberp,$customerDetails);
+      myPost("MEM",$description,$amount,$billingDetails["member_name"]);
+    }
   }
 
 ?>

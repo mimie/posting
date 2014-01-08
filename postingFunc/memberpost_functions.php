@@ -72,6 +72,7 @@ function displayBillings(array $members){
     $email = $details["email"];
     $org = $details["organization_name"];
     $amount = $details["fee_amount"];
+    $amount = number_format($amount,2);
     $paymentStatus = $details["paid_bill"];
     $postBill = $details["post_bill"];
     $billingNo = $details["billing_no"];
@@ -88,7 +89,9 @@ function displayBillings(array $members){
           . "<td>$email</td>"   
           . "<td>$org</td>"
           . "<td>$amount</td>"
-          . "<td>Print</td>"
+          . "<td><a href='../memberBillingReference.php?billingId=$billingId' target='_blank' title='Click to print membership bill' style='text-decoration: none;'>"
+          . "<img src='../images/printer-icon.png' width='40' height='40'><br>Print"
+          . "</a></td>"
           . "<td>Payment Status</td>"
           . "<td>$billingNo</td>"
           . "<td>$billDate</td>"

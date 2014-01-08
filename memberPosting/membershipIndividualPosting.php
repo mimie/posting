@@ -76,6 +76,7 @@ $(function() {
     $members = getTransactionsPerYear($dbh,$yearSelected);
 
     if($members){
+      echo "<div style='padding:6px;' align='center'><b><font color='003366'>Generated Membership Billings For Year $yearSelected</font></b></div>";
       $displayBillings = displayBillings($members);
       echo $displayBillings;
     }
@@ -89,12 +90,14 @@ $(function() {
   elseif(isset($_GET["year"])){
      $yearSelected = $_GET["year"];
      $members = getTransactionsPerYear($dbh,$yearSelected);
+     echo "<div style='padding:6px;' align='center'><b><font color='003366'>Generated Membership Billings For Year $yearSelected</font></b></div>";
      $displayBillings = displayBillings($members);
      echo $displayBillings;
   }
 
   else{
     $members = getMemberNonPosted($dbh);
+    echo "<div style='padding:6px;' align='center'><b><font color='003366'>All Non-Posted Membership Billings</font></b></div>";
     $displayBillings = displayBillings($members);
     echo $displayBillings;
   }
@@ -126,9 +129,19 @@ $(function() {
       $membershipYear = $billingDetails["year"];
       $amount = $billingDetails["fee_amount"];
       $description = "Membership $membershipYear";
+
+      $exist = checkMemberRecordExist($weberp,$contactId);
     
-      insertCustomer($weberp,$customerDetails);
-      myPost("MEM",$description,$amount,$billingDetails["member_name"]);
+      if($exist == 0){
+        insertCustomer($weberp,$customerDetails);
+        $name = $billingDetails["member_name"];
+        myPost("MEM",$description,$amount,$name);
+      }
+
+      else{
+        $name = $billingDetails["member_name"];
+        myPost("MEM",$description,$amount,$name);
+      }
     }
   }
 

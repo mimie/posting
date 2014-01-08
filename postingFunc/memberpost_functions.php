@@ -112,5 +112,18 @@ function updateMembershipPost($dbh,array $billingIds){
   }
 }
 
+function checkMemberRecordExist($weberp,$contactId){
+
+  $debtorno = "IIAP".$contactId;
+  $sql = $weberp->prepare("SELECT COUNT(*) as count FROM debtorsmaster WHERE debtorno = '$debtorno'");
+  $sql->execute();
+  $result = $sql->fetch(PDO::FETCH_ASSOC);
+
+  $count = $result["count"];
+  $count = intval($count);
+  
+
+  return $count;
+}
 
 ?>

@@ -45,10 +45,12 @@ $(function() {
   /**$header = headerDiv();
   echo $header;**/
 ?>
+   <br>
    <table width='100%'>
     <tr>
-     <td align='center' bgcolor="#084B8A"><a href='membershipIndividualBilling.php?&user=<?=$userId?>'>INDIVIDUAL BILLING</a></td>
-     <td align='center' bgcolor='white'><a href='membershipCompanyBilling.php?&user=<?=$userId?>'>COMPANY BILLING</td>
+     <td align='center' bgcolor="#084B8A"><a href='membershipIndividualBilling.php'>INDIVIDUAL BILLING</a></td>
+     <td align='center' bgcolor='white'><a href='membershipCompanyBilling.php'>COMPANY BILLING</td>
+     <td align='center' bgcolor='#084B8A'><a href='memberPosting/membershipIndividualPosting.php'>INDIVIDUAL POSTING</td>
     </tr>
    </table><br>
 

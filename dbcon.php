@@ -1,6 +1,6 @@
 <?php
   
-  $db=mysql_connect('localhost', 'root', 'mysqladmin');
+  $db=mysql_connect('10.110.215.92', 'iiap', 'mysqladmin');
   if (!$db) {
       die('Could not connect: ' . mysql_error());
   }

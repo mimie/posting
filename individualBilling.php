@@ -102,14 +102,14 @@
     <option value="select">Select ation type</option>
     <option value="Generate Bill">Generate Bill</option>
     <option value="Send Bill">Send Bill</option>
-<!--    <option value="Post to Weberp">Post to Weberp</option> -->
+    <option value="Post to Weberp">Post to Weberp</option>
   </select>
   <input type="submit" value="Process Action" name="processAction">
 <?
 
    echo "<br><br><br>";
    echo "<table border='1' width='100%'>";
-   echo "<tr><th colspan='14'>Individual Billing</th></tr>";
+   echo "<tr><th colspan='15'>Individual Billing</th></tr>";
    echo "<tr>";
    echo "<th>Participant Name</th>";
    echo "<th>Email</th>";
@@ -120,7 +120,7 @@
    echo "<th>12% VAT</th>";
    echo "<th>Generate Bill</th>";
    echo "<th>Send Bill</th>";
-//   echo "<th>Post Bill</th>";
+   echo "<th>Post Bill</th>";
    echo "<th>Payment Status</th>";
    echo "<th>Billing Reference No.</th>";
    echo "<th>Billing Date</th>";
@@ -184,15 +184,15 @@
           echo "<br>Email</a>";
           echo "</td>";
 
-          /**
-           for posting
+     
+          //for posting
           if($status == 'Registered'){
             echo "<td align='center'><input type='checkbox' name='postIds[]' value='$contact_id' disabled></td>";
           }
 
           else{
             echo "<td align='center'><input type='checkbox' name='postIds[]' value='$contact_id'></td>";
-          }**/
+          }
       
           echo "<td align='center'>$paymentStatus</td>";
           echo "<td align='center'>$billingNo</td>";
@@ -215,7 +215,7 @@
           echo "</td>";
           echo "<td align='center'><input type='checkbox' name='sendIds[]' value='$contact_id' disabled></td>";
          //for posting
-         // echo "<td align='center'><input type='checkbox' name='postIds[]' value='$contact_id' disabled></td>";
+           echo "<td align='center'><input type='checkbox' name='postIds[]' value='$contact_id' disabled></td>";
           echo "<td align='center'>Pay Later</td>";
           echo "<td align='center'>Number</td>";
           echo "<td align='center'>Date</td>";

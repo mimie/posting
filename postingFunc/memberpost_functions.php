@@ -3,10 +3,12 @@
 function getMemberNonPosted($dbh){
 
   $sql = $dbh->prepare("SELECT bm.id as billing_id,membership_id, bm.contact_id,member_name, email, organization_name, fee_amount, paid_bill, post_bill, billing_no, bill_date, bill_address,street,city,cm.status_id, cms.label AS status_type
-                        FROM billing_membership bm, civicrm_membership cm, civicrm_membership_status cms
-                        WHERE bm.membership_id = cm.id
+                        FROM billing_membership bm
+                        LEFT JOIN civicrm_membership cm ON bm.contact_id = cm.contact_id
+                        LEFT JOIN civicrm_membership_status cms ON bm.membership_id = cm.id
                         AND cm.status_id = cms.id
-                        AND bm.post_bill =  '0'");
+                        WHERE bm.post_bill =  '0'
+                        ORDER BY member_name");
   $sql->execute();
   $details = $sql->fetchAll(PDO::FETCH_ASSOC);
 
@@ -16,10 +18,11 @@ function getMemberNonPosted($dbh){
 function getTransactionsPerYear($dbh,$year){
 
   $sql = $dbh->prepare("SELECT bm.id as billing_id,membership_id, bm.contact_id,member_name, email, organization_name, fee_amount, paid_bill, post_bill, billing_no, bill_date, bill_address,street,city,cm.status_id, cms.label AS status_type
-                        FROM billing_membership bm, civicrm_membership cm, civicrm_membership_status cms
-                        WHERE bm.membership_id = cm.id
+                        FROM billing_membership bm
+                        LEFT JOIN civicrm_membership cm ON bm.contact_id = cm.contact_id
+                        LEFT JOIN civicrm_membership_status cms ON bm.membership_id = cm.id
                         AND cm.status_id = cms.id
-                        AND bill_date LIKE '%$year%'
+                        WHERE bill_date LIKE '%$year%'
 
                         ");
 
@@ -28,6 +31,22 @@ function getTransactionsPerYear($dbh,$year){
 
   return $details; 
   
+}
+
+function searchMemberNonPostedByName($dbh,$name){
+
+  $sql = $dbh->prepare("SELECT bm.id as billing_id,membership_id, bm.contact_id,member_name, email, organization_name, fee_amount, paid_bill, post_bill, billing_no, bill_date, bill_address,street,city,cm.status_id, cms.label AS status_type
+                        FROM billing_membership bm
+                        LEFT JOIN civicrm_membership cm ON bm.contact_id = cm.contact_id
+                        LEFT JOIN civicrm_membership_status cms ON bm.membership_id = cm.id
+                        AND cm.status_id = cms.id
+                        WHERE bm.post_bill =  '0'
+                        AND member_name LIKE '%$name%'
+                        ORDER BY member_name");
+  $sql->execute();
+  $details = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+  return $details; 
 }
 
 function getBillingInfoById($dbh,$billingId){

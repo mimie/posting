@@ -21,6 +21,11 @@ $(function() {
 //        $("table").tablesorter( {sortList: [[0,0], [1,0]]} ); 
 });
 
+function postConfirmation(){
+
+  alert("Membership bill/s are already posted.");
+}
+
 </script>
 </head>
 <body>
@@ -30,7 +35,7 @@ $(function() {
   include '../billing_functions.php';
   include '../postingFunc/memberpost_functions.php';
   include '../weberp_functions.php';
-  include '../../weberpdev/postFunction.php';
+  include '../../weberp/postFunction.php';
   
   $dbh = civicrmConnect();
   $weberp = weberpConnect();
@@ -50,19 +55,20 @@ $(function() {
 
 ?>
   <form method="POST" action="">
-   <select name="year">
+   Search name:&nbsp;<input type='text' name='contactName'><input type="submit" name="searchContact" value="SEARCH"><br>
+<!--   <select name="year">-->
 <?php 
-   $year = 2014;
+   /**$year = 2014;
    echo "<option>- Select transaction year -</option>";
    echo "<option></option>";
  
    for($i=0;$i<=30;$i++){
      echo "<option>$year</option>";
      $year++;
-   }
+   }**/
 ?>
-  </select>
-  <input type="submit" value="Show Billings"><br>
+<!--  </select>-->
+  <!--<input type="submit" value="Show Billings">--><br>
  </form>
  
 
@@ -71,6 +77,7 @@ $(function() {
  <input type="submit" value="Post to Weberp" name="post"><br><br>
 
 <?php
+/**
   if(isset($_POST["year"])){
     $yearSelected = $_POST["year"];
     $members = getTransactionsPerYear($dbh,$yearSelected);
@@ -93,6 +100,14 @@ $(function() {
      echo "<div style='padding:6px;' align='center'><b><font color='003366'>Generated Membership Billings For Year $yearSelected</font></b></div>";
      $displayBillings = displayBillings($members);
      echo $displayBillings;
+  }
+**/
+  if(isset($_POST["searchContact"])){
+    $name = $_POST["contactName"];
+    $members = searchMemberNonPostedByName($dbh,$name);
+    $displayBillings = displayBillings($members);
+    echo $displayBillings;
+
   }
 
   else{
@@ -140,6 +155,11 @@ $(function() {
         myPost("MEM",$description,$amount,$name);
       }
     }
+
+    echo'<div id="dialog" title="Confirmation">';
+    echo'<p>Billing is already posted.</p>';
+    echo'</div>';
+
   }
 
 ?>

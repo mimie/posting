@@ -41,6 +41,7 @@ $(function() {
         . "</table><br><br>";
 
    echo "<div style='padding:9px;width:50%;margin:0 auto;'>";
+   echo "<form action='' method='POST'>";
    echo "<fieldset>";
    echo "<legend>Search Individual Event Billing</legend>";
    echo "Search category:";
@@ -51,14 +52,26 @@ $(function() {
         . "<option value='org_name'>Organization Name</option>"
         . "<option value='billing_no'>Billing No</option>"
         . "</select>";
-   echo "&nbsp;<input type='text' name='contactName' placeholder='Enter search text here.....'>";
-   echo "<input type='submit' name='searchValue' value='SEARCH'>";
+   echo "&nbsp;<input type='text' name='searchText' placeholder='Enter search text here.....'>";
+   echo "<input type='submit' name='search' value='SEARCH'>";
    echo "</fieldset>";
    echo "</div>";
 
-   $eventBillings = getIndividualNonPostedBillings($dbh);
-   $display = displayIndividualEventBillings($eventBillings);
-   echo $display;
+   if(isset($_POST["search"])){
+      $category = $_POST["category"];
+      $searchValue = $_POST["searchText"];
+      $eventBillings = searchNonPostedBilling($dbh,$category,$searchValue);
+      $display = displayIndividualEventBillings($eventBillings);
+      echo $display;
+   }
+
+   else{
+      $eventBillings = getIndividualNonPostedBillings($dbh);
+      $display = displayIndividualEventBillings($eventBillings);
+      echo $display;
+   }
+
 ?>
+   </form>
 </body>
 </html>

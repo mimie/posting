@@ -22,6 +22,10 @@
         . "<td><a href='eventCompanyPosting.php'>COMPANY EVENT POSTING</a></td>"
         . "</tr>"
         . "</table><br><br>";
+
+  $companyBillings = getGeneratedCompanyBillings($dbh);
+  $display = displayCompanyEventBillings($companyBillings);
+  echo $display;
 ?>
 </body>
 </html>

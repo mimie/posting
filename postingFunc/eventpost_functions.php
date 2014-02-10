@@ -102,13 +102,42 @@ function displayIndividualEventBillings(array $eventBillings){
 
 function getCompanyNonPostedBillings($dbh){
 
-   $sql = $dbh->prepare("SELECT event_name, org_contact_id,organization_name, total_amount, subtotal, vat, bill_date
+   $sql = $dbh->prepare("SELECT event_name, org_contact_id,organization_name, billing_no,total_amount, subtotal, vat, bill_date
                          FROM billing_company
                          WHERE post_bill = '0'");
    $sql->execute();
    $result = $sql->fetchAll(PDO::FETCH_ASSOC);
 
    return $result;
+}
+
+function searchCompanyNonPostedBillings($dbh,$category,$value){
+
+   $searchQuery = "";
+
+   switch($category){
+     case "org_name":
+       $searchQuery = "AND organization_name LIKE ?";
+       break;
+     case "event_name":
+       $searchQuery = "AND event_name LIKE ?";
+       break;
+     case "billing_no":
+       $searchQUery = "AND billing_no LIKE ?";
+       break;
+
+   }
+
+   $sql = $dbh->prepare("SELECT event_name, org_contact_id,organization_name, billing_no,total_amount, subtotal, vat, bill_date
+                         FROM billing_company
+                         WHERE post_bill = '0'
+                         $searchQuery");
+   $sql->bindValue(1,"%".$value."%",PDO::PARAM_STR);
+   $sql->execute();
+   $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+   return $result;
+
 }
 
 function displayCompanyEventBillings(array $companyBillings){
@@ -119,6 +148,7 @@ function displayCompanyEventBillings(array $companyBillings){
          . "<th>Select organization</th>"
          . "<th>Event Name</th>"
          . "<th>Organization Name</th>"
+         . "<th>Billing No</th>"
          . "<th>Total Amount</th>"
          . "<th>Subtotal</th>"
          . "<th>VAT</th>"
@@ -132,6 +162,7 @@ function displayCompanyEventBillings(array $companyBillings){
       $eventName = $field["event_name"];
       $orgId = $field["org_contact_id"];
       $orgName = $field["organization_name"];
+      $billingNo = $field["billing_no"];
       $totalAmount = $field["total_amount"];
       $subtotal = $field["subtotal"];
       $vat = $field["vat"];
@@ -141,6 +172,7 @@ function displayCompanyEventBillings(array $companyBillings){
             . "<td><input type='checkbox' name='orgIds[]' value='$orgId'></td>"
             . "<td>$eventName</td>"
             . "<td>$orgName</td>"
+            . "<td>$billingNo</td>"
             . "<td>$totalAmount</td>"
             . "<td>$subtotal</td>"
             . "<td>$vat</td>"

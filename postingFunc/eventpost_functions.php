@@ -1,6 +1,6 @@
 <?php
 
-function getGeneratedEventBillings(PDO $dbh){
+function getIndividualNonPostedBillings(PDO $dbh){
 
    $sql = $dbh->prepare("SELECT contact_id, participant_id, event_type, event_name, participant_name,
                          organization_name, org_contact_id, fee_amount, billing_no, bill_date
@@ -12,6 +12,44 @@ function getGeneratedEventBillings(PDO $dbh){
    return $result;
    
 }
+
+function searchNonPostedBilling($dbh,$category,$value){
+
+   $searchQuery = "";
+
+   switch($category){
+
+     case "name":
+       $searchQuery = "AND participant_name LIKE '%$value%'";
+       break;
+     case "event_type":
+       $searchQuery = "AND event_type LIKE '%$value%'";
+       break;
+     case "event_name":
+       $searchQuery = "AND event_name LIKE '%$value%'";
+       break;
+     case "org_name":
+       $searchQuery = "AND organization_name LIKE '%$value%'";
+       break;
+     case "billing_no":
+       $searchQuery = "AND billing_no LIKE '%$value%'";
+       break;
+   }
+
+   $sql = $dbh->prepare("SELECT contact_id, participant_id, event_type, event_name, participant_name,
+                         organization_name, org_contact_id, fee_amount, billing_no, bill_date
+                         FROM billing_details
+                         WHERE billing_type = 'Individual' 
+                         AND post_bill='0'
+                         $searchQuery");
+   $sql->execute();
+   $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+   return $result;
+
+}
+
+
 
 function displayIndividualEventBillings(array $eventBillings){
 
@@ -61,7 +99,7 @@ function displayIndividualEventBillings(array $eventBillings){
     return $html;
 }
 
-function getGeneratedCompanyBillings($dbh){
+function getCompanyNonPostedBillings($dbh){
 
    $sql = $dbh->prepare("SELECT event_name, org_contact_id,organization_name, total_amount, subtotal, vat, bill_date
                          FROM billing_company

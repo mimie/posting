@@ -19,8 +19,8 @@
 
    echo "<table width='100%'>"
         . "<tr>"
-        . "<td>INDIVIDUAL EVENT POSTING</td>"
-        . "<td bgcolor='#084B8A'>COMPANY EVENT POSTING</td>"
+        . "<td><a href='eventIndividualPosting.php'>INDIVIDUAL EVENT POSTING</a></td>"
+        . "<td bgcolor='#084B8A'><a href='eventCompanyPosting.php'>COMPANY EVENT POSTING</a></td>"
         . "</tr>"
         . "</table><br><br>";
 

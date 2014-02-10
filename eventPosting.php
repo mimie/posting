@@ -8,11 +8,18 @@
 <?php
    include "login_functions.php";
    include "pdo_conn.php";
+   include "postingFunc/eventpost_functions.php";
+
 
    $dbh = civicrmConnect();
    $menu = logoutDiv($dbh);
 
    echo $menu;
+
+   $eventBillings = getGeneratedEventBillings($dbh);
+   echo "<pre>";
+   print_r($eventBillings);
+   echo "</pre>";
 ?>
 </body>
 </html>

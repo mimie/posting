@@ -1,6 +1,6 @@
 <?php
 
-  function getGeneratedEventBillings(PDO $dbh){
+function getGeneratedEventBillings(PDO $dbh){
 
    $sql = $dbh->prepare("SELECT contact_id, participant_id, event_type, event_name, participant_name,
                          organization_name, org_contact_id, fee_amount, billing_no, bill_date
@@ -11,9 +11,9 @@
 
    return $result;
    
-  }
+}
 
-  function displayEventBillings(array $eventBillings){
+function displayEventBillings(array $eventBillings){
 
     $html = "<table width='100%'>"
           . "<thead>"
@@ -59,7 +59,17 @@
   
     $html = $html."</tbody></table>";
     return $html;
+}
 
+function getGeneratedCompanyBillings($dbh){
+
+   $sql = $dbh->prepare("SELECT event_name, org_contact_id,organization_name, total_amount, subtotal, vat, bill_date
+                         FROM billing_company
+                         WHERE post_bill = '0'");
+   $sql->execute;
+   $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+   return $result;
 }
 
 ?>

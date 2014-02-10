@@ -17,9 +17,8 @@
    echo $menu;
 
    $eventBillings = getGeneratedEventBillings($dbh);
-   echo "<pre>";
-   print_r($eventBillings);
-   echo "</pre>";
+   $display = displayEventBillings($eventBillings);
+   echo $display;
 ?>
 </body>
 </html>

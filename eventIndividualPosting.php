@@ -40,7 +40,23 @@ $(function() {
         . "</tr>"
         . "</table><br><br>";
 
-   $eventBillings = getGeneratedEventBillings($dbh);
+   echo "<div style='padding:9px;width:50%;margin:0 auto;'>";
+   echo "<fieldset>";
+   echo "<legend>Search Individual Event Billing</legend>";
+   echo "Search category:";
+   echo "<select name='category'>"
+        . "<option value='name'>Name</option>"
+        . "<option value='event_type'>Event Type</option>"
+        . "<option value='event_name'>Event Name</option>"
+        . "<option value='org_name'>Organization Name</option>"
+        . "<option value='billing_no'>Billing No</option>"
+        . "</select>";
+   echo "&nbsp;<input type='text' name='contactName' placeholder='Enter search text here.....'>";
+   echo "<input type='submit' name='searchValue' value='SEARCH'>";
+   echo "</fieldset>";
+   echo "</div>";
+
+   $eventBillings = getIndividualNonPostedBillings($dbh);
    $display = displayIndividualEventBillings($eventBillings);
    echo $display;
 ?>

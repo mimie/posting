@@ -20,19 +20,19 @@ function searchNonPostedBilling($dbh,$category,$value){
    switch($category){
 
      case "name":
-       $searchQuery = "AND participant_name LIKE '%$value%'";
+       $searchQuery = "AND participant_name LIKE ?";
        break;
      case "event_type":
-       $searchQuery = "AND event_type LIKE '%$value%'";
+       $searchQuery = "AND event_type LIKE ?";
        break;
      case "event_name":
-       $searchQuery = "AND event_name LIKE '%$value%'";
+       $searchQuery = "AND event_name LIKE ?";
        break;
      case "org_name":
-       $searchQuery = "AND organization_name LIKE '%$value%'";
+       $searchQuery = "AND organization_name LIKE ?";
        break;
      case "billing_no":
-       $searchQuery = "AND billing_no LIKE '%$value%'";
+       $searchQuery = "AND billing_no LIKE ?";
        break;
    }
 
@@ -42,6 +42,7 @@ function searchNonPostedBilling($dbh,$category,$value){
                          WHERE billing_type = 'Individual' 
                          AND post_bill='0'
                          $searchQuery");
+   $sql->bindValue(1,"%".$value."%",PDO::PARAM_STR);
    $sql->execute();
    $result = $sql->fetchAll(PDO::FETCH_ASSOC);
 

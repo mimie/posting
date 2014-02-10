@@ -39,7 +39,7 @@ $(function() {
         . "</tr>"
         . "</table><br><br>";
 
-  $companyBillings = getGeneratedCompanyBillings($dbh);
+  $companyBillings = getCompanyNonPostedBillings($dbh);
   $display = displayCompanyEventBillings($companyBillings);
   echo $display;
 ?>

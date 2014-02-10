@@ -13,9 +13,9 @@ function getGeneratedEventBillings(PDO $dbh){
    
 }
 
-function displayEventBillings(array $eventBillings){
+function displayIndividualEventBillings(array $eventBillings){
 
-    $html = "<table width='100%'>"
+    $html = "<table id='info' width='100%'>"
           . "<thead>"
           . "<tr>"
           . "<th>Select Contact</th>"
@@ -66,10 +66,52 @@ function getGeneratedCompanyBillings($dbh){
    $sql = $dbh->prepare("SELECT event_name, org_contact_id,organization_name, total_amount, subtotal, vat, bill_date
                          FROM billing_company
                          WHERE post_bill = '0'");
-   $sql->execute;
+   $sql->execute();
    $result = $sql->fetchAll(PDO::FETCH_ASSOC);
 
    return $result;
+}
+
+function displayCompanyEventBillings(array $companyBillings){
+
+   $html = "<table id='info' width='100%'>"
+         . "<thead>"
+         . "<tr>"
+         . "<th>Select organization</th>"
+         . "<th>Event Name</th>"
+         . "<th>Organization Name</th>"
+         . "<th>Total Amount</th>"
+         . "<th>Subtotal</th>"
+         . "<th>VAT</th>"
+         . "<th>Billing Date</th>"
+         . "</tr>" 
+         . "</thead>";
+    $html = $html."<tbody>";
+
+    foreach($companyBillings as $key => $field){
+
+      $eventName = $field["event_name"];
+      $orgId = $field["org_contact_id"];
+      $orgName = $field["organization_name"];
+      $totalAmount = $field["total_amount"];
+      $subtotal = $field["subtotal"];
+      $vat = $field["vat"];
+      $billDate = $field["bill_date"];
+
+      $html = $html."<tr>"
+            . "<td><input type='checkbox' name='orgIds[]' value='$orgId'></td>"
+            . "<td>$eventName</td>"
+            . "<td>$orgName</td>"
+            . "<td>$totalAmount</td>"
+            . "<td>$subtotal</td>"
+            . "<td>$vat</td>"
+            . "<td>$billDate</td>"
+            . "</tr>";
+    }
+
+   $html = $html."</tbody></table>";
+
+   return $html;
 }
 
 ?>

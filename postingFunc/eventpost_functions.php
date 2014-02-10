@@ -15,7 +15,7 @@
 
   function displayEventBillings(array $eventBillings){
 
-    $html = "<table>"
+    $html = "<table width='100%'>"
           . "<thead>"
           . "<tr>"
           . "<th>Select Contact</th>"

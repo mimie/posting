@@ -70,6 +70,7 @@ function displayIndividualEventBillings(array $eventBillings){
           . "<th>Fee Amount</th>"
           . "<th>Billing Number</th>"
           . "<th>Billing Date</th>"
+          . "<th>Print Bill</th>"
           . "</tr>"
           . "</thead>";
 
@@ -103,6 +104,8 @@ function displayIndividualEventBillings(array $eventBillings){
              . "<td>$feeAmount</td>"
              . "<td>$billingNo</td>"
              . "<td>$date</td>"
+             . "<td><a href='../webapp/pire/individualBillingReference.php?billingRef=$billingNo&eventId=$eventId' target='_blank'>"
+             . "<img src='images/printer-icon.png' width='50' height='50'></a></td>"
              . "</tr>";
     }
   
@@ -114,7 +117,8 @@ function getCompanyNonPostedBillings($dbh){
 
    $sql = $dbh->prepare("SELECT event_name, org_contact_id,organization_name, billing_no,total_amount, subtotal, vat, bill_date
                          FROM billing_company
-                         WHERE post_bill = '0'");
+                         WHERE post_bill = '0'
+                         AND total_amount != '0'");
    $sql->execute();
    $result = $sql->fetchAll(PDO::FETCH_ASSOC);
 
@@ -141,6 +145,7 @@ function searchCompanyNonPostedBillings($dbh,$category,$value){
    $sql = $dbh->prepare("SELECT event_name, org_contact_id,organization_name, billing_no,total_amount, subtotal, vat, bill_date
                          FROM billing_company
                          WHERE post_bill = '0'
+                         AND total_amount != '0'
                          $searchQuery");
    $sql->bindValue(1,"%".$value."%",PDO::PARAM_STR);
    $sql->execute();

@@ -3,6 +3,7 @@
  <title>Event Posting</title>
  <link rel="stylesheet" type="text/css" href="billingStyle.css">
  <link rel="stylesheet" type="text/css" href="menu.css">
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
 </head>
   <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
   <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
@@ -19,6 +20,19 @@ $(function() {
         });
 //        $("table").tablesorter( {sortList: [[0,0], [1,0]]} ); 
 });
+
+$(function() {
+    $( "#confirmation" ).dialog({
+      resizable: false,
+      width:500,
+      modal: true,
+      buttons: {
+        "OK": function() {
+          $( this ).dialog( "close" );
+        }
+      }
+    });
+  });
 </script>
 <body>
 <?php
@@ -26,6 +40,7 @@ $(function() {
    include "pdo_conn.php";
    include "postingFunc/eventpost_functions.php";
    include "billing_functions.php";
+   include "../weberp/postFunction.php";
 
 
    $dbh = civicrmConnect();
@@ -72,12 +87,15 @@ $(function() {
       $ids = $_POST["billingIds"];
 
       foreach($ids as $billingId){
-        //updateIndividualEventPost($dbh,$billingId);
+        updateIndividualEventPost($dbh,$billingId);
         //you can get name, contactId, & email
         $details = getParticipantInfoBilling($dbh,$billingId);
         $contactId = $details["contact_id"];
         $name = $details["participant_name"];
         $email = $details["email"];
+        $eventType = $details["event_type"];
+        $eventName = $details["event_name"];
+        $feeAmount = $details["fee_amount"];
 
         $address = getAddressDetails($dbh,$contactId);
         $street = $address["street"];
@@ -93,18 +111,32 @@ $(function() {
         $customer["email"] = $email;
         $customer["member_id"] = $memberId;
 
-        echo $contactId."<br>";
 
         $exist = checkParticipantRecordExist($weberp,$contactId);
-        echo $exist."<br>";
 
         if($exist == 0){
           insertCustomer($weberp,$customer);
-          //echo $contactId;
+          myPost($eventType,$eventName,$feeAmount,$name);
+
+          echo'<div id="confirmation" title="Confirmation">';
+          echo'<p>Billing is already posted.</p>';
+          echo'</div>';
+      
+          $eventBillings = getIndividualNonPostedBillings($dbh);
+          $display = displayIndividualEventBillings($eventBillings);
+          echo $display;
         }
 
         else{
-         echo "existing";
+          myPost($eventType,$eventName,$feeAmount,$name);
+
+          echo'<div id="confirmation" title="Confirmation">';
+          echo'<p>Billing is already posted.</p>';
+          echo'</div>';
+      
+          $eventBillings = getIndividualNonPostedBillings($dbh);
+          $display = displayIndividualEventBillings($eventBillings);
+          echo $display;
         }
     }
 

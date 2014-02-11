@@ -66,7 +66,7 @@ $(function() {
    }
 
    elseif(isset($_POST["post"])){
-      $ids = $_POST["contactIds"];
+      $ids = $_POST["billingIds"];
       echo "<pre>";
       print_r($ids);
       echo "</pre>";

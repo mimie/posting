@@ -36,11 +36,12 @@ function postConfirmation(){
   include '../postingFunc/memberpost_functions.php';
   include '../weberp_functions.php';
   include '../../weberp/postFunction.php';
+  include '../menu_functions.php';
   
   $dbh = civicrmConnect();
   $weberp = weberpConnect();
-  $logout = logoutDiv($dbh);
-  echo $logout;
+  $menu = menu();
+  echo $menu;
 
 ?>
    <br>

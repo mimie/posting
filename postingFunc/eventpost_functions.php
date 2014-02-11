@@ -38,11 +38,12 @@ function searchNonPostedBilling($dbh,$category,$value){
        break;
    }
 
-   $sql = $dbh->prepare("SELECT contact_id, participant_id, event_type, event_name, participant_name,
-                         organization_name, org_contact_id, fee_amount, billing_no, bill_date
-                         FROM billing_details
-                         WHERE billing_type = 'Individual' 
-                         AND post_bill='0'
+   $sql = $dbh->prepare("SELECT bd.contact_id, bd.participant_id, bd.event_type, bd.event_name, bd.participant_name,
+                         bd.organization_name, bd.org_contact_id, bd.fee_amount, bd.billing_no, bd.bill_date, cs.name as status
+                         FROM billing_details bd, civicrm_participant cp, civicrm_participant_status_type cs
+                         WHERE billing_type = 'Individual' AND post_bill='0'
+                         AND cp.id = bd.participant_id
+                         AND cp.status_id  = cs.id
                          $searchQuery");
    $sql->bindValue(1,"%".$value."%",PDO::PARAM_STR);
    $sql->execute();

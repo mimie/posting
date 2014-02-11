@@ -65,6 +65,14 @@ $(function() {
       echo $display;
    }
 
+   elseif(isset($_POST["post"])){
+      $ids = $_POST["contactIds"];
+      echo "<pre>";
+      print_r($ids);
+      echo "</pre>";
+
+   }
+
    else{
       $eventBillings = getIndividualNonPostedBillings($dbh);
       $display = displayIndividualEventBillings($eventBillings);

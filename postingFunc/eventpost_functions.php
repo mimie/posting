@@ -57,7 +57,7 @@ function displayIndividualEventBillings(array $eventBillings){
     $html = "<table id='info' width='100%'>"
           . "<thead>"
           . "<tr>"
-          . "<th>Select Contact</th>"
+          . "<th><input type='checkbox' id='check'>Select Contact</th>"
           . "<th>Participant Id</th>"
           . "<th>Event Type</th>"
           . "<th>Event Name</th>"
@@ -84,7 +84,7 @@ function displayIndividualEventBillings(array $eventBillings){
        $date = $field["bill_date"];
 
        $html = $html."<tr>"
-             . "<td><input type='checkbox' name='contactIds[]' value='$contactId'></td>"
+             . "<td><input type='checkbox' name='contactIds[]' value='$contactId' class='checkbox'></td>"
              . "<td>$participantId</td>"
              . "<td>$eventType</td>"
              . "<td>$eventName</td>"

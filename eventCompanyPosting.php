@@ -71,4 +71,16 @@ $(function() {
 
   </form>
 </body>
+<script type="text/javascript">                                                                
+  $("#check").click(function(){                                                                
+          
+    if($(this).is(":checked")){                                                                
+      $("body input[type=checkbox][class=checkbox]").prop("checked",true);                     
+    }else{
+      $("body input[type=checkbox][class=checkbox]").prop("checked",false);                    
+    }
+                                                                                               
+  });    
+                
+</script>                                                                      
 </html>

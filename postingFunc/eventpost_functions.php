@@ -145,7 +145,7 @@ function displayCompanyEventBillings(array $companyBillings){
    $html = "<table id='info' width='100%'>"
          . "<thead>"
          . "<tr>"
-         . "<th>Select organization</th>"
+         . "<th><input type='checkbox' id='check'>Select organization</th>"
          . "<th>Event Name</th>"
          . "<th>Organization Name</th>"
          . "<th>Billing No</th>"
@@ -169,7 +169,7 @@ function displayCompanyEventBillings(array $companyBillings){
       $billDate = $field["bill_date"];
 
       $html = $html."<tr>"
-            . "<td><input type='checkbox' name='orgIds[]' value='$orgId'></td>"
+            . "<td><input type='checkbox' name='orgIds[]' value='$orgId' class='checkbox'></td>"
             . "<td>$eventName</td>"
             . "<td>$orgName</td>"
             . "<td>$billingNo</td>"

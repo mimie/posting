@@ -59,7 +59,7 @@ function getOrganization($dbh){
 
   $sql = $dbh->prepare("SELECT id as orgId, display_name as companyName
                         FROM civicrm_contact
-                        WHERE contact_type = 'Organization'");
+                        WHERE contact_type = 'Organization' AND is_deleted = 0");
   $sql->execute();
   $org = $sql->fetchAll(PDO::FETCH_ASSOC);
 
@@ -569,12 +569,11 @@ function insertCustomer(PDO $weberpConn,array $customerDetails){
                                (debtorno,name,address1,address3,address6,currcode,clientsince,holdreason,paymentterms,discount,creditlimit,salestype,invaddrbranch,customerpoline,typeid,memberid)
                                VALUES ('$debtorno','$name','$street','$city','Philippines','PHP','$dateToday','1','CA','0','1000','02','1','0','1','$memberId')
                               ");
-
   $sqlDebtor->execute();
 
   $sqlBranch = $weberpConn->prepare("INSERT INTO custbranch
                                      (branchcode,debtorno,brname,braddress1,braddress3,braddress6,lat,lng,estdeliverydays,fwddate,salesman,area,defaultlocation,disabletrans,deliverblind,email)
-                                     VALUES('$debtorno','$debtorno','$name','$street','$city','Philippines','0','0','0','0','001','001','MKT','0','1','$email')
+                                     VALUES('$debtorno','$debtorno','$name','$street','$city','Philippines','0','0','0','0','745','001','MKT','0','1','$email')
                                     ");
  $sqlBranch->execute();
 
@@ -697,11 +696,11 @@ function formatEventLocation($locationDetails){
 /*
  *return a link for lookup of participants under a certain company billing
  */
-function participantsLink($billingNo,$eventId,$userId){
+function participantsLink($billingNo,$eventId,$orgId){
 
-  $link = "<a href=\"billedParticipants.php?eventId=$eventId&billingNo=$billingNo&user=$userId\""
+  $link = "<a href=\"billedParticipants.php?eventId=$eventId&billingNo=$billingNo&orgId=$orgId\""
         . "title='Click to view participants under this billing no.'"
-        . "onclick=\"javascript:void window.open('billedParticipants.php?eventId=$eventId&billingNo=$billingNo&user=$userId','1384398816566','width=1000,height=900,toolbar=0,menubar=0,location=0,status=1,scrollbars=1,resizable=1,left=0,top=0');"
+        . "onclick=\"javascript:void window.open('billedParticipants.php?eventId=$eventId&billingNo=$billingNo&orgId=$orgId','1384398816566','width=1000,height=900,toolbar=1,menubar=1,location=1,status=1,scrollbars=1,resizable=1,left=0,top=0');"
         . "return false;\">"
         . "<img src='participants.png' height='50' width='50'>"
         . "</a>"; 
@@ -798,11 +797,22 @@ function sendMail($email,$billingNo,$body,$subject,$folder){
 
          require "Mail.php";
 
-         $pdfFilename = $billingNo.".pdf";
+         $startMessage = "This is a system generated email.<br>"
+                       . "Please do not reply to this message.<br><br>";
+
+         $body = $startMessage.$body."<br>";
+         $endMessage = "Thank you for your event registration.<br>"
+                     . "We are sincerely grateful.<br>"
+                     . "Please don't hesitate to contact us should you have any question.<br><br>";
+
+         $body = $body.$endMessage."Sincerely yours,<br>Institute of Internal Auditors Philippines";
+
+
+         /**$pdfFilename = $billingNo.".pdf";
          //File
          $file = fopen("../../pdf/$folder/".$pdfFilename, "rb");
          $data = fread($file,filesize("../../pdf/$folder/".$pdfFilename));
-         fclose($file);
+         fclose($file);**/
  
          $semi_rand = md5(time());
          $mime_boundary = "==Multipart_Boundary_x{$semi_rand}x";
@@ -844,7 +854,7 @@ function sendMail($email,$billingNo,$body,$subject,$folder){
                     "\n\n".
                     "$body";
  
-        $data = chunk_split(base64_encode($data));
+        /**$data = chunk_split(base64_encode($data));
         $message .= "--{$mime_boundary}\n" .
                     "Content-Type: {$fileatttype};\n" .
                     " name=\"{$pdfFilename}\"\n" .
@@ -852,7 +862,7 @@ function sendMail($email,$billingNo,$body,$subject,$folder){
                     " filename=\"{$pdfFilename}\"\n" .
                     "Content-Transfer-Encoding: base64\n\n" .
                     $data . "\n\n" .
-                    "-{$mime_boundary}-\n";
+                    "-{$mime_boundary}-\n";**/
  
         $mail = $smtp->send($to, $headers, $message);
         echo "Sending mail to: $to". "<br>";
@@ -914,5 +924,32 @@ function getCompanyBillingAddress($dbh,$contactId){
   $address["city"] = $result["city"];
 
   return $address;
+}
+
+function getEmployerId($dbh,$contactId){
+
+  $sql = $dbh->prepare("SELECT employer_id FROM civicrm_contact WHERE id = ? AND is_deleted = 0");
+  $sql->bindValue(1,$contactId,PDO::PARAM_INT);
+  $sql->execute();
+
+  $result = $sql->fetch(PDO::FETCH_ASSOC);
+  $orgId = $result["employer_id"];
+
+  return $orgId;
+}
+
+function getEmployerName($dbh,$orgId){
+
+  $sql = $dbh->prepare("SELECT organization_name FROM civicrm_contact
+                        WHERE id = ?
+                        AND is_deleted = '0';
+                       ");
+  $sql->bindValue(1,$orgId,PDO::PARAM_INT);
+  $sql->execute();
+
+  $result = $sql->fetch(PDO::FETCH_ASSOC);
+  $orgName = $result["organization_name"];
+
+  return $orgName;
 }
 ?>

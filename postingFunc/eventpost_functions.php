@@ -2,7 +2,7 @@
 
 function getIndividualNonPostedBillings(PDO $dbh){
 
-   $sql = $dbh->prepare("SELECT bd.contact_id, bd.participant_id, bd.event_type, bd.event_name, bd.participant_name,
+   $sql = $dbh->prepare("SELECT bd.contact_id, bd.participant_id, bd.event_id,bd.event_type, bd.event_name, bd.participant_name,
                          bd.organization_name, bd.org_contact_id, bd.fee_amount, bd.billing_no, bd.bill_date, cs.name as status
                          FROM billing_details bd, civicrm_participant cp, civicrm_participant_status_type cs
                          WHERE billing_type = 'Individual' AND post_bill='0'
@@ -38,7 +38,7 @@ function searchNonPostedBilling($dbh,$category,$value){
        break;
    }
 
-   $sql = $dbh->prepare("SELECT bd.contact_id, bd.participant_id, bd.event_type, bd.event_name, bd.participant_name,
+   $sql = $dbh->prepare("SELECT bd.contact_id, bd.participant_id, bd.event_id,bd.event_type, bd.event_name, bd.participant_name,
                          bd.organization_name, bd.org_contact_id, bd.fee_amount, bd.billing_no, bd.bill_date, cs.name as status
                          FROM billing_details bd, civicrm_participant cp, civicrm_participant_status_type cs
                          WHERE billing_type = 'Individual' AND post_bill='0'
@@ -87,12 +87,16 @@ function displayIndividualEventBillings(array $eventBillings){
        $billingNo = $field["billing_no"];
        $date = $field["bill_date"];
        $status = $field["status"];
+       $eventId = $field["event_id"];
+
+       $checkbox = $status == 'Attended' ? "class='checkbox'" : "";
+       $disabled = $status != 'Attended' ? "disabled" : "";
 
        $html = $html."<tr>"
-             . "<td><input type='checkbox' name='contactIds[]' value='$contactId' class='checkbox'></td>"
+             . "<td><input type='checkbox' name='contactIds[]' value='$contactId' $checkbox $disabled></td>"
              . "<td>$participantId</td>"
              . "<td>$eventType</td>"
-             . "<td>$eventName</td>"
+             . "<td><a href='participantListing.php?eventId=$eventId' title='Click this link to edit participant status'>$eventName</a></td>"
              . "<td>$name</td>"
              . "<td>$orgName</td>"
              . "<td>$status</td>"

@@ -25,10 +25,13 @@ $(function() {
    include "login_functions.php";
    include "pdo_conn.php";
    include "postingFunc/eventpost_functions.php";
+   include "billing_functions.php";
 
 
    $dbh = civicrmConnect();
+   $weberp = weberpConnect();
    $menu = logoutDiv($dbh);
+
 
    echo $menu;
    echo "<br>";
@@ -67,9 +70,43 @@ $(function() {
 
    elseif(isset($_POST["post"])){
       $ids = $_POST["billingIds"];
-      echo "<pre>";
-      print_r($ids);
-      echo "</pre>";
+
+      foreach($ids as $billingId){
+        //updateIndividualEventPost($dbh,$billingId);
+        //you can get name, contactId, & email
+        $details = getParticipantInfoBilling($dbh,$billingId);
+        $contactId = $details["contact_id"];
+        $name = $details["participant_name"];
+        $email = $details["email"];
+
+        $address = getAddressDetails($dbh,$contactId);
+        $street = $address["street"];
+        $city = $address["city"];
+
+        $memberId = getMemberId($dbh,$contactId);
+
+        $customer = array();
+        $customer["contact_id"] = $contactId;
+        $customer["participant_name"] = $name;
+        $customer["street"] = $street;
+        $customer["city"] = $city;
+        $customer["email"] = $email;
+        $customer["member_id"] = $memberId;
+
+        echo $contactId."<br>";
+
+        $exist = checkParticipantRecordExist($weberp,$contactId);
+        echo $exist."<br>";
+
+        if($exist == 0){
+          insertCustomer($weberp,$customer);
+          //echo $contactId;
+        }
+
+        else{
+         echo "existing";
+        }
+    }
 
    }
 

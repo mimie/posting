@@ -202,4 +202,40 @@ function displayCompanyEventBillings(array $companyBillings){
    return $html;
 }
 
+function updateIndividualEventPost($dbh,$billingId){
+
+    $sql = $dbh->prepare("UPDATE billing_details SET post_bill = '1'
+                          WHERE id = ?
+                         ");
+    $sql->bindValue(1,$billingId,PDO::PARAM_INT);
+    $sql->execute();
+}
+
+function getParticipantInfoBilling($dbh,$billingId){
+
+   $sql = $dbh->prepare("SELECT participant_name,contact_id,email FROM billing_details
+                         WHERE id = ? ");
+   $sql->bindValue(1,$billingId,PDO::PARAM_INT);
+   $sql->execute();
+   $result = $sql->fetch(PDO::FETCH_ASSOC);
+
+   return $result;
+   
+}
+
+function checkParticipantRecordExist($weberp,$contactId){
+
+  $debtorno = "IIAP".$contactId;
+  $sql = $weberp->prepare("SELECT COUNT(*) as count FROM debtorsmaster WHERE debtorno = '$debtorno'");
+  $sql->execute();
+  $result = $sql->fetch(PDO::FETCH_ASSOC);
+
+  $count = $result["count"];
+  $count = intval($count);
+
+
+  return $count;
+}
+
+
 ?>

@@ -573,7 +573,7 @@ function insertCustomer(PDO $weberpConn,array $customerDetails){
 
   $sqlBranch = $weberpConn->prepare("INSERT INTO custbranch
                                      (branchcode,debtorno,brname,braddress1,braddress3,braddress6,lat,lng,estdeliverydays,fwddate,salesman,area,defaultlocation,disabletrans,deliverblind,email)
-                                     VALUES('$debtorno','$debtorno','$name','$street','$city','Philippines','0','0','0','0','745','001','MKT','0','1','$email')
+                                     VALUES('$debtorno','$debtorno','$name','$street','$city','Philippines','0','0','0','0','001','001','MKT','0','1','$email')
                                     ");
  $sqlBranch->execute();
 

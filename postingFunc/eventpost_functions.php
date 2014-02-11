@@ -2,10 +2,12 @@
 
 function getIndividualNonPostedBillings(PDO $dbh){
 
-   $sql = $dbh->prepare("SELECT contact_id, participant_id, event_type, event_name, participant_name,
-                         organization_name, org_contact_id, fee_amount, billing_no, bill_date
-                         FROM billing_details
-                         WHERE billing_type = 'Individual' AND post_bill='0'");
+   $sql = $dbh->prepare("SELECT bd.contact_id, bd.participant_id, bd.event_type, bd.event_name, bd.participant_name,
+                         bd.organization_name, bd.org_contact_id, bd.fee_amount, bd.billing_no, bd.bill_date, cs.name as status
+                         FROM billing_details bd, civicrm_participant cp, civicrm_participant_status_type cs
+                         WHERE billing_type = 'Individual' AND post_bill='0'
+                         AND cp.id = bd.participant_id
+                         AND cp.status_id  = cs.id");
    $sql->execute();
    $result = $sql->fetchAll(PDO::FETCH_ASSOC);
 
@@ -63,6 +65,7 @@ function displayIndividualEventBillings(array $eventBillings){
           . "<th>Event Name</th>"
           . "<th>Participant Name</th>"
           . "<th>Organization Name</th>"
+          . "<th>Participant Status</th>"
           . "<th>Fee Amount</th>"
           . "<th>Billing Number</th>"
           . "<th>Billing Date</th>"
@@ -82,6 +85,7 @@ function displayIndividualEventBillings(array $eventBillings){
        $feeAmount = $field["fee_amount"];
        $billingNo = $field["billing_no"];
        $date = $field["bill_date"];
+       $status = $field["status"];
 
        $html = $html."<tr>"
              . "<td><input type='checkbox' name='contactIds[]' value='$contactId' class='checkbox'></td>"
@@ -90,6 +94,7 @@ function displayIndividualEventBillings(array $eventBillings){
              . "<td>$eventName</td>"
              . "<td>$name</td>"
              . "<td>$orgName</td>"
+             . "<td>$status</td>"
              . "<td>$feeAmount</td>"
              . "<td>$billingNo</td>"
              . "<td>$date</td>"

@@ -59,6 +59,7 @@ function displayIndividualEventBillings(array $eventBillings){
 
     $html = "<table id='info' width='100%'>"
           . "<thead>"
+          . "<tr><td colspan='11' bgcolor='#2c4f85'><input type='submit' value='Post to Weberp' name='post'></td></tr>"
           . "<tr>"
           . "<th><input type='checkbox' id='check'>Select Contact</th>"
           . "<th>Participant Id</th>"
@@ -105,7 +106,7 @@ function displayIndividualEventBillings(array $eventBillings){
              . "<td>$billingNo</td>"
              . "<td>$date</td>"
              . "<td><a href='../webapp/pire/individualBillingReference.php?billingRef=$billingNo&eventId=$eventId' target='_blank'>"
-             . "<img src='images/printer-icon.png' width='50' height='50'></a></td>"
+             . "<img src='images/printer-icon.png' width='30' height='30'></a></td>"
              . "</tr>";
     }
   

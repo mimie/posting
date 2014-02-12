@@ -117,7 +117,7 @@ function displayIndividualEventBillings(array $eventBillings){
 
 function getCompanyNonPostedBillings($dbh){
 
-   $sql = $dbh->prepare("SELECT event_name, org_contact_id,organization_name, billing_no,total_amount, subtotal, vat, bill_date
+   $sql = $dbh->prepare("SELECT cbid,event_name, org_contact_id,organization_name, billing_no,total_amount, subtotal, vat, bill_date,event_id
                          FROM billing_company
                          WHERE post_bill = '0'
                          AND total_amount != '0'");
@@ -144,7 +144,7 @@ function searchCompanyNonPostedBillings($dbh,$category,$value){
 
    }
 
-   $sql = $dbh->prepare("SELECT event_name, org_contact_id,organization_name, billing_no,total_amount, subtotal, vat, bill_date
+   $sql = $dbh->prepare("SELECT event_name, org_contact_id,organization_name, billing_no,total_amount, subtotal, vat, bill_date,event_id
                          FROM billing_company
                          WHERE post_bill = '0'
                          AND total_amount != '0'
@@ -161,6 +161,7 @@ function displayCompanyEventBillings(array $companyBillings){
 
    $html = "<table id='info' width='100%'>"
          . "<thead>"
+          . "<tr><td colspan='12' bgcolor='#2c4f85'><input type='submit' value='Post to Weberp' name='post'></td></tr>"
          . "<tr>"
          . "<th><input type='checkbox' id='check'>Select organization</th>"
          . "<th>Event Name</th>"
@@ -170,6 +171,7 @@ function displayCompanyEventBillings(array $companyBillings){
          . "<th>Subtotal</th>"
          . "<th>VAT</th>"
          . "<th>Billing Date</th>"
+         . "<th>Print Bill</th>"
          . "</tr>" 
          . "</thead>";
     $html = $html."<tbody>";
@@ -184,9 +186,11 @@ function displayCompanyEventBillings(array $companyBillings){
       $subtotal = $field["subtotal"];
       $vat = $field["vat"];
       $billDate = $field["bill_date"];
+      $billingId = $field["cbid"];
+      $eventId = $field["event_id"];
 
       $html = $html."<tr>"
-            . "<td><input type='checkbox' name='orgIds[]' value='$orgId' class='checkbox'></td>"
+            . "<td><input type='checkbox' name='billingIds[]' value='$billingId' class='checkbox'></td>"
             . "<td>$eventName</td>"
             . "<td>$orgName</td>"
             . "<td>$billingNo</td>"
@@ -194,6 +198,8 @@ function displayCompanyEventBillings(array $companyBillings){
             . "<td>$subtotal</td>"
             . "<td>$vat</td>"
             . "<td>$billDate</td>"
+            . "<td><a href='../webapp/pire/companyBillingReference.php?companyBillingRef=$billingNo&eventId=$eventId&orgId=$orgId' target='_blank'>"
+            . "<img src='images/printer-icon.png' width='30' height='30'></a></td>"
             . "</tr>";
     }
 
@@ -223,7 +229,7 @@ function getParticipantInfoBilling($dbh,$billingId){
    
 }
 
-function checkParticipantRecordExist($weberp,$contactId){
+function checkContactRecordExist($weberp,$contactId){
 
   $debtorno = "IIAP".$contactId;
   $sql = $weberp->prepare("SELECT COUNT(*) as count FROM debtorsmaster WHERE debtorno = '$debtorno'");
@@ -237,5 +243,24 @@ function checkParticipantRecordExist($weberp,$contactId){
   return $count;
 }
 
+function updateCompanyEventPost($dbh,$billingId){
 
+  $sql = $dbh->prepare("UPDATE billing_company SET post_bill = '1'
+                        WHERE cbid = ?");
+  $sql->bindValue(1,$billingId,PDO::PARAM_INT);
+  $sql->execute();
+}
+
+function getCompanyInfoBilling($dbh,$billingId){
+
+  $sql = $dbh->prepare("SELECT bc.cbid, bc.org_contact_id,bc.organization_name, bc.total_amount, bc.event_name,bc.billing_no,em.email
+                        FROM billing_company bc
+                        LEFT JOIN civicrm_email em ON em.contact_id = bc.org_contact_id
+                        WHERE bc.cbid = ?");
+  $sql->bindValue(1,$billingId,PDO::PARAM_INT);
+  $sql->execute();
+  $result = $sql->fetch(PDO::FETCH_ASSOC);
+
+  return $result;
+}
 ?>

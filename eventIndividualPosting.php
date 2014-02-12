@@ -118,18 +118,14 @@ $(function() {
           insertCustomer($weberp,$customer);
           myPost($eventType,$eventName,$feeAmount,$name);
 
-          echo'<div id="confirmation" title="Confirmation">';
-          echo'<p>Billing is already posted.</p>';
-          echo'</div>';
-      
-          $eventBillings = getIndividualNonPostedBillings($dbh);
-          $display = displayIndividualEventBillings($eventBillings);
-          echo $display;
         }
 
         else{
           myPost($eventType,$eventName,$feeAmount,$name);
 
+        }
+    }
+
           echo'<div id="confirmation" title="Confirmation">';
           echo'<p>Billing is already posted.</p>';
           echo'</div>';
@@ -137,8 +133,6 @@ $(function() {
           $eventBillings = getIndividualNonPostedBillings($dbh);
           $display = displayIndividualEventBillings($eventBillings);
           echo $display;
-        }
-    }
 
    }
 

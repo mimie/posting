@@ -4,7 +4,6 @@
  <link rel="stylesheet" type="text/css" href="billingStyle.css">
  <link rel="stylesheet" type="text/css" href="menu.css">
  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-</head>
   <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
   <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
   <script src="js/jquery-jPaginate.js"></script>
@@ -34,6 +33,7 @@ $(function() {
     });
   });
 </script>
+</head>
 <body>
 <?php
    include "login_functions.php";
@@ -112,7 +112,7 @@ $(function() {
         $customer["member_id"] = $memberId;
 
 
-        $exist = checkParticipantRecordExist($weberp,$contactId);
+        $exist = checkContactRecordExist($weberp,$contactId);
 
         if($exist == 0){
           insertCustomer($weberp,$customer);

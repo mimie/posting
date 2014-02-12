@@ -3,7 +3,7 @@
   <title>Company Event Posting</title>
   <link rel="stylesheet" type="text/css" href="billingStyle.css">
   <link rel="stylesheet" type="text/css" href="menu.css">
-</head>
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
   <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
   <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
   <script src="js/jquery-jPaginate.js"></script>
@@ -19,15 +19,31 @@ $(function() {
         });
 //        $("table").tablesorter( {sortList: [[0,0], [1,0]]} ); 
 });
+$(function() {
+    $( "#confirmation" ).dialog({
+      resizable: false,
+      width:500,
+      modal: true,
+      buttons: {
+        "OK": function() {
+          $( this ).dialog( "close" );
+        }
+      }
+    });
+  });
 </script>
+</head>
 <body>
 <?php
 
   include "login_functions.php";
+  include "billing_functions.php";
   include "pdo_conn.php";
   include "postingFunc/eventpost_functions.php";
+  include "../webapp/pire/company_functions.php";
 
   $dbh = civicrmConnect();
+  $weberp = weberpConnect();
   $menu = logoutDiv($dbh);
 
   echo $menu;
@@ -61,6 +77,55 @@ $(function() {
      $display = displayCompanyEventBillings($companyBillings);
      echo $display;
   }
+
+  elseif(isset($_POST["post"])){
+     $ids = $_POST["billingIds"];
+
+      foreach($ids as $billingId){
+        //updateCompanyEventPost($dbh,$billingId);
+        $details = getCompanyInfoBilling($dbh,$billingId);
+        $orgId = $details["org_contact_id"];
+        $orgName = $details["organization_name"];
+        $totalAmount = $details["total_amount"];
+        $eventName = $details["event_name"];
+        $billingNo = $details["billing_no"];
+        $email = $details["email"];
+      
+   
+        $eventType = substr($billingNo,0,3);
+        $address = getCompanyAddress($dbh,$orgId);
+        $city = $address["city"];
+        $street = $address["street_address"];
+
+        $customer = array();
+        $customer["contact_id"] = $orgId;
+        $customer["participant_name"] = $orgName;
+        $customer["street"] = $street;
+        $customer["city"] = $city;
+        $customer["email"] = $email;
+        $customer["member_id"] = "NONE";
+
+
+        $exist = checkContactRecordExist($weberp,$orgId);
+
+        if($exist == 0){
+          insertCustomer($weberp,$customer);
+          myPost($eventType,$eventName,$totalAmount,$orgName);
+        }   
+        
+        else{
+          myPost($eventType,$eventName,$totalAmount,$orgName);
+        }
+      }
+          echo'<div id="confirmation" title="Confirmation">';
+          echo'<p>Billing is already posted.</p>';
+          echo'</div>';
+
+          $companyBillings = getCompanyNonPostedBillings($dbh);
+          $display = displayCompanyEventBillings($companyBillings);
+          echo $display;
+      
+   }
 
   else{
     $companyBillings = getCompanyNonPostedBillings($dbh);

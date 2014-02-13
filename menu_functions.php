@@ -7,6 +7,7 @@ function menu(){
            . "<li><a href='#'>Membership</a>"
            . "<ul><li><a href='../membershipIndividualBilling.php'>Membership Billing</a></li></ul>"
            . "</li>"
+           . "<li><a href='../addCustomer.php'>Civicrm Contacts</></li>"
            . "<li><a href='../logout.php'>Logout</a></li>"
            . "</ul><br><br>"
            . "</div>";

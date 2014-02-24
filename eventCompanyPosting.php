@@ -41,6 +41,7 @@ $(function() {
   include "pdo_conn.php";
   include "postingFunc/eventpost_functions.php";
   include "../webapp/pire/company_functions.php";
+  include "../weberp/postFunction.php";
 
   $dbh = civicrmConnect();
   $weberp = weberpConnect();

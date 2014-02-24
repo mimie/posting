@@ -83,7 +83,7 @@ $(function() {
      $ids = $_POST["billingIds"];
 
       foreach($ids as $billingId){
-        //updateCompanyEventPost($dbh,$billingId);
+        updateCompanyEventPost($dbh,$billingId);
         $details = getCompanyInfoBilling($dbh,$billingId);
         $orgId = $details["org_contact_id"];
         $orgName = $details["organization_name"];
@@ -119,7 +119,7 @@ $(function() {
         }
       }
           echo'<div id="confirmation" title="Confirmation">';
-          echo "<img src='../webapp/images/confirm.png' alt='confirm' style='float:left;padding:5px;'i width='42' height='42'/>";
+          echo "<img src='../pire/webapp/images/confirm.png' alt='confirm' style='float:left;padding:5px;'i width='42' height='42'/>";
           echo'<p>Billing is already posted.</p>';
           echo'</div>';
 

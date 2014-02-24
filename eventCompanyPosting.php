@@ -119,6 +119,7 @@ $(function() {
         }
       }
           echo'<div id="confirmation" title="Confirmation">';
+          echo "<img src='../webapp/images/confirm.png' alt='confirm' style='float:left;padding:5px;'i width='42' height='42'/>";
           echo'<p>Billing is already posted.</p>';
           echo'</div>';
 

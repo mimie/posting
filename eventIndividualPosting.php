@@ -91,11 +91,14 @@ $(function() {
         //you can get name, contactId, & email
         $details = getParticipantInfoBilling($dbh,$billingId);
         $contactId = $details["contact_id"];
+        $custId = "IIAP".$contactId;
         $name = $details["participant_name"];
         $email = $details["email"];
         $eventType = $details["event_type"];
         $eventName = $details["event_name"];
         $feeAmount = $details["fee_amount"];
+        $billingNo = $details["billing_no"];
+        $billDate = $details["bill_date"];
 
         $address = getAddressDetails($dbh,$contactId);
         $street = $address["street"];
@@ -116,12 +119,12 @@ $(function() {
 
         if($exist == 0){
           insertCustomer($weberp,$customer);
-          myPost($eventType,$eventName,$feeAmount,$name);
+          myPost($eventType,$eventName,$feeAmount,$name,$custId,$billingNo,$billDate);
 
         }
 
         else{
-          myPost($eventType,$eventName,$feeAmount,$name);
+          myPost($eventType,$eventName,$feeAmount,$name,$custId,$billingNo,$billDate);
 
         }
     }

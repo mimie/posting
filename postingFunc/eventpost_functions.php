@@ -253,7 +253,7 @@ function updateCompanyEventPost($dbh,$billingId){
 
 function getCompanyInfoBilling($dbh,$billingId){
 
-  $sql = $dbh->prepare("SELECT bc.cbid, bc.org_contact_id,bc.organization_name, bc.total_amount, bc.event_name,bc.billing_no,em.email
+  $sql = $dbh->prepare("SELECT bc.cbid, bc.org_contact_id,bc.organization_name, bc.total_amount, bc.event_name,bc.billing_no,bc.bill_date,em.email
                         FROM billing_company bc
                         LEFT JOIN civicrm_email em ON em.contact_id = bc.org_contact_id
                         WHERE bc.cbid = ?");

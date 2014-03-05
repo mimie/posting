@@ -86,11 +86,13 @@ $(function() {
         updateCompanyEventPost($dbh,$billingId);
         $details = getCompanyInfoBilling($dbh,$billingId);
         $orgId = $details["org_contact_id"];
+        $custId = "IIAP".$orgId;
         $orgName = $details["organization_name"];
         $totalAmount = $details["total_amount"];
         $eventName = $details["event_name"];
         $billingNo = $details["billing_no"];
         $email = $details["email"];
+        $billingDate = $details["bill_date"];
       
    
         $eventType = substr($billingNo,0,3);
@@ -111,11 +113,11 @@ $(function() {
 
         if($exist == 0){
           insertCustomer($weberp,$customer);
-          myPost($eventType,$eventName,$totalAmount,$orgName);
+          myPost($eventType,$eventName,$totalAmount,$orgName,$custId,$billingNo,$billingDate);
         }   
         
         else{
-          myPost($eventType,$eventName,$totalAmount,$orgName);
+          myPost($eventType,$eventName,$totalAmount,$orgName,$custId,$billingNo,$billingDate);
         }
       }
           echo'<div id="confirmation" title="Confirmation">';

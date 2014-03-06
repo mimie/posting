@@ -90,6 +90,8 @@ $(function() {
         $orgName = $details["organization_name"];
         $totalAmount = $details["total_amount"];
         $eventName = $details["event_name"];
+        $eventId = $details["event_id"];
+        $eventDescription = $eventId."/".$eventName;
         $billingNo = $details["billing_no"];
         $email = $details["email"];
         $billingDate = $details["bill_date"];
@@ -113,11 +115,11 @@ $(function() {
 
         if($exist == 0){
           insertCustomer($weberp,$customer);
-          myPost($eventType,$eventName,$totalAmount,$orgName,$custId,$billingNo,$billingDate);
+          myPost($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate);
         }   
         
         else{
-          myPost($eventType,$eventName,$totalAmount,$orgName,$custId,$billingNo,$billingDate);
+          myPost($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate);
         }
       }
           echo'<div id="confirmation" title="Confirmation">';

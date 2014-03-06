@@ -96,6 +96,8 @@ $(function() {
         $email = $details["email"];
         $eventType = $details["event_type"];
         $eventName = $details["event_name"];
+        $eventId = $details["event_id"];
+        $eventDescription = $eventId."/".$eventName;
         $feeAmount = $details["fee_amount"];
         $billingNo = $details["billing_no"];
         $billDate = $details["bill_date"];
@@ -119,12 +121,12 @@ $(function() {
 
         if($exist == 0){
           insertCustomer($weberp,$customer);
-          myPost($eventType,$eventName,$feeAmount,$name,$custId,$billingNo,$billDate);
+          myPost($eventType,$eventDescription,$feeAmount,$name,$custId,$billingNo,$billDate);
 
         }
 
         else{
-          myPost($eventType,$eventName,$feeAmount,$name,$custId,$billingNo,$billDate);
+          myPost($eventType,$eventDescription,$feeAmount,$name,$custId,$billingNo,$billDate);
 
         }
     }

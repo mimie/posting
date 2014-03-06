@@ -219,7 +219,7 @@ function updateIndividualEventPost($dbh,$billingId){
 
 function getParticipantInfoBilling($dbh,$billingId){
 
-   $sql = $dbh->prepare("SELECT billing_no,bill_date,participant_name,contact_id,email,event_type,event_name,fee_amount FROM billing_details
+   $sql = $dbh->prepare("SELECT billing_no,bill_date,participant_name,contact_id,email,event_type,event_id,event_name,fee_amount FROM billing_details
                          WHERE id = ? ");
    $sql->bindValue(1,$billingId,PDO::PARAM_INT);
    $sql->execute();
@@ -253,7 +253,7 @@ function updateCompanyEventPost($dbh,$billingId){
 
 function getCompanyInfoBilling($dbh,$billingId){
 
-  $sql = $dbh->prepare("SELECT bc.cbid, bc.org_contact_id,bc.organization_name, bc.total_amount, bc.event_name,bc.billing_no,bc.bill_date,em.email
+  $sql = $dbh->prepare("SELECT bc.cbid, bc.event_id,bc.org_contact_id,bc.organization_name, bc.total_amount, bc.event_name,bc.billing_no,bc.bill_date,em.email
                         FROM billing_company bc
                         LEFT JOIN civicrm_email em ON em.contact_id = bc.org_contact_id
                         WHERE bc.cbid = ?");

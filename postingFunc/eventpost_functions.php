@@ -171,6 +171,7 @@ function displayCompanyEventBillings(array $companyBillings){
          . "<th>Subtotal</th>"
          . "<th>VAT</th>"
          . "<th>Billing Date</th>"
+         . "<th>Billed Participants</th>"
          . "<th>Print Bill</th>"
          . "</tr>" 
          . "</thead>";
@@ -189,6 +190,9 @@ function displayCompanyEventBillings(array $companyBillings){
       $billingId = $field["cbid"];
       $eventId = $field["event_id"];
 
+      $participantsLink = "<a href='../webapp/pire/billedParticipants.php?eventId=$eventId&billingNo=$billingNo&orgId=$orgId' target='_blank'>"
+                        . "<img src='../webapp/pire/participants.png' height='50' width='50'></a>";
+
       $html = $html."<tr>"
             . "<td><input type='checkbox' name='billingIds[]' value='$billingId' class='checkbox'></td>"
             . "<td>$eventName</td>"
@@ -198,6 +202,7 @@ function displayCompanyEventBillings(array $companyBillings){
             . "<td>$subtotal</td>"
             . "<td>$vat</td>"
             . "<td>$billDate</td>"
+            . "<td>$participantsLink</td>"
             . "<td><a href='../webapp/pire/companyBillingReference.php?companyBillingRef=$billingNo&eventId=$eventId&orgId=$orgId' target='_blank'>"
             . "<img src='images/printer-icon.png' width='30' height='30'></a></td>"
             . "</tr>";

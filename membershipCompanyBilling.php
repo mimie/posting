@@ -12,8 +12,8 @@
 $(function() {
         $( "#tabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
         $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
-        $('table').jPaginate({
-                'max': 15,
+        $('#companies').jPaginate({
+                'max': 20,
                 'page': 1,
                 'links': 'buttons'
         });
@@ -26,7 +26,7 @@ $(function() {
 <?php
   include 'login_functions.php';
   include 'pdo_conn.php';
-  include 'membership_functions.php';
+  include '../webapp/pire/membership_functions.php';
 
   $dbh = civicrmConnect();
   
@@ -44,21 +44,37 @@ $(function() {
   echo $logout;
   /**$header = headerDiv();
   echo $header;**/
+  echo "<br>";
 ?>
-   <br>
    <table width='100%'>
     <tr>
-     <td align='center' bgcolor="#084B8A"><a href='membershipIndividualBilling.php'>INDIVIDUAL BILLING</a></td>
+     <td align='center' bgcolor='#084B8A'><a href='membershipNewBilling.php'>NEW MEMBERSHIP BILLING</a></td>
+     <td align='center' bgcolor="#084B8A"><a href='membershipIndividualBilling2.php'>INDIVIDUAL BILLING</a></td>
      <td align='center' bgcolor='white'><a href='membershipCompanyBilling.php'>COMPANY BILLING</td>
-     <td align='center' bgcolor='#084B8A'><a href='memberPosting/membershipIndividualPosting.php'>INDIVIDUAL POSTING</td>
+     <td align='center' bgcolor='#084B8A'><a href='onlineMembership.php'>ONLINE MEMBERSHIP</td>
+     <td align='center' bgcolor='#084B8A'><a href='membershipBillingView.php'>GENERATED BILLINGS</td>
     </tr>
    </table><br>
 
-<?php
-  $companies = getAllCompanies($dbh);
+   <form method="POST" action="">
+     <input name="orgName" type="text">
+     <input type="submit" value="Search Organization" name="search"> 
+   </form>
 
-  $displayCompanies = displayAllCompanies($dbh,$companies);
-  echo $displayCompanies;
+<?php
+
+  if(isset($_POST["search"])){
+    $orgName = $_POST["orgName"];
+    $companies = searchCompanyName($dbh,$orgName);
+    $displayCompanies = displayAllCompanies($companies);
+    echo $displayCompanies;
+  }
+
+  else{
+    $companies = getAllCompanies($dbh);
+    $displayCompanies = displayAllCompanies($companies);
+    echo $displayCompanies;
+  }
 ?>
 </body>
 </html>

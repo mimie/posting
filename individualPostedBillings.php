@@ -52,12 +52,10 @@ $(function() {
   echo $menu;
   echo "<br>";
 
-  $currentYear = date("Y");
-
   echo "<table width='100%'>"
        . "<tr>"
        . "<td><a href='individualPostedBillings.php'>INDIVIDUAL POSTED BILLINGS</a></td>"
-       . "<td bgcolor='#084B8A'><a href='#'>COMPANY POSTED BILLINGS</a></td>"
+       . "<td bgcolor='#084B8A'><a href='companyPostedBillings.php'>COMPANY POSTED BILLINGS</a></td>"
        . "</tr>"
        . "</table><br><br>";
 

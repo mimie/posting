@@ -2,7 +2,7 @@
 
 function viewAllIndividualPostedBillings($dbh){
 
-  $sql = $dbh->prepare("SELECT bd.participant_id, bd.event_type, ce.title AS event_name, 
+  $sql = $dbh->prepare("SELECT bd.participant_id, bd.event_type, ce.title AS event_name, bd.event_id,
                         cc.sort_name AS participant_name, cc.organization_name, cs.name AS participant_status, 
                         bd.fee_amount, bd.billing_no, bd.bill_date
                         FROM billing_details bd, civicrm_event ce, civicrm_contact cc, civicrm_participant cp, civicrm_participant_status_type cs
@@ -46,6 +46,7 @@ function displayIndividualPostedBilings(array $billingDetails){
     $feeAmount = $field["fee_amount"];
     $billingNo = $field["billing_no"];
     $billingDate = $field["bill_date"];
+    $eventId = $field["event_id"];
 
     $html = $html."<tr>"
           . "<td>$participantId</td>"
@@ -57,7 +58,9 @@ function displayIndividualPostedBilings(array $billingDetails){
           . "<td>$feeAmount</td>"
           . "<td>$billingNo</td>"
           . "<td>$billingDate</td>"
-          . "<td></td>"
+          . "<td><a href='../webapp/pire/individualBillingReference.php?billingRef=$billingNo&eventId=$eventId' target='_blank'>"
+          . "<img src='../webapp/pire/images/printer-icon.png' width='40' height='40'>"
+          . "</a></td>"
           . "</tr>";
 
   }
@@ -65,6 +68,45 @@ function displayIndividualPostedBilings(array $billingDetails){
   $html = $html."</tbody></table>";
 
   return $html;
+}
+
+function searchPostedBillings($dbh,$searchType,$searchValue){
+
+  $searchQuery = '';
+
+  switch($searchType){
+
+    case 'participant_name':
+         $searchQuery = "AND cc.sort_name LIKE ?";
+         break;
+    case 'event_name':
+         $searchQuery = "AND ce.title LIKE ?";
+         break;
+    case 'org_name':
+         $searchQuery = "AND cc.organization_name LIKE ?";
+         break;
+    case 'billing_no':
+         $searchQuery = "AND bd.billing_no LIKE ?";
+         break;
+    
+  }
+
+
+  $sql = $dbh->prepare("SELECT bd.participant_id, bd.event_type, ce.title AS event_name, bd.event_id,
+                        cc.sort_name AS participant_name, cc.organization_name, cs.name AS participant_status, 
+                        bd.fee_amount, bd.billing_no, bd.bill_date
+                        FROM billing_details bd, civicrm_event ce, civicrm_contact cc, civicrm_participant cp, civicrm_participant_status_type cs
+                        WHERE bd.event_id = ce.id
+                        AND bd.contact_id = cc.id
+                        AND bd.participant_id = cp.id
+                        AND cp.status_id = cs.id
+                        AND bd.post_bill =  '1'
+                        $searchQuery");
+
+  $sql->bindValue(1,"%".$searchValue."%",PDO::PARAM_STR);
+  $sql->execute();
+  $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+  return $result;
 }
 
 ?>

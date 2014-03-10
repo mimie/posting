@@ -90,6 +90,14 @@ $(function() {
      echo $displayBillings;
    }
 
+   elseif(isset($_POST["searchDate"])){
+     $startDate = $_POST["startDate"];
+     $endDate = $_POST["endDate"];
+     $postedBillings = searchCompanyPostedBillingsByDate($dbh,$startDate,$endDate);
+     $displayBillings = displayCompanyPostedBillings($postedBillings);
+     echo $displayBillings;
+   }
+
    else{
      $postedBillings = viewAllCompanyPostedBillings($dbh);
      $displayBillings = displayCompanyPostedBillings($postedBillings);

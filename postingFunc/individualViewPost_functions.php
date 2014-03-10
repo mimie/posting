@@ -10,7 +10,8 @@ function viewAllIndividualPostedBillings($dbh){
                         AND bd.contact_id = cc.id
                         AND bd.participant_id = cp.id
                         AND cp.status_id = cs.id
-                        AND bd.post_bill =  '1'");
+                        AND bd.post_bill =  '1'
+                        AND bd.billing_type = 'Individual'");
   $sql->execute();
   $result = $sql->fetchAll(PDO::FETCH_ASSOC);
   return $result;
@@ -101,6 +102,7 @@ function searchPostedBillings($dbh,$searchType,$searchValue){
                         AND bd.participant_id = cp.id
                         AND cp.status_id = cs.id
                         AND bd.post_bill =  '1'
+                        AND bd.billing_type = 'Individual'
                         $searchQuery");
 
   $sql->bindValue(1,"%".$searchValue."%",PDO::PARAM_STR);
@@ -127,6 +129,7 @@ function searchPostedBillingsByDate($dbh,$startDate,$endDate){
                         AND bd.participant_id = cp.id
                         AND cp.status_id = cs.id
                         AND bd.post_bill =  '1'
+                        AND bd.billing_type = 'Individual'
                         AND bd.bill_date BETWEEN ? AND ?");
 
   $sql->bindValue(1,$startDate,PDO::PARAM_STR);

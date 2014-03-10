@@ -1,5 +1,6 @@
 <html>
 <head>
+   <title>Company Posted Billings</title>
    <title>Individual Posted Billings</title>
    <link rel="stylesheet" type="text/css" href="billingStyle.css">
    <link rel="stylesheet" type="text/css" href="menu.css">
@@ -37,15 +38,14 @@ $(function() {
     $( "#datepickerEnd" ).datepicker();
 });
 </script>
-</head>
+<head>
 <body>
-
 <?php
   include "login_functions.php";
   include "billing_functions.php";
   include "pdo_conn.php";
   include "postingFunc/eventpost_functions.php";
-  include "postingFunc/individualViewPost_functions.php";
+  include "postingFunc/companyViewPost_functions.php";
 
   $dbh = civicrmConnect();
   $menu = logoutDiv($dbh);
@@ -54,8 +54,8 @@ $(function() {
 
   echo "<table width='100%'>"
        . "<tr>"
-       . "<td><a href='individualPostedBillings.php'>INDIVIDUAL POSTED BILLINGS</a></td>"
-       . "<td bgcolor='#084B8A'><a href='companyPostedBillings.php'>COMPANY POSTED BILLINGS</a></td>"
+       . "<td bgcolor='#084B8A'><a href='individualPostedBillings.php'>INDIVIDUAL POSTED BILLINGS</a></td>"
+       . "<td><a href='companyPostedBillings.php'>COMPANY POSTED BILLINGS</a></td>"
        . "</tr>"
        . "</table><br><br>";
 
@@ -65,9 +65,8 @@ $(function() {
    echo "<legend>Search Individual Posted Billing</legend>";
    echo "Search category:";
    echo "<select name='category'>"
-        . "<option value='participant_name'>Participant Name</option>"
-        . "<option value='event_name'>Event Name</option>"
         . "<option value='org_name'>Organization Name</option>"
+        . "<option value='event_name'>Event Name</option>"
         . "<option value='billing_no'>Billing No</option>"
         . "</select>";
    echo "&nbsp;<input type='text' name='searchText' placeholder='Enter search text here.....'>";
@@ -86,28 +85,24 @@ $(function() {
    if(isset($_POST["search"])){
      $searchType = $_POST["category"];
      $searchValue = $_POST["searchText"];
-
-     $postedBillings = searchPostedBillings($dbh,$searchType,$searchValue);
-     $displayBillings = displayIndividualPostedBilings($postedBillings);
+     $postedBillings = searchCompanyPostedBillings($dbh,$searchType,$searchValue);
+     $displayBillings = displayCompanyPostedBillings($postedBillings);
      echo $displayBillings;
-
    }
 
    elseif(isset($_POST["searchDate"])){
      $startDate = $_POST["startDate"];
      $endDate = $_POST["endDate"];
-     $postedBillings = searchPostedBillingsByDate($dbh,$startDate,$endDate);
-     $displayBillings = displayIndividualPostedBilings($postedBillings);
+     $postedBillings = searchCompanyPostedBillingsByDate($dbh,$startDate,$endDate);
+     $displayBillings = displayCompanyPostedBillings($postedBillings);
      echo $displayBillings;
-    
    }
 
    else{
-     $allIndividualPostedBillings = viewAllIndividualPostedBillings($dbh);
-     $displayBillings = displayIndividualPostedBilings($allIndividualPostedBillings);
+     $postedBillings = viewAllCompanyPostedBillings($dbh);
+     $displayBillings = displayCompanyPostedBillings($postedBillings);
      echo $displayBillings;
    }
-
 ?>
 </body>
 </html>

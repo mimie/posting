@@ -99,4 +99,29 @@ function searchCompanyPostedBillings($dbh,$searchType,$searchValue){
 
   return $result;
 }
+
+function searchCompanyPostedBillingsByDate($dbh,$startDate,$endDate){
+
+  $startDate = date("Y-m-d",strtotime($startDate));
+  $endDate = date("Y-m-d",strtotime($endDate));
+
+  $startDate = $startDate." 00:00:00";
+  $endDate = $endDate." 23:59:59";
+  $sql = $dbh->prepare("SELECT bc.event_id, ce.title as event_name, bc.org_contact_id, 
+                        cc.display_name as organization_name, bc.billing_no, 
+                        bc.total_amount, bc.subtotal,bc.vat, bc.bill_date
+                        FROM billing_company bc, civicrm_event ce, civicrm_contact cc
+                        WHERE bc.event_id = ce.id
+                        AND bc.org_contact_id = cc.id
+                        AND post_bill = '1'
+                        AND total_amount != '0'
+                        AND bc.bill_date BETWEEN ? AND ?");
+ $sql->bindValue(1,$startDate,PDO::PARAM_STR);
+ $sql->bindValue(2,$endDate,PDO::PARAM_STR);
+
+ $sql->execute();
+ $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+ return $result;
+}
 ?>

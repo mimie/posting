@@ -112,7 +112,9 @@ function logoutDiv($dbh){
 
      $html = "<div width='100%' style='background-color:black; padding:1px;'>"
            . "<ul>"
-           . "<li><a href='events2.php?'>Event</a><ul><li><a href='eventIndividualPosting.php'>Event Posting</a></li></ul></li>"
+           . "<li><a href='events2.php?'>Event</a>"
+           . "<ul><li><a href='eventIndividualPosting.php'>Event Posting</a></li>"
+           . "<li><a href='individualPostedBillings.php'>Posted Billings</a></li></ul></li>"
            . "<li><a href='#'>Membership</a>"
            . "<ul><li><a href='membershipBillingView.php'>Membership Billing</a></li></ul>"
            . "</li>"

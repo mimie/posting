@@ -82,9 +82,19 @@ $(function() {
 
    echo "</form>";
 
-   $postedBillings = viewAllCompanyPostedBillings($dbh);
-   $displayBillings = displayCompanyPostedBillings($postedBillings);
-   echo $displayBillings;
+   if(isset($_POST["search"])){
+     $searchType = $_POST["category"];
+     $searchValue = $_POST["searchText"];
+     $postedBillings = searchCompanyPostedBillings($dbh,$searchType,$searchValue);
+     $displayBillings = displayCompanyPostedBillings($postedBillings);
+     echo $displayBillings;
+   }
+
+   else{
+     $postedBillings = viewAllCompanyPostedBillings($dbh);
+     $displayBillings = displayCompanyPostedBillings($postedBillings);
+     echo $displayBillings;
+   }
 ?>
 </body>
 </html>

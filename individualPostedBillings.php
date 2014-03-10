@@ -12,7 +12,7 @@
 $(function() {
         $( "#tabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
         $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
-        $('#info').jPaginate({
+        $('#billingInfo').jPaginate({
                 'max': 20,
                 'page': 1,
                 'links': 'buttons'
@@ -88,6 +88,8 @@ $(function() {
    echo "</form>";
 
    $allIndividualPostedBillings = viewAllIndividualPostedBillings($dbh);
+   $displayBillings = displayIndividualPostedBilings($allIndividualPostedBillings);
+   echo $displayBillings;
 
 ?>
 </body>

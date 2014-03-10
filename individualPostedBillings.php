@@ -67,6 +67,7 @@ $(function() {
    echo "<legend>Search Individual Posted Billing</legend>";
    echo "Search category:";
    echo "<select name='category'>"
+        . "<option value='participant_name'>Participant Name</option>"
         . "<option value='event_name'>Event Name</option>"
         . "<option value='org_name'>Organization Name</option>"
         . "<option value='billing_no'>Billing No</option>"
@@ -87,9 +88,21 @@ $(function() {
 
    echo "</form>";
 
-   $allIndividualPostedBillings = viewAllIndividualPostedBillings($dbh);
-   $displayBillings = displayIndividualPostedBilings($allIndividualPostedBillings);
-   echo $displayBillings;
+   if(isset($_POST["search"])){
+     $searchType = $_POST["category"];
+     $searchValue = $_POST["searchText"];
+
+     $postedBillings = searchPostedBillings($dbh,$searchType,$searchValue);
+     $displayBillings = displayIndividualPostedBilings($postedBillings);
+     echo $displayBillings;
+
+   }
+
+   else{
+     $allIndividualPostedBillings = viewAllIndividualPostedBillings($dbh);
+     $displayBillings = displayIndividualPostedBilings($allIndividualPostedBillings);
+     echo $displayBillings;
+   }
 
 ?>
 </body>

@@ -31,6 +31,11 @@ $(function() {
       }
     });
   });
+
+$(function() {
+    $( "#datepickerStart" ).datepicker();
+    $( "#datepickerEnd" ).datepicker();
+});
 </script>
 </head>
 <body>
@@ -40,11 +45,49 @@ $(function() {
   include "billing_functions.php";
   include "pdo_conn.php";
   include "postingFunc/eventpost_functions.php";
+  include "postingFunc/individualViewPost_functions.php";
 
   $dbh = civicrmConnect();
   $menu = logoutDiv($dbh);
   echo $menu;
   echo "<br>";
+
+  $currentYear = date("Y");
+
+  echo "<table width='100%'>"
+       . "<tr>"
+       . "<td><a href='individualPostedBillings.php'>INDIVIDUAL POSTED BILLINGS</a></td>"
+       . "<td bgcolor='#084B8A'><a href='#'>COMPANY POSTED BILLINGS</a></td>"
+       . "</tr>"
+       . "</table><br><br>";
+
+   echo "<div style='padding:9px;width:50%;margin:0 auto;'>";
+   echo "<form action='' method='POST'>";
+   echo "<fieldset>";
+   echo "<legend>Search Individual Posted Billing</legend>";
+   echo "Search category:";
+   echo "<select name='category'>"
+        . "<option value='event_name'>Event Name</option>"
+        . "<option value='org_name'>Organization Name</option>"
+        . "<option value='billing_no'>Billing No</option>"
+        . "</select>";
+   echo "&nbsp;<input type='text' name='searchText' placeholder='Enter search text here.....'>";
+   echo "<input type='submit' name='search' value='SEARCH'>";
+   echo "<br><br>";
+   echo "Search bill date:&nbsp;";
+   echo "<input type='text' name='startDate' id='datepickerStart' placeholder='From'>";
+   echo "<input type='text'  name='endDate' id='datepickerEnd' placeholder='To'>";
+   echo "<input type='submit' value='SEARCH BILL DATE' name='searchDate'>";
+   echo "<br><br>";
+   echo "Search $currentYear New Membership Billing:";
+   echo "<input type='text'  name='contactName' placeholder='Enter search text here...'>";
+   echo "<input type='submit' name='searchName' value='SEARCH NEW MEMBERSHIP'>";
+   echo "</fieldset>";
+   echo "</div>";
+
+   echo "</form>";
+
+   $allIndividualPostedBillings = viewAllIndividualPostedBillings($dbh);
 
 ?>
 </body>

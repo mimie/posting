@@ -80,9 +80,6 @@ $(function() {
    echo "<input type='text'  name='endDate' id='datepickerEnd' placeholder='To'>";
    echo "<input type='submit' value='SEARCH BILL DATE' name='searchDate'>";
    echo "<br><br>";
-   echo "Search $currentYear New Membership Billing:";
-   echo "<input type='text'  name='contactName' placeholder='Enter search text here...'>";
-   echo "<input type='submit' name='searchName' value='SEARCH NEW MEMBERSHIP'>";
    echo "</fieldset>";
    echo "</div>";
 

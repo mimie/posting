@@ -14,7 +14,57 @@ function viewAllIndividualPostedBillings($dbh){
   $sql->execute();
   $result = $sql->fetchAll(PDO::FETCH_ASSOC);
   return $result;
+}
 
+function displayIndividualPostedBilings(array $billingDetails){
+
+  $html = "<table id='billingInfo' style='width:100%;'>"
+        . "<thead>"
+        . "<tr>"
+        . "<th>Participant Id</th>"
+        . "<th>Event Type</th>"
+        . "<th>Event Name</th>"
+        . "<th>Participant Name</th>"
+        . "<th>Organization Name</th>"
+        . "<th>Participant Status</th>"
+        . "<th>Fee Amount</th>"
+        . "<th>Billing Number</th>"
+        . "<th>Billing Date</th>"
+        . "<th>Print Bill</th>"
+        . "</tr>"
+        . "</thead>";
+
+  $html = $html."<tbody>";
+
+  foreach($billingDetails as $key => $field){
+    $participantId = $field["participant_id"];
+    $eventType = $field["event_type"];
+    $eventName = $field["event_name"];
+    $participantName = $field["participant_name"];
+    $orgName = $field["organization_name"];
+    $participantStatus = $field["participant_status"];
+    $feeAmount = $field["fee_amount"];
+    $billingNo = $field["billing_no"];
+    $billingDate = $field["bill_date"];
+
+    $html = $html."<tr>"
+          . "<td>$participantId</td>"
+          . "<td>$eventType</td>"
+          . "<td>$eventName</td>"
+          . "<td>$participantName</td>"
+          . "<td>$orgName</td>"
+          . "<td>$participantStatus</td>"
+          . "<td>$feeAmount</td>"
+          . "<td>$billingNo</td>"
+          . "<td>$billingDate</td>"
+          . "<td></td>"
+          . "</tr>";
+
+  }
+
+  $html = $html."</tbody></table>";
+
+  return $html;
 }
 
 ?>

@@ -103,7 +103,7 @@ $(function() {
   elseif(isset($_POST["searchEvent"])){
 
     $eventSearch = $_POST["eventName"];
-    $eventIds = searchEventName($eventSearch);
+    $eventIds = searchEventName($dbh,$eventSearch);
     $eventsDisplay = displayEvents($eventIds);
     echo $eventsDisplay;
 

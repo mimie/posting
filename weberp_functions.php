@@ -19,12 +19,16 @@ function displayEvents($eventIds){
 
   $allEvents = getAllEvents();
   $html = "<table align='center' border='1'>"
+        . "<thead>"
         . "<tr>"
         . "<th>Event Title</th>"
         . "<th>Event Date</th>"
-        . "<th>Participant List</th>"
-        . "<th>Billing</th>"
-        . "</tr>";
+        //. "<th>Participant List</th>"
+       // . "<th>Billing</th>"
+        . "</tr>"
+        . "</thead>";
+
+  $html = $html."</tbody>";
 
   foreach($eventIds as $id){
 
@@ -33,15 +37,15 @@ function displayEvents($eventIds){
     $date = $eventInfo["start_date"];
 
     $html = $html."<tr>"
-          ."<td>$title</td>"
+          ."<td><a href='participantListing.php?eventId=".$id."' style='text-decoration:none;' title='Click event name to view participants'>$title</a></td>"
           ."<td>".formatDate($date)."</td>"
-          ."<td align='center'><a href='participantListing.php?eventId=".$id."'><img src='participants.png' height='50' width='50'></a></td>"
-          ."<td align='center'><a href='individualBilling.php?eventId=".$id."&billingType=individual'><img src='billing_icon.png' height='50' width='70'></a></td>"
+          //."<td align='center'><a href='participantListing.php?eventId=".$id."'><img src='participants.png' height='50' width='50'></a></td>"
+         // ."<td align='center'><a href='individualBilling.php?eventId=".$id."&billingType=individual'><img src='billing_icon.png' height='50' width='70'></a></td>"
           ."</tr>";
 
   }
 
-  $html = $html."</table>";
+  $html = $html."</tbody></table>";
   return $html;
 }
 

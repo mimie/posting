@@ -15,9 +15,9 @@ function getEventByDate($startDate,$endDate){
   return $eventIds;
 }
 
-function displayEvents($dbh,$eventIds){
+function displayEvents($eventIds){
 
-  //$allEvents = getAllEvents();
+  $allEvents = getAllEvents();
   $html = "<table align='center' border='1'>"
         . "<tr>"
         . "<th>Event Title</th>"
@@ -28,9 +28,9 @@ function displayEvents($dbh,$eventIds){
 
   foreach($eventIds as $id){
 
-    /*$eventInfo = $allEvents["$id"];
+    $eventInfo = $allEvents["$id"];
     $title = $eventInfo["title"];
-    $date = $eventInfo["start_date"];**/
+    $date = $eventInfo["start_date"];
 
     $html = $html."<tr>"
           ."<td>$title</td>"

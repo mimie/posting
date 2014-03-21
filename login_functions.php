@@ -119,7 +119,7 @@ function logoutDiv($dbh){
            . "<ul><li><a href='membershipBillingView.php'>Membership Billing</a></li></ul>"
            . "</li>"
            . "<li><a href='addCustomer.php'>Civicrm Contacts</a></li>"
-           . "<li><a href='logout.php'>Logout</a></li>"
+         //  . "<li><a href='logout.php'>Logout</a></li>"
            . "</ul><br><br>"
            . "</div>";
 

@@ -15,9 +15,9 @@ function getEventByDate($startDate,$endDate){
   return $eventIds;
 }
 
-function displayEvents($eventIds){
+function displayEvents($dbh,$eventIds){
 
-  $allEvents = getAllEvents();
+  //$allEvents = getAllEvents();
   $html = "<table align='center' border='1'>"
         . "<tr>"
         . "<th>Event Title</th>"
@@ -28,9 +28,9 @@ function displayEvents($eventIds){
 
   foreach($eventIds as $id){
 
-    $eventInfo = $allEvents["$id"];
+    /*$eventInfo = $allEvents["$id"];
     $title = $eventInfo["title"];
-    $date = $eventInfo["start_date"];
+    $date = $eventInfo["start_date"];**/
 
     $html = $html."<tr>"
           ."<td>$title</td>"
@@ -57,9 +57,9 @@ function getStatusId($eventId,$contactId){
 }
 
 
-function searchEventName($eventName){
+function searchEventName($dbh,$eventName){
 
-  $allEvents = getAllEvents();
+  /*$allEvents = getAllEvents();
   $eventIdMatches = array();
 
   $patternEvent = "/\b\w*".$eventName."\w*\b/";
@@ -72,8 +72,19 @@ function searchEventName($eventName){
       $eventIdMatches[] = $eventId;
 
     }
-  }
+  }*/
 
+  $sql = $dbh->prepare("SELECT id FROM civicrm_event WHERE title LIKE ?");
+  $sql->bindValue(1,"%".$eventName."%",PDO::PARAM_STR);
+  $sql->execute();
+  $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+  $eventIdMatches = array();
+
+  foreach($result as $key => $field){
+    $eventIdMatches[] = $field["id"];
+  }
+  
   return $eventIdMatches;
 }
 

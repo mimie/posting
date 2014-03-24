@@ -92,59 +92,80 @@ function searchEventName($dbh,$eventName){
   return $eventIdMatches;
 }
 
-function getParticipantByEvent($eventId){
+function getParticipantByEvent($dbh,$eventId){
 
- $allContacts = getAllContacts();
- $contactIds = getEventParticipantId($eventId);
  $allEmails = getAllEmails();
  $status = getParticipantStatusType();
  $statusSelector = participantStatusSelector();
  //$filterParticipantForm = filterParticipantForm();
 
  //$html = $filterParticipantForm;
+ $prefixes = array("Mr.","Mrs.","Ms.","Dr.","Sr.","Jr.");
+
+ $sql = $dbh->prepare("SELECT cp.id as participant_id,cp.contact_id, cp.status_id,cp.event_id,cc.sort_name,cc.display_name,cc.organization_name, cs.name as status, cp.fee_amount
+                       FROM civicrm_participant cp
+                       INNER JOIN civicrm_contact cc ON cp.contact_id = cc.id
+                       INNER JOIN civicrm_participant_status_type cs ON cp.status_id = cs.id 
+                       WHERE cp.event_id = ?
+                       ORDER BY cc.sort_name");
+ $sql->bindParam(1,$eventId,PDO::PARAM_INT);
+ $sql->execute();
+
+ $participants = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+ 
  $html = "<form id='participants' method='post'>"
        . "<div align='center' style='padding:6px;'>$statusSelector</div>";
  
  $html = $html."<table border='1' align='center'>"
        . "<tr>"
+       . "<th>Prefix</th>"
        . "<th>Participant Name</th>"
        . "<th>Organization Name</th>"
        . "<th>Email Address</th>"
        . "<th>Participant Status</th>"
        . "<th>Change Participant Status</th>"
        . "<th>Fee Amount</th>"
-//       . "<th>Post</th>"
+       . "<th>Billing Type</th>"
+       . "<th>Billing No.</th>"
        . "<tr>";
 
- foreach($contactIds as $id){
+ foreach($participants as $key => $field){
 
-  $details = $allContacts[$id];
-  $name = $details["name"];
-  $org = $details["org"];
-  $email = $allEmails[$id];
+  $name = $field["sort_name"];
+  $displayName = $field["display_name"];
+  $org = $field["organization_name"];
+  $statusName = $field["status"];
+  $contactId = $field["contact_id"];
+  $email = $allEmails[$contactId];
+  $feeAmount = $field["fee_amount"];
+  $feeAmount = number_format($feeAmount, 2, '.',','); 
+  $firstWord = strtok($displayName, " ");
+  $prefix = in_array($firstWord,$prefixes) ? $firstWord : '';
 
-  $feeAmount = getParticipantFeeAmount($id,$eventId);
-  
-  $statusId = getParticipantStatusId($id,$eventId);
-  $statusName = $status[$statusId];
-  //$statusTypeSelectForm = statusTypeSelectForm($statusId);
+  $sql = $dbh->prepare("SELECT billing_type,billing_no FROM billing_details WHERE contact_id = ?");
+  $sql->bindParam(1,$contactId,PDO::PARAM_INT);
+  $sql->execute();
+  $result = $sql->fetch(PDO::FETCH_ASSOC);
+  $billingType = $result["billing_type"];
+  $billingNo = $result["billing_no"];
 
   $html = $html."<tr>"
+        . "<td>$prefix</td>"
         . "<td>$name</td>"
         . "<td>$org</td>"
         . "<td>$email</td>"
         . "<td align='center'>$statusName</td>"
-        . "<td align='center'><input type='checkbox' name='contactIds[]' value='$id'></td>"
+        . "<td align='center' style='width:3%;'><input type='checkbox' name='contactIds[]' value='$contactId'></td>"
         . "<td align='center'>$feeAmount</td>"
-  //      . "<td align='center'><input type='submit' value='Post'></td>"
+        . "<td>$billingType</td>"
+        . "<td>$billingNo</td>"
         . "</tr>";
   }
 
   $html = $html."</form></table>";
 
   return $html;
-
- 
 }
 
 /*

@@ -138,7 +138,7 @@ function checkedAll(formname)
 
     else{
       
-    $displayParticipants = getParticipantByEvent($eventId);
+    $displayParticipants = getParticipantByEvent($dbh,$eventId);
     echo $displayParticipants;
     }
 
@@ -146,7 +146,7 @@ function checkedAll(formname)
 
   else{
   
-    $displayParticipants = getParticipantByEvent($eventId);
+    $displayParticipants = getParticipantByEvent($dbh,$eventId);
     echo $displayParticipants;
   }
   

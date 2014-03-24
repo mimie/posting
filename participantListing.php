@@ -103,25 +103,31 @@ function checkedAll(formname)
   if(isset($_POST["searchNameEmail"])){
     
     $searchNameEmail = $_POST["nameEmailTb"];
-    $contactIds = getContactIdSearchName($eventId,$searchNameEmail);
+    /**$contactIds = getContactIdSearchName($eventId,$searchNameEmail);
     $searchParticipantByName = searchedParticipantListByName($contactIds,$eventId);
-    echo $searchParticipantByName;
+    echo $searchParticipantByName;*/
+    $participants = findParticipantByCategory($dbh,$eventId,"name",$searchNameEmail);
+    echo $participants;
 
   }
 
   elseif(isset($_POST["searchOrg"])){
 
     $searchOrg = $_POST["orgTb"];
-    $contactIds = getContactIdSearchOrg($eventId,$searchOrg);
+    /*$contactIds = getContactIdSearchOrg($eventId,$searchOrg);
     $searchParticipantByName = searchedParticipantListByName($contactIds,$eventId);
-    echo $searchParticipantByName;
+    echo $searchParticipantByName;**/
+    $participants = findParticipantByCategory($dbh,$eventId,"org",$searchOrg);
+    echo $participants;
   }
 
   elseif(isset($_POST["searchStatus"])){
     $statusId = $_POST["statusTypeSelect"];
-    $contactIds = getContactIdSearchStatusId($eventId,$statusId);
+    /**$contactIds = getContactIdSearchStatusId($eventId,$statusId);
     $searchParticipantByName = searchedParticipantListByName($contactIds,$eventId);
-    echo $searchParticipantByName;
+    echo $searchParticipantByName;**/
+    $participants = findParticipantByCategory($dbh,$eventId,"status",$statusId);
+    echo $participants;
   }
 
   elseif(isset($_POST["updateStatus"])){

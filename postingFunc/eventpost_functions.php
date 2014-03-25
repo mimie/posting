@@ -117,9 +117,10 @@ function displayIndividualEventBillings(array $eventBillings){
 
 function getCompanyNonPostedBillings($dbh){
 
-   $sql = $dbh->prepare("SELECT cbid,event_name, org_contact_id,organization_name, billing_no,total_amount, subtotal, vat, bill_date,event_id
-                         FROM billing_company
+   $sql = $dbh->prepare("SELECT cbid,event_name, org_contact_id,organization_name, billing_no,total_amount, subtotal, vat, bill_date,event_id,start_date,end_date
+                         FROM billing_company, civicrm_event
                          WHERE post_bill = '0'
+                         AND billing_company.event_id = civicrm_event.id
                          AND total_amount != '0'");
    $sql->execute();
    $result = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -165,6 +166,8 @@ function displayCompanyEventBillings(array $companyBillings){
          . "<tr>"
          . "<th><input type='checkbox' id='check'>Select organization</th>"
          . "<th>Event Name</th>"
+         . "<th>Start Date</th>"
+         . "<th>End Date</th>"
          . "<th>Organization Name</th>"
          . "<th>Billing No</th>"
          . "<th>Total Amount</th>"
@@ -189,6 +192,10 @@ function displayCompanyEventBillings(array $companyBillings){
       $billDate = $field["bill_date"];
       $billingId = $field["cbid"];
       $eventId = $field["event_id"];
+      $startDate = date($field["start_date"]);
+      $startDate = date("F j, Y",strtotime($startDate));
+      $endDate = $field["end_date"];
+      $endDate = date("F j, Y",strtotime($endDate));
 
       $participantsLink = "<a href='../webapp/pire/billedParticipants.php?eventId=$eventId&billingNo=$billingNo&orgId=$orgId' target='_blank'>"
                         . "<img src='../webapp/pire/participants.png' height='50' width='50'></a>";
@@ -196,6 +203,8 @@ function displayCompanyEventBillings(array $companyBillings){
       $html = $html."<tr>"
             . "<td><input type='checkbox' name='billingIds[]' value='$billingId' class='checkbox'></td>"
             . "<td>$eventName</td>"
+            . "<td>$startDate</td>"
+            . "<td>$endDate</td>"
             . "<td>$orgName</td>"
             . "<td>$billingNo</td>"
             . "<td>$totalAmount</td>"

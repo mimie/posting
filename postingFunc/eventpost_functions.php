@@ -55,6 +55,26 @@ function searchNonPostedBilling($dbh,$category,$value){
 
 }
 
+function searchNonPostedBillingByDate($dbh,$startDate,$endDate){
+
+  $startDate = date("Y-m-d",strtotime($startDate));
+  $endDate = date("Y-m-d",strtotime($endDate));
+
+  $sql = $dbh->prepare("SELECT bd.id,bd.contact_id, bd.participant_id, bd.event_id,bd.event_type, bd.event_name, bd.participant_name,
+                         bd.organization_name, bd.org_contact_id, bd.fee_amount, bd.billing_no, bd.bill_date, cs.name as status,ce.start_date,ce.end_date
+                         FROM billing_details bd, civicrm_participant cp, civicrm_participant_status_type cs,civicrm_event ce
+                         WHERE billing_type = 'Individual' AND post_bill='0'
+                         AND cp.id = bd.participant_id
+                         AND cp.status_id  = cs.id
+                         AND bd.event_id = ce.id
+                         AND ce.start_date >= STR_TO_DATE('$startDate','%Y-%m-%d') AND ce.end_date < STR_TO_DATE('$endDate', '%Y-%m-%d') + INTERVAL 1 DAY");
+ $sql->execute();
+ $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+ return $result;
+
+}
+
 
 
 function displayIndividualEventBillings(array $eventBillings){

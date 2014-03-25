@@ -155,10 +155,11 @@ function searchCompanyNonPostedBillings($dbh,$category,$value){
 
    }
 
-   $sql = $dbh->prepare("SELECT event_name, org_contact_id,organization_name, billing_no,total_amount, subtotal, vat, bill_date,event_id
-                         FROM billing_company
+   $sql = $dbh->prepare("SELECT ce.title as event_name, bc.org_contact_id,bc.organization_name, bc.billing_no,bc.total_amount, bc.subtotal, bc.vat, bc.bill_date,bc.event_id,ce.start_date,ce.end_date
+                         FROM billing_company bc, civicrm_event ce
                          WHERE post_bill = '0'
                          AND total_amount != '0'
+                         AND bc.event_id = ce.id
                          $searchQuery");
    $sql->bindValue(1,"%".$value."%",PDO::PARAM_STR);
    $sql->execute();

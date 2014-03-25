@@ -3,10 +3,11 @@
 function getIndividualNonPostedBillings(PDO $dbh){
 
    $sql = $dbh->prepare("SELECT bd.id,bd.contact_id, bd.participant_id, bd.event_id,bd.event_type, bd.event_name, bd.participant_name,
-                         bd.organization_name, bd.org_contact_id, bd.fee_amount, bd.billing_no, bd.bill_date, cs.name as status
-                         FROM billing_details bd, civicrm_participant cp, civicrm_participant_status_type cs
+                         bd.organization_name, bd.org_contact_id, bd.fee_amount, bd.billing_no, bd.bill_date, cs.name as status,ce.start_date,ce.end_date
+                         FROM billing_details bd, civicrm_participant cp, civicrm_participant_status_type cs, civicrm_event ce
                          WHERE billing_type = 'Individual' AND post_bill='0'
                          AND cp.id = bd.participant_id
+                         AND bd.event_id = ce.id
                          AND cp.status_id  = cs.id");
    $sql->execute();
    $result = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -39,11 +40,12 @@ function searchNonPostedBilling($dbh,$category,$value){
    }
 
    $sql = $dbh->prepare("SELECT bd.id,bd.contact_id, bd.participant_id, bd.event_id,bd.event_type, bd.event_name, bd.participant_name,
-                         bd.organization_name, bd.org_contact_id, bd.fee_amount, bd.billing_no, bd.bill_date, cs.name as status
-                         FROM billing_details bd, civicrm_participant cp, civicrm_participant_status_type cs
+                         bd.organization_name, bd.org_contact_id, bd.fee_amount, bd.billing_no, bd.bill_date, cs.name as status,ce.start_date,ce.end_date
+                         FROM billing_details bd, civicrm_participant cp, civicrm_participant_status_type cs,civicrm_event ce
                          WHERE billing_type = 'Individual' AND post_bill='0'
                          AND cp.id = bd.participant_id
                          AND cp.status_id  = cs.id
+                         AND bd.event_id = ce.id
                          $searchQuery");
    $sql->bindValue(1,"%".$value."%",PDO::PARAM_STR);
    $sql->execute();
@@ -59,12 +61,14 @@ function displayIndividualEventBillings(array $eventBillings){
 
     $html = "<table id='info' width='100%'>"
           . "<thead>"
-          . "<tr><td colspan='11' bgcolor='#2c4f85'><input type='submit' value='Post to Weberp' name='post'></td></tr>"
+          . "<tr><td colspan='13' bgcolor='#2c4f85'><input type='submit' value='Post to Weberp' name='post'></td></tr>"
           . "<tr>"
           . "<th><input type='checkbox' id='check'>Select Contact</th>"
           . "<th>Participant Id</th>"
           . "<th>Event Type</th>"
           . "<th>Event Name</th>"
+          . "<th>Start Date</th>"
+          . "<th>End Date</th>"
           . "<th>Participant Name</th>"
           . "<th>Organization Name</th>"
           . "<th>Participant Status</th>"
@@ -91,6 +95,10 @@ function displayIndividualEventBillings(array $eventBillings){
        $status = $field["status"];
        $eventId = $field["event_id"];
        $billingId = $field["id"];
+       $startDate = $field["start_date"];
+       $startDate = date("F j, Y",strtotime($startDate));
+       $endDate = $field["end_date"];
+       $endDate = date("F j, Y",strtotime($endDate));
 
        $checkbox = $status == 'Attended' ? "class='checkbox'" : "";
        $disabled = $status != 'Attended' ? "disabled" : "";
@@ -100,6 +108,8 @@ function displayIndividualEventBillings(array $eventBillings){
              . "<td>$participantId</td>"
              . "<td>$eventType</td>"
              . "<td><a href='participantListing.php?eventId=$eventId' title='Click this link to edit participant status'>$eventName</a></td>"
+             . "<td>$startDate</td>"
+             . "<td>$endDate</td>"
              . "<td>$name</td>"
              . "<td>$orgName</td>"
              . "<td>$status</td>"

@@ -189,6 +189,23 @@ function searchCompanyNonPostedBillings($dbh,$category,$value){
 
 }
 
+function searchCompanyNonPostedBillingsByDate($dbh,$startDate,$endDate){
+
+  $startDate = date("Y-m-d",strtotime($startDate));
+  $endDate = date("Y-m-d",strtotime($endDate));
+  $sql = $dbh->prepare("SELECT ce.title as event_name, bc.org_contact_id,bc.organization_name, bc.billing_no,bc.total_amount, bc.subtotal, bc.vat, bc.bill_date,bc.event_id,ce.start_date,ce.end_date
+                         FROM billing_company bc, civicrm_event ce
+                         WHERE post_bill = '0'
+                         AND total_amount != '0'
+                         AND bc.event_id = ce.id
+                         AND ce.start_date >= STR_TO_DATE('$startDate','%Y-%m-%d') AND ce.end_date < STR_TO_DATE('$endDate', '%Y-%m-%d') + INTERVAL 1 DAY");
+  $sql->execute();
+  $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+  return $result;
+  
+
+}
+
 function displayCompanyEventBillings(array $companyBillings){
 
    $html = "<table id='info' width='100%'>"

@@ -75,10 +75,10 @@ $(function() {
    echo "&nbsp;<input type='text' name='searchText' placeholder='Enter search text here.....'>";
    echo "<input type='submit' name='search' value='SEARCH'>";
    echo "<br><br>";
-   echo "Search bill date:&nbsp;";
+   echo "Search event start date:&nbsp;";
    echo "<input type='text' name='startDate' id='datepickerStart' placeholder='From'>";
    echo "<input type='text'  name='endDate' id='datepickerEnd' placeholder='To'>";
-   echo "<input type='submit' value='SEARCH BILL DATE' name='searchDate'>";
+   echo "<input type='submit' value='SEARCH EVENT DATE' name='searchDate'>";
    echo "<br><br>";
    echo "</fieldset>";
    echo "</div>";
@@ -87,6 +87,15 @@ $(function() {
      $category = $_POST["category"];
      $searchValue = $_POST["searchText"];
      $companyBillings = searchCompanyNonPostedBillings($dbh,$category,$searchValue);
+     $display = displayCompanyEventBillings($companyBillings);
+     echo $display;
+  }
+
+  elseif(isset($_POST["searchDate"])){
+
+     $startDate = $_POST["startDate"];
+     $endDate = $_POST["endDate"];
+     $companyBillings = searchCompanyNonPostedBillingsByDate($dbh,$startDate,$endDate);
      $display = displayCompanyEventBillings($companyBillings);
      echo $display;
   }

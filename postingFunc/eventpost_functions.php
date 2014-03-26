@@ -176,7 +176,7 @@ function searchCompanyNonPostedBillings($dbh,$category,$value){
 
    }
 
-   $sql = $dbh->prepare("SELECT ce.title as event_name, bc.org_contact_id,bc.organization_name, bc.billing_no,bc.total_amount, bc.subtotal, bc.vat, bc.bill_date,bc.event_id,ce.start_date,ce.end_date
+   $sql = $dbh->prepare("SELECT bc.cbid,ce.title as event_name, bc.org_contact_id,bc.organization_name, bc.billing_no,bc.total_amount, bc.subtotal, bc.vat, bc.bill_date,bc.event_id,ce.start_date,ce.end_date
                          FROM billing_company bc, civicrm_event ce
                          WHERE post_bill = '0'
                          AND total_amount != '0'
@@ -194,7 +194,7 @@ function searchCompanyNonPostedBillingsByDate($dbh,$startDate,$endDate){
 
   $startDate = date("Y-m-d",strtotime($startDate));
   $endDate = date("Y-m-d",strtotime($endDate));
-  $sql = $dbh->prepare("SELECT ce.title as event_name, bc.org_contact_id,bc.organization_name, bc.billing_no,bc.total_amount, bc.subtotal, bc.vat, bc.bill_date,bc.event_id,ce.start_date,ce.end_date
+  $sql = $dbh->prepare("SELECT bc.cbid,ce.title as event_name, bc.org_contact_id,bc.organization_name, bc.billing_no,bc.total_amount, bc.subtotal, bc.vat, bc.bill_date,bc.event_id,ce.start_date,ce.end_date
                          FROM billing_company bc, civicrm_event ce
                          WHERE post_bill = '0'
                          AND total_amount != '0'
@@ -231,6 +231,7 @@ function displayCompanyEventBillings(array $companyBillings){
 
     foreach($companyBillings as $key => $field){
 
+      $billingId = $field["cbid"];
       $eventName = $field["event_name"];
       $orgId = $field["org_contact_id"];
       $orgName = $field["organization_name"];

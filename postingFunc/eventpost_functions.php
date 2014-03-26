@@ -235,9 +235,9 @@ function displayCompanyEventBillings(array $companyBillings){
       $orgId = $field["org_contact_id"];
       $orgName = $field["organization_name"];
       $billingNo = $field["billing_no"];
-      $totalAmount = $field["total_amount"];
-      $subtotal = $field["subtotal"];
-      $vat = $field["vat"];
+      $totalAmount = number_format($field["total_amount"], 2, '.',',');
+      $subtotal = number_format($field["subtotal"], 2, '.',',');
+      $vat = number_format($field["vat"], 2, '.',',');
       $billDate = $field["bill_date"];
       $billingId = $field["cbid"];
       $eventId = $field["event_id"];

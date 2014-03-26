@@ -238,7 +238,7 @@ function displayCompanyEventBillings(array $companyBillings){
       $totalAmount = number_format($field["total_amount"], 2, '.',',');
       $subtotal = number_format($field["subtotal"], 2, '.',',');
       $vat = number_format($field["vat"], 2, '.',',');
-      $billDate = $field["bill_date"];
+      $billDate = date("F j, Y",strtotime($field["bill_date"]));
       $billingId = $field["cbid"];
       $eventId = $field["event_id"];
       $startDate = date($field["start_date"]);

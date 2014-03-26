@@ -109,9 +109,10 @@ function displayIndividualEventBillings(array $eventBillings){
        $eventName = $field["event_name"];
        $name = $field["participant_name"];
        $orgName = $field["organization_name"];
-       $feeAmount = $field["fee_amount"];
+       $feeAmount = number_format($field["fee_amount"], 2, '.',',');
        $billingNo = $field["billing_no"];
-       $date = $field["bill_date"];
+       $billdate = $field["bill_date"];
+       $billdate = date("F j, Y",strtotime($billdate));
        $status = $field["status"];
        $eventId = $field["event_id"];
        $billingId = $field["id"];
@@ -135,7 +136,7 @@ function displayIndividualEventBillings(array $eventBillings){
              . "<td>$status</td>"
              . "<td>$feeAmount</td>"
              . "<td>$billingNo</td>"
-             . "<td>$date</td>"
+             . "<td>$billdate</td>"
              . "<td><a href='../webapp/pire/individualBillingReference.php?billingRef=$billingNo&eventId=$eventId' target='_blank'>"
              . "<img src='images/printer-icon.png' width='30' height='30'></a></td>"
              . "</tr>";

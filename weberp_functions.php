@@ -18,7 +18,7 @@ function getEventByDate($startDate,$endDate){
 function displayEvents($eventIds){
 
   $allEvents = getAllEvents();
-  $html = "<table align='center' border='1'>"
+  $html = "<table id='eventInfo' align='center' border='1'>"
         . "<thead>"
         . "<tr>"
         . "<th>Event Title</th>"

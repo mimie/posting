@@ -18,7 +18,7 @@
 $(function() {
         $( "#tabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
         $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
-        $('table').jPaginate({
+        $("#eventInfo").jPaginate({
                 'max': 30,
                 'page': 1,
                 'links': 'buttons'
@@ -54,9 +54,23 @@ $(function() {
   echo "<div align='center' style='padding:16px;'>";  
   $logout = logoutDiv($dbh);
   echo $logout;
+  echo "<br>";
   /**$header = headerDiv();
   echo $header;**/
-  echo "</div>";
+
+  @$originUrl = $_GET["origin_url"];
+
+  if(isset($originUrl) && $originUrl == 'posting'){
+   echo "<table width='100%'>"
+        . "<tr>"
+        . "<td><a href='events2.php?origin_url=participants'>PARTICIPANT LIST</a></td>"
+        . "<td bgcolor='#084B8A'><a href='eventIndividualPosting.php'>INDIVIDUAL EVENT POSTING</a></td>"
+        . "<td bgcolor='#084B8A'><a href='eventCompanyPosting.php'>COMPANY EVENT POSTING</a></td>"
+        . "</tr>"
+        . "</table><br><br>";
+
+    echo "</div>";
+  }
 
 ?>
 <center>

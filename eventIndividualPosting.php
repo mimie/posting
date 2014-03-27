@@ -58,7 +58,7 @@ $(function() {
 
    echo "<table width='100%'>"
         . "<tr>"
-        . "<td bgcolor='#084B8A'><a href='events2.php'>PARTICIPANT LIST</a></td>"
+        . "<td bgcolor='#084B8A'><a href='events2.php?origin_url=posting'>PARTICIPANT LIST</a></td>"
         . "<td><a href='eventIndividualPosting.php'>INDIVIDUAL EVENT POSTING</a></td>"
         . "<td bgcolor='#084B8A'><a href='eventCompanyPosting.php'>COMPANY EVENT POSTING</a></td>"
         . "</tr>"

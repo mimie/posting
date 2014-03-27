@@ -12,6 +12,7 @@
 
   include 'pdo_conn.php';
   include 'login_functions.php';
+  include 'postingFunc/eventIndividualPost_functions.php';
 
   $dbh = civicrmConnect();
   include 'billing_functions.php';
@@ -58,6 +59,10 @@
    echo "<th>Event Location</th><td><i>$eventLocation</i></td>";
    echo "</tr>";
    echo "</table>";
+
+   $bills = getIndividualBillingsByEvent($dbh,$eventId);
+   $display = displayIndividualBillingsByEvent($bills);
+   echo $display;
   
 
 ?>

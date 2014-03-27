@@ -70,6 +70,13 @@ function checkedAll(formname)
    echo "&nbsp;&nbsp;<b>&gt;</b>&nbsp;";
    echo "<i>$eventName</i>";
    echo "</div>";
+   echo "<table width='100%'>";
+   echo "<tr>";
+   echo "<td><a href='participantListing.php?eventId=$eventId'>ALL PARTICIPANTS</a></td>";
+   echo "<td bgcolor='#084B8A'><a href='EventIndividualPostingByEvent.php?eventId=$eventId'>INDIVIDUAL EVENT POSTING</a></td>";
+   echo "<td bgcolor='#084B8A'><a href='EventCompanyPostingByEvent.php'>COMPANY EVENT POSTING</a></td>";
+   echo "</tr>";
+   echo "</table>";
 
    echo "<div id='eventDetails'>";
    echo "<table border = '1' align='center'>";

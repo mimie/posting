@@ -35,6 +35,7 @@ $(function() {
 $(function() {
     $( "#datepickerStart" ).datepicker();
     $( "#datepickerEnd" ).datepicker();
+    $( "#postDate" ).datepicker();
 });
 </script>
 </head>
@@ -48,9 +49,11 @@ $(function() {
   include "postingFunc/individualViewPost_functions.php";
 
   $dbh = civicrmConnect();
+  $weberp = weberpConnect();
   $menu = logoutDiv($dbh);
   echo $menu;
   echo "<br>";
+  echo "<form action='' method='POST'>";
 
   echo "<table width='100%'>"
        . "<tr>"
@@ -60,7 +63,6 @@ $(function() {
        . "</table><br><br>";
 
    echo "<div style='padding:9px;width:50%;margin:0 auto;'>";
-   echo "<form action='' method='POST'>";
    echo "<fieldset>";
    echo "<legend>Search Individual Posted Billing</legend>";
    echo "Search category:";
@@ -81,7 +83,6 @@ $(function() {
    echo "</fieldset>";
    echo "</div>";
 
-   echo "</form>";
 
    if(isset($_POST["search"])){
      $searchType = $_POST["category"];
@@ -102,11 +103,26 @@ $(function() {
     
    }
 
+   elseif(isset($_POST["update"])){
+     $vouchers = $_POST["billingNos"];
+     $date = $_POST["postdate"];
+     foreach($vouchers as $key => $voucherNo){
+        updatePostDate($weberp,$voucherNo,$date);
+     }
+
+     $allIndividualPostedBillings = viewAllIndividualPostedBillings($dbh);
+     $displayBillings = displayIndividualPostedBilings($allIndividualPostedBillings);
+     echo $displayBillings;
+     
+   }
+
    else{
      $allIndividualPostedBillings = viewAllIndividualPostedBillings($dbh);
      $displayBillings = displayIndividualPostedBilings($allIndividualPostedBillings);
      echo $displayBillings;
    }
+
+   echo "</form>";
 
 ?>
 </body>

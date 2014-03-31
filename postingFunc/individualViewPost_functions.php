@@ -22,6 +22,13 @@ function displayIndividualPostedBilings(array $billingDetails){
   $html = "<table id='billingInfo' style='width:100%;'>"
         . "<thead>"
         . "<tr>"
+        . "<td bgcolor='#084B8A' colspan='11'>"
+        . "<input type='text' name='postdate' id='postDate' placeholder='Select post date..'>"
+        . "<input type='submit' name='update' value='UPDATE POST DATE'>"
+        . "</td>"
+        . "</tr>"
+        . "<tr>"
+        . "<th>Select bill</th>"
         . "<th>Participant Id</th>"
         . "<th>Event Type</th>"
         . "<th>Event Name</th>"
@@ -50,6 +57,7 @@ function displayIndividualPostedBilings(array $billingDetails){
     $eventId = $field["event_id"];
 
     $html = $html."<tr>"
+          . "<td><input type='checkbox' name='billingNos[]' value='$billingNo'></td>"
           . "<td>$participantId</td>"
           . "<td>$eventType</td>"
           . "<td>$eventName</td>"
@@ -69,6 +77,16 @@ function displayIndividualPostedBilings(array $billingDetails){
   $html = $html."</tbody></table>";
 
   return $html;
+}
+
+function updatePostDate($weberp,$voucherNo,$postDate){
+
+  $postDate = date("Y-m-d",strtotime($postDate));
+  $sql = $weberp->prepare("UPDATE gltrans SET trandate = ? WHERE voucherno = ?");
+  $sql->bindValue(1,$postDate,PDO::PARAM_STR);
+  $sql->bindValue(2,$voucherNo,PDO::PARAM_STR);
+  $sql->execute();
+
 }
 
 function searchPostedBillings($dbh,$searchType,$searchValue){

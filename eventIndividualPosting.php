@@ -36,6 +36,7 @@ $(function() {
 $(function() {
     $( "#datepickerStart" ).datepicker();
     $( "#datepickerEnd" ).datepicker();
+    $( "#postDate" ).datepicker();
 });
 </script>
 </head>

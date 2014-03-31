@@ -17,12 +17,12 @@ function viewAllIndividualPostedBillings($dbh){
   return $result;
 }
 
-function displayIndividualPostedBilings(array $billingDetails){
+function displayIndividualPostedBilings($weberp,array $billingDetails){
 
   $html = "<table id='billingInfo' style='width:100%;'>"
         . "<thead>"
         . "<tr>"
-        . "<td bgcolor='#084B8A' colspan='11'>"
+        . "<td bgcolor='#084B8A' colspan='12'>"
         . "<input type='text' name='postdate' id='postDate' placeholder='Select post date..'>"
         . "<input type='submit' name='update' value='UPDATE POST DATE'>"
         . "</td>"
@@ -38,6 +38,7 @@ function displayIndividualPostedBilings(array $billingDetails){
         . "<th>Fee Amount</th>"
         . "<th>Billing Number</th>"
         . "<th>Billing Date</th>"
+        . "<th>Post Date</th>"
         . "<th>Print Bill</th>"
         . "</tr>"
         . "</thead>";
@@ -56,6 +57,11 @@ function displayIndividualPostedBilings(array $billingDetails){
     $billingDate = $field["bill_date"];
     $eventId = $field["event_id"];
 
+    $sql = $weberp->prepare("SELECT trandate FROM gltrans WHERE voucherno = ?");
+    $sql->bindValue(1,$billingNo,PDO::PARAM_STR);
+    $sql->execute();
+    $postDate = $sql->fetchColumn();
+
     $html = $html."<tr>"
           . "<td><input type='checkbox' name='billingNos[]' value='$billingNo'></td>"
           . "<td>$participantId</td>"
@@ -67,6 +73,7 @@ function displayIndividualPostedBilings(array $billingDetails){
           . "<td>$feeAmount</td>"
           . "<td>$billingNo</td>"
           . "<td>$billingDate</td>"
+          . "<td>$postDate</td>"
           . "<td><a href='../webapp/pire/individualBillingReference.php?billingRef=$billingNo&eventId=$eventId' target='_blank'>"
           . "<img src='../webapp/pire/images/printer-icon.png' width='40' height='40'>"
           . "</a></td>"

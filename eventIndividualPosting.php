@@ -138,17 +138,17 @@ $(function() {
         $customer["email"] = $email;
         $customer["member_id"] = $memberId;
 
-
+        $postDate = $_POST["postdate"];
         $exist = checkContactRecordExist($weberp,$contactId);
 
         if($exist == 0){
           insertCustomer($weberp,$customer);
-          myPost($eventType,$eventDescription,$feeAmount,$name,$custId,$billingNo,$billDate);
+          myPost($eventType,$eventDescription,$feeAmount,$name,$custId,$billingNo,$billDate,$postDate);
 
         }
 
         else{
-          myPost($eventType,$eventDescription,$feeAmount,$name,$custId,$billingNo,$billDate);
+          myPost($eventType,$eventDescription,$feeAmount,$name,$custId,$billingNo,$billDate,$postDate);
 
         }
     }

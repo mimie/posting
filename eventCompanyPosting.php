@@ -35,6 +35,7 @@ $(function() {
 $(function() {
     $( "#datepickerStart" ).datepicker();
     $( "#datepickerEnd" ).datepicker();
+    $( "#postDate" ).datepicker();
 });
 </script>
 </head>
@@ -102,8 +103,10 @@ $(function() {
 
   elseif(isset($_POST["post"])){
      $ids = $_POST["billingIds"];
+     $postDate = $_POST["postdate"];
 
       foreach($ids as $billingId){
+        
         updateCompanyEventPost($dbh,$billingId);
         $details = getCompanyInfoBilling($dbh,$billingId);
         $orgId = $details["org_contact_id"];
@@ -136,11 +139,11 @@ $(function() {
 
         if($exist == 0){
           insertCustomer($weberp,$customer);
-          myPost($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate);
+          myPost($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate,$postDate);
         }   
         
         else{
-          myPost($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate);
+          myPost($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate,$postDate);
         }
       }
           echo'<div id="confirmation" title="Confirmation">';

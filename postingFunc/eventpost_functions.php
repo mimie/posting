@@ -213,7 +213,10 @@ function displayCompanyEventBillings(array $companyBillings){
 
    $html = "<table id='info' width='100%'>"
          . "<thead>"
-          . "<tr><td colspan='12' bgcolor='#2c4f85'><input type='submit' value='Post to Weberp' name='post'></td></tr>"
+         . "<tr><td colspan='12' bgcolor='#2c4f85'>"
+         . "<input type='text' name='postdate' id='postDate' placeholder='Select post date..'>"
+         . "<input type='submit' value='Post to Weberp' name='post'>"
+         . "</td></tr>"
          . "<tr>"
          . "<th><input type='checkbox' id='check'>Select organization</th>"
          . "<th>Event Name</th>"

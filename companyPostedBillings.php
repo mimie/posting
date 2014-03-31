@@ -36,6 +36,7 @@ $(function() {
 $(function() {
     $( "#datepickerStart" ).datepicker();
     $( "#datepickerEnd" ).datepicker();
+    $( "#postDate" ).datepicker();
 });
 </script>
 <head>
@@ -48,9 +49,11 @@ $(function() {
   include "postingFunc/companyViewPost_functions.php";
 
   $dbh = civicrmConnect();
+  $weberp = weberpConnect();
   $menu = logoutDiv($dbh);
   echo $menu;
   echo "<br>";
+  echo "<form action='' method='POST'>";
 
   echo "<table width='100%'>"
        . "<tr>"
@@ -60,7 +63,6 @@ $(function() {
        . "</table><br><br>";
 
    echo "<div style='padding:9px;width:50%;margin:0 auto;'>";
-   echo "<form action='' method='POST'>";
    echo "<fieldset>";
    echo "<legend>Search Individual Posted Billing</legend>";
    echo "Search category:";
@@ -80,13 +82,12 @@ $(function() {
    echo "</fieldset>";
    echo "</div>";
 
-   echo "</form>";
 
    if(isset($_POST["search"])){
      $searchType = $_POST["category"];
      $searchValue = $_POST["searchText"];
      $postedBillings = searchCompanyPostedBillings($dbh,$searchType,$searchValue);
-     $displayBillings = displayCompanyPostedBillings($postedBillings);
+     $displayBillings = displayCompanyPostedBillings($weberp,$postedBillings);
      echo $displayBillings;
    }
 
@@ -94,15 +95,30 @@ $(function() {
      $startDate = $_POST["startDate"];
      $endDate = $_POST["endDate"];
      $postedBillings = searchCompanyPostedBillingsByDate($dbh,$startDate,$endDate);
-     $displayBillings = displayCompanyPostedBillings($postedBillings);
+     $displayBillings = displayCompanyPostedBillings($weberp,$postedBillings);
+     echo $displayBillings;
+   }
+
+   elseif(isset($_POST["update"])){
+     $postDate = $_POST["postdate"];
+     $vouchers = $_POST["billingNos"];
+
+     foreach($vouchers as $key => $billingNo){
+       updatePostDate($weberp,$billingNo,$postDate);
+     }
+
+     $postedBillings = viewAllCompanyPostedBillings($dbh);
+     $displayBillings = displayCompanyPostedBillings($weberp,$postedBillings);
      echo $displayBillings;
    }
 
    else{
      $postedBillings = viewAllCompanyPostedBillings($dbh);
-     $displayBillings = displayCompanyPostedBillings($postedBillings);
+     $displayBillings = displayCompanyPostedBillings($weberp,$postedBillings);
      echo $displayBillings;
    }
+
+   echo "</form>";
 ?>
 </body>
 </html>

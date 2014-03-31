@@ -15,11 +15,17 @@ function viewAllCompanyPostedBillings($dbh){
   return $result;
 }
 
-function displayCompanyPostedBillings(array $billingDetails){
+function displayCompanyPostedBillings($weberp,array $billingDetails){
 
   $html = "<table id='billingInfo' style='width:100%;'>"
         . "<thead>"
         . "<tr>"
+        . "<td bgcolor='#084B8A' colspan='11'>"
+        . "<input type='text' id='postDate' name='postdate' placeholder='Select post date..'>"
+        . "<input type='submit' name='update' value='UPDATE POST DATE'>"
+        . "</td></tr>"
+        . "<tr>"
+        . "<th>Select bill</th>"
         . "<th>Event Name</th>"
         . "<th>Organization Name</th>"
         . "<th>Billing No</th>"
@@ -27,6 +33,7 @@ function displayCompanyPostedBillings(array $billingDetails){
         . "<th>Subtotal</th>"
         . "<th>VAT</th>"
         . "<th>Billing Date</th>"
+        . "<th>Post Date</th>"
         . "<th>Billed Participants</th>"
         . "<th>Print Bill</th>"
         . "</tr>"
@@ -45,6 +52,11 @@ function displayCompanyPostedBillings(array $billingDetails){
     $vat = $field["vat"];
     $billingDate = $field["bill_date"];
 
+    $sql = $weberp->prepare("SELECT trandate FROM gltrans WHERE voucherno = ?");
+    $sql->bindValue(1,$billingNo,PDO::PARAM_STR);
+    $sql->execute();
+    $postDate = $sql->fetchColumn();
+
     $participantsLink = "<a href='../webapp/pire/billedParticipants.php?eventId=$eventId&billingNo=$billingNo&orgId=$orgId' target='_blank'>"
                         . "<img src='../webapp/pire/participants.png' height='50' width='50'></a>";
 
@@ -52,6 +64,7 @@ function displayCompanyPostedBillings(array $billingDetails){
             . "<img src='images/printer-icon.png' width='30' height='30'></a>";
     
     $html = $html."<tr>"
+          . "<td><input type='checkbox' name='billingNos[]' value='$billingNo'></td>"
           . "<td>$eventName</td>"
           . "<td>$orgName</td>"
           . "<td>$billingNo</td>"
@@ -59,6 +72,7 @@ function displayCompanyPostedBillings(array $billingDetails){
           . "<td>$subtotal</td>"
           . "<td>$vat</td>"
           . "<td>$billingDate</td>"
+          . "<td>$postDate</td>"
           . "<td>$participantsLink</td>"
           . "<td>$printBill</td>"
           . "</tr>";

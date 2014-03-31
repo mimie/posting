@@ -332,4 +332,14 @@ function getCompanyInfoBilling($dbh,$billingId){
 
   return $result;
 }
+
+function updatePostDate($weberp,$voucherNo,$postDate){
+
+  $postDate = $postDate == NULL ? date("Y-m-d") : date("Y-m-d",strtotime($postDate));
+  $sql = $weberp->prepare("UPDATE gltrans SET trandate = ? WHERE voucherno = ?");
+  $sql->bindValue(1,$postDate,PDO::PARAM_STR);
+  $sql->bindValue(2,$voucherNo,PDO::PARAM_STR);
+  $sql->execute();
+
+}
 ?>

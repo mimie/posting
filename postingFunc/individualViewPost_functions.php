@@ -86,15 +86,6 @@ function displayIndividualPostedBilings($weberp,array $billingDetails){
   return $html;
 }
 
-function updatePostDate($weberp,$voucherNo,$postDate){
-
-  $postDate = date("Y-m-d",strtotime($postDate));
-  $sql = $weberp->prepare("UPDATE gltrans SET trandate = ? WHERE voucherno = ?");
-  $sql->bindValue(1,$postDate,PDO::PARAM_STR);
-  $sql->bindValue(2,$voucherNo,PDO::PARAM_STR);
-  $sql->execute();
-
-}
 
 function searchPostedBillings($dbh,$searchType,$searchValue){
 

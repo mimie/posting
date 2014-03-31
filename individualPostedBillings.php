@@ -89,7 +89,7 @@ $(function() {
      $searchValue = $_POST["searchText"];
 
      $postedBillings = searchPostedBillings($dbh,$searchType,$searchValue);
-     $displayBillings = displayIndividualPostedBilings($postedBillings);
+     $displayBillings = displayIndividualPostedBilings($weberp,$postedBillings);
      echo $displayBillings;
 
    }
@@ -98,7 +98,7 @@ $(function() {
      $startDate = $_POST["startDate"];
      $endDate = $_POST["endDate"];
      $postedBillings = searchPostedBillingsByDate($dbh,$startDate,$endDate);
-     $displayBillings = displayIndividualPostedBilings($postedBillings);
+     $displayBillings = displayIndividualPostedBilings($weberp,$postedBillings);
      echo $displayBillings;
     
    }
@@ -111,14 +111,14 @@ $(function() {
      }
 
      $allIndividualPostedBillings = viewAllIndividualPostedBillings($dbh);
-     $displayBillings = displayIndividualPostedBilings($allIndividualPostedBillings);
+     $displayBillings = displayIndividualPostedBilings($weberp,$allIndividualPostedBillings);
      echo $displayBillings;
      
    }
 
    else{
      $allIndividualPostedBillings = viewAllIndividualPostedBillings($dbh);
-     $displayBillings = displayIndividualPostedBilings($allIndividualPostedBillings);
+     $displayBillings = displayIndividualPostedBilings($weberp,$allIndividualPostedBillings);
      echo $displayBillings;
    }
 

@@ -46,8 +46,12 @@ $(function() {
    include 'login_functions.php';
    include 'postingFunc/eventCompanyPost_functions.php';
    include 'billing_functions.php';
+   include "postingFunc/eventpost_functions.php";
+   include "../webapp/pire/company_functions.php";
+   include "../weberp/postFunction.php";
 
    $dbh = civicrmConnect();
+   $weberp = weberpConnect();
    $menu = logoutDiv($dbh);
    echo $menu;
    echo "<br>";
@@ -94,9 +98,71 @@ $(function() {
    echo "</table>";
    echo "</div>";
 
-   $billings = getCompanyBillingByEvent($dbh,$eventId);
-   $display = displayCompanyBillingsByEvent($billings);
-   echo $display;
+   echo "<form action='' method='POST'>";
+
+   if(isset($_POST["post"])){
+     $ids = $_POST["billingIds"];
+     $postDate = $_POST["postdate"];
+
+      foreach($ids as $billingId){
+        
+        updateCompanyEventPost($dbh,$billingId);
+        $details = getCompanyInfoBilling($dbh,$billingId);
+        $orgId = $details["org_contact_id"];
+        $custId = "IIAP".$orgId;
+        $orgName = $details["organization_name"];
+        $totalAmount = $details["total_amount"];
+        $eventName = $details["event_name"];
+        $eventId = $details["event_id"];
+        $eventDescription = $eventId."/".$eventName;
+        $billingNo = $details["billing_no"];
+        $email = $details["email"];
+        $billingDate = $details["bill_date"];
+      
+   
+        $eventType = substr($billingNo,0,3);
+        $address = getCompanyAddress($dbh,$orgId);
+        $city = $address["city"];
+        $street = $address["street_address"];
+
+        $customer = array();
+        $customer["contact_id"] = $orgId;
+        $customer["participant_name"] = $orgName;
+        $customer["street"] = $street;
+        $customer["city"] = $city;
+        $customer["email"] = $email;
+        $customer["member_id"] = "NONE";
+
+
+        $exist = checkContactRecordExist($weberp,$orgId);
+
+        if($exist == 0){
+          insertCustomer($weberp,$customer);
+          myPost($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate,$postDate);
+        }   
+        
+        else{
+          myPost($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate,$postDate);
+        }
+      }
+          echo'<div id="confirmation" title="Confirmation">';
+          echo "<img src='../webapp/pire/images/confirm.png' alt='confirm' style='float:left;padding:5px;'i width='42' height='42'/>";
+          echo'<p>Billing is already posted.</p>';
+          echo'</div>';
+
+     $billings = getCompanyBillingByEvent($dbh,$eventId);
+     $display = displayCompanyBillingsByEvent($billings);
+     echo $display;
+
+   }
+
+   else{
+     $billings = getCompanyBillingByEvent($dbh,$eventId);
+     $display = displayCompanyBillingsByEvent($billings);
+     echo $display;
+   }
+
+   echo "</form>";
 
 
 ?>

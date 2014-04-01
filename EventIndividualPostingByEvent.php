@@ -36,8 +36,8 @@
    echo "<table width='100%'>";
    echo "<tr>";
    echo "<td bgcolor='#084B8A'><a href='participantListing.php?eventId=$eventId'>ALL PARTICIPANTS</a></td>";
-   echo "<td><a href='EventIndividualPostingByEvent.php'>INDIVIDUAL EVENT POSTING</a></td>";
-   echo "<td bgcolor='#084B8A'><a href='EventCompanyPostingByEvent.php'>COMPANY EVENT POSTING</a></td>";
+   echo "<td><a href='EventIndividualPostingByEvent.php?eventId=$eventId'>INDIVIDUAL EVENT POSTING</a></td>";
+   echo "<td bgcolor='#084B8A'><a href='EventCompanyPostingByEvent.php?eventId=$eventId'>COMPANY EVENT POSTING</a></td>";
    echo "</tr>";
    echo "</table>";
 
@@ -58,7 +58,7 @@
    echo "<tr>";
    echo "<th>Event Location</th><td><i>$eventLocation</i></td>";
    echo "</tr>";
-   echo "</table>";
+   echo "</table><br>";
 
    $bills = getIndividualBillingsByEvent($dbh,$eventId);
    $display = displayIndividualBillingsByEvent($bills);

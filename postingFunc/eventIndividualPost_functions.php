@@ -20,6 +20,8 @@ function getIndividualBillingsByEvent($dbh,$eventId){
 
 function displayIndividualBillingsByEvent(array $bills){
 
+  $prefixes = array("Dr.","Mrs.","Mr.","Ms.","Dr.","Sr.","Jr.");
+
   $html = "<table id='billInfo' style='width:100%;'>"
         . "<thead>"
         . "<tr>"
@@ -46,7 +48,7 @@ function displayIndividualBillingsByEvent(array $bills){
     $name = $field["sort_name"];
     $displayName = $field["display_name"];
     $firstWord = strtok($displayName, " ");
-    $prefix = in_array($firstWord,$prefixes) ? $firstWord : '';
+    $prefix = in_array($firstWord,$prefixes) || $firstWord != NULL ? $firstWord : '';
     $orgName = $field["organization_name"];
     $status = $field["status"];
     $feeAmount = number_format($field["fee_amount"], 2, '.',',');

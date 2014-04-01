@@ -164,7 +164,7 @@ function getParticipantByEvent($dbh,$eventId){
         . "<td>$org</td>"
         . "<td>$email</td>"
         . "<td align='center'>$statusName</td>"
-        . "<td align='center' style='width:3%;'><input type='checkbox' name='contactIds[]' value='$contactId'></td>"
+        . "<td align='center' style='width:3%;'><input type='checkbox' name='contactIds[]' value='$contactId' class='checkbox'></td>"
         . "<td align='center'>$feeAmount</td>"
         . "<td>$billingType</td>"
         . "<td>$billingNo</td>"
@@ -487,7 +487,7 @@ function participantStatusSelector(){
    $html = $html."<option value='$id'>$statusName</option>";
   }
   $html = $html."</SELECT>";
-  $html = $html."Check All<input type='checkbox' name='checkall' onclick='checkedAll(\"participants\");'>";
+  $html = $html."Check All<input type='checkbox' id='check'>";
   $html = $html."<input type='submit' value='UPDATE' name='updateStatus'>";
 
   return $html;

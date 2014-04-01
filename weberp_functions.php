@@ -103,16 +103,16 @@ function getParticipantByEvent($dbh,$eventId){
  $prefixes = array("Mr.","Mrs.","Ms.","Dr.","Sr.","Jr.");
 
  $sql = $dbh->prepare("SELECT cp.id as participant_id,cp.contact_id, cp.status_id,cp.event_id,cc.sort_name,cc.display_name,cc.organization_name, cs.name as status, cp.fee_amount
-                       FROM civicrm_participant cp
-                       INNER JOIN civicrm_contact cc ON cp.contact_id = cc.id
-                       INNER JOIN civicrm_participant_status_type cs ON cp.status_id = cs.id 
-                       WHERE cp.event_id = ?
+                       FROM civicrm_participant cp,civicrm_contact cc, civicrm_participant_status_type cs
+                       WHERE cp.contact_id = cc.id
+                       AND cp.status_id = cs.id 
+                       AND cp.event_id = ?
                        ORDER BY cc.sort_name");
+
  $sql->bindParam(1,$eventId,PDO::PARAM_INT);
  $sql->execute();
 
  $participants = $sql->fetchAll(PDO::FETCH_ASSOC);
-
  
  $html = "<form id='participants' method='post'>"
        . "<div align='center' style='padding:6px;'>$statusSelector</div>";
@@ -142,9 +142,11 @@ function getParticipantByEvent($dbh,$eventId){
   $feeAmount = number_format($feeAmount, 2, '.',','); 
   $firstWord = strtok($displayName, " ");
   $prefix = in_array($firstWord,$prefixes) ? $firstWord : '';
+  $eventId = $field["event_id"];
 
-  $sql = $dbh->prepare("SELECT billing_type,billing_no FROM billing_details WHERE contact_id = ?");
-  $sql->bindParam(1,$contactId,PDO::PARAM_INT);
+  $sql = $dbh->prepare("SELECT billing_type,billing_no FROM billing_details WHERE contact_id = ? AND event_id = ?");
+  $sql->bindValue(1,$contactId,PDO::PARAM_INT);
+  $sql->bindValue(2,$eventId,PDO::PARAM_INT);
   $sql->execute();
   $result = $sql->fetch(PDO::FETCH_ASSOC);
   $billingType = $result["billing_type"];

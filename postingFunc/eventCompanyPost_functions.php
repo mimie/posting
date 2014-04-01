@@ -18,6 +18,10 @@ function displayCompanyBillingsByEvent(array $billings){
 
   $html = "<table width='100%' id='billings'>"
         . "<thead>"
+        . "<tr><td colspan='13' bgcolor='#2c4f85'>"
+        . "<input type='text' name='postdate' id='postDate' placeholder='Select post date..'>"
+        . "<input type='submit' value='Post to Weberp' name='post'></td></tr>"
+        . "<tr>"
         . "<th><input type='checkbox' id='check'>Select bill</th>"
         . "<th>Organization</th>"
         . "<th>Billing Number</th>"
@@ -27,6 +31,7 @@ function displayCompanyBillingsByEvent(array $billings){
         . "<th>Billing Date</th>"
         . "<th>Billed Participants</th>"
         . "<th>Print Bill</th>"
+        . "</tr>"
         . "</thead>";
 
   $html = $html."<tbody>";

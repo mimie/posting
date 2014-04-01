@@ -1,7 +1,6 @@
-
 <html>
 <head>
-<title>Participant Listing</title>
+<title>Individual Billing</title>
  <link rel="stylesheet" type="text/css" href="billingStyle.css">
  <link rel="stylesheet" type="text/css" href="menu.css">
 <script>
@@ -13,9 +12,9 @@
   include 'pdo_conn.php';
   include 'login_functions.php';
   include 'postingFunc/eventIndividualPost_functions.php';
+  include 'billing_functions.php';
 
   $dbh = civicrmConnect();
-  include 'billing_functions.php';
   $logout = logoutDiv($dbh);
   echo $logout;
   echo "<br>";

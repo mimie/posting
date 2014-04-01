@@ -225,7 +225,8 @@ function findParticipantByCategory($dbh,$eventId,$searchCategory,$searchValue){
   $html = "<form id='participants' method='post'>"
         . "<div align='center' style='padding:6px;'>$statusSelector</div>";
  
-  $html = $html."<table border='1' align='center'>"
+  $html = $html."<table border='1' align='center' id='billings'>"
+        . "<thead>"
         . "<tr>"
         . "<th>Prefix</th>"
         . "<th>Participant Name</th>"
@@ -236,11 +237,15 @@ function findParticipantByCategory($dbh,$eventId,$searchCategory,$searchValue){
         . "<th>Fee Amount</th>"
         . "<th>Billing Type</th>"
         . "<th>Billing No.</th>"
-        . "<tr>";
+        . "<tr>"
+        . "</thead>";
+
+  $html = $html."<tbody>";
  
   foreach($participants as $key => $field){
  
    $name = $field["sort_name"];
+   $name = mb_convert_encoding($name,"UTF-8");
    $displayName = $field["display_name"];
    $org = $field["organization_name"];
    $statusName = $field["status"];
@@ -273,7 +278,7 @@ function findParticipantByCategory($dbh,$eventId,$searchCategory,$searchValue){
          . "</tr>";
    }
  
-   $html = $html."</form></table>";
+   $html = $html."</form></tbody></table>";
  
    return $html;
  }

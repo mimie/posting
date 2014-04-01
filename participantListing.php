@@ -3,30 +3,23 @@
 <title>Participant Listing</title>
  <link rel="stylesheet" type="text/css" href="billingStyle.css">
  <link rel="stylesheet" type="text/css" href="menu.css">
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script src="js/jquery-jPaginate.js"></script>
+  <script src="js/jquery.tablesorter.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css" />
 <script type="text/javascript">
-  var checked=false;
-  var formname='';
-
-function checkedAll(formname)
-{
-  var values= document.getElementById(formname);
- 
-  if (checked==false)
-  {
-    checked=true;
-  }
- 
-  else
-  {
-    checked = false;
-  }
-
- for (var i=0; i < values.elements.length; i++)
- {
-   values.elements[i].checked=checked;
- }
-
-}
+$(function() {
+        $( "#tabs" ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+        $( "#tabs li" ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+        $("#billings").jPaginate({
+                'max': 20,
+                'page': 1,
+                'links': 'buttons'
+        });
+//        $("table").tablesorter( {sortList: [[0,0], [1,0]]} ); 
+});
 </script>
 </head>
 <body>

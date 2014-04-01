@@ -118,7 +118,8 @@ function getParticipantByEvent($dbh,$eventId){
  $html = "<form id='participants' method='post'>"
        . "<div align='center' style='padding:6px;'>$statusSelector</div>";
  
- $html = $html."<table border='1' align='center'>"
+ $html = $html."<table border='1' align='center' id='billings'>"
+       . "<thead>"
        . "<tr>"
        . "<th>Prefix</th>"
        . "<th>Participant Name</th>"
@@ -129,11 +130,15 @@ function getParticipantByEvent($dbh,$eventId){
        . "<th>Fee Amount</th>"
        . "<th>Billing Type</th>"
        . "<th>Billing No.</th>"
-       . "<tr>";
+       . "<tr>"
+       . "</thead>";
+
+ $html = $html."<tbody>";
 
  foreach($participants as $key => $field){
 
   $name = $field["sort_name"];
+  $name = mb_convert_encoding($name,"UTF-8");
   $displayName = $field["display_name"];
   $org = $field["organization_name"];
   $statusName = $field["status"];
@@ -166,7 +171,7 @@ function getParticipantByEvent($dbh,$eventId){
         . "</tr>";
   }
 
-  $html = $html."</form></table>";
+  $html = $html."</tbody></table></form>";
 
   return $html;
 }

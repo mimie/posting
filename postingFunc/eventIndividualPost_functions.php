@@ -48,7 +48,7 @@ function displayIndividualBillingsByEvent(array $bills){
     $name = $field["sort_name"];
     $displayName = $field["display_name"];
     $firstWord = strtok($displayName, " ");
-    $prefix = in_array($firstWord,$prefixes) || $firstWord != NULL ? $firstWord : '';
+    $prefix = in_array($firstWord,$prefixes) ? $firstWord : '';
     $orgName = $field["organization_name"];
     $status = $field["status"];
     $feeAmount = number_format($field["fee_amount"], 2, '.',',');

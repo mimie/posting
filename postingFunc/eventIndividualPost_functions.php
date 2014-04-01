@@ -24,8 +24,11 @@ function displayIndividualBillingsByEvent(array $bills){
 
   $html = "<table id='billInfo' style='width:100%;'>"
         . "<thead>"
+        . "<tr><td colspan='13' bgcolor='#2c4f85'>"
+        . "<input type='text' name='postdate' id='postDate' placeholder='Select post date..'>"
+        . "<input type='submit' value='Post to Weberp' name='post'></td></tr>"
         . "<tr>"
-        . "<th>Post Bill</th>"
+        . "<th><input type='checkbox' id='check'>Select Bill</th>"
         . "<th>Participant Id</th>"
         . "<th>Prefix</th>"
         . "<th>Participant Name</th>"
@@ -59,7 +62,7 @@ function displayIndividualBillingsByEvent(array $bills){
     $postBill = $field["post_bill"];
 
     
-    $enabled = $postBill == '0' || $status == 'Attended' ? "class='checkbox'" : "disabled";
+    $enabled = $postBill == '0' && $status == 'Attended' ? "class='checkbox'" : "disabled";
 
     $html = $html."<tr>"
           . "<td><input type='checkbox' name='billingIds[]' value='$billingId' $enabled></td>"

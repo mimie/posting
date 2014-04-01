@@ -3,7 +3,7 @@
 function getCompanyBillingByEvent($dbh,$eventId){
 
    $sql = $dbh->prepare("SELECT cbid as billing_id, organization_name, event_id,org_contact_id,billing_no,
-                         total_amount,subtotal,vat,bill_date
+                         total_amount,subtotal,vat,bill_date,post_bill
                          FROM billing_company
                          WHERE event_id = ?
                          AND total_amount != '0'");
@@ -16,7 +16,7 @@ function getCompanyBillingByEvent($dbh,$eventId){
 
 function displayCompanyBillingsByEvent(array $billings){
 
-  $html = "<table width='100%'>"
+  $html = "<table width='100%' id='billings'>"
         . "<thead>"
         . "<th><input type='checkbox' id='check'>Select bill</th>"
         . "<th>Organization</th>"
@@ -44,12 +44,15 @@ function displayCompanyBillingsByEvent(array $billings){
      $billDate = date("F j, Y",strtotime($billDate));
      $eventId = $field["event_id"];
      $orgId = $field["org_contact_id"];
+     $postBill = $field["post_bill"];
 
-      $participantsLink = "<a href='../webapp/pire/billedParticipants.php?eventId=$eventId&billingNo=$billingNo&orgId=$orgId' target='_blank'>"
+     $disabled = $postBill == '1' ? "disabled" : "class='checkbox'";
+
+     $participantsLink = "<a href='../webapp/pire/billedParticipants.php?eventId=$eventId&billingNo=$billingNo&orgId=$orgId' target='_blank'>"
                         . "<img src='../webapp/pire/participants.png' height='50' width='50'></a>";
 
      $html = $html."<tr>"
-           . "<td><input type='checkbox' name='billingIds[]' value='$billingId'></td>"
+           . "<td><input type='checkbox' name='billingIds[]' value='$billingId' $disabled></td>"
            . "<td>$orgName</td>"
            . "<td>$billingNo</td>"
            . "<td>$totalAmount</td>"

@@ -201,8 +201,6 @@ function findParticipantByCategory($dbh,$eventId,$searchCategory,$searchValue){
  
   }
 
-  echo $searchCategory;
-
   $prefixes = array("Mr.","Mrs.","Ms.","Dr.","Sr.","Jr.");
  
   $sql = $dbh->prepare("SELECT cp.id as participant_id,cp.contact_id, cp.status_id,cp.event_id,cc.sort_name,cc.display_name,cc.organization_name, cs.name as status, cp.fee_amount
@@ -252,9 +250,11 @@ function findParticipantByCategory($dbh,$eventId,$searchCategory,$searchValue){
    $feeAmount = number_format($feeAmount, 2, '.',',');
    $firstWord = strtok($displayName, " ");
    $prefix = in_array($firstWord,$prefixes) ? $firstWord : '';
+   $eventId = $field["event_id"];
  
-   $sql = $dbh->prepare("SELECT billing_type,billing_no FROM billing_details WHERE contact_id = ?");
-   $sql->bindParam(1,$contactId,PDO::PARAM_INT);
+   $sql = $dbh->prepare("SELECT billing_type,billing_no FROM billing_details WHERE contact_id = ? AND event_id = ?");
+   $sql->bindValue(1,$contactId,PDO::PARAM_INT);
+   $sql->bindValue(2,$eventId,PDO::PARAM_INT);
    $sql->execute();
    $result = $sql->fetch(PDO::FETCH_ASSOC);
    $billingType = $result["billing_type"];
@@ -266,7 +266,7 @@ function findParticipantByCategory($dbh,$eventId,$searchCategory,$searchValue){
          . "<td>$org</td>"
          . "<td>$email</td>"
          . "<td align='center'>$statusName</td>"
-         . "<td align='center' style='width:3%;'><input type='checkbox' name='contactIds[]' value='$contactId'></td>"
+         . "<td align='center' style='width:3%;'><input type='checkbox' name='contactIds[]' value='$contactId' class='checkbox'></td>"
          . "<td align='center'>$feeAmount</td>"
          . "<td>$billingType</td>"
          . "<td>$billingNo</td>"

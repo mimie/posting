@@ -2,7 +2,7 @@
 
 function getIndividualBillingsByEvent($dbh,$eventId){
 
-  $sql = $dbh->prepare("SELECT bd.id as billing_id, bd.participant_id,cc.sort_name,cc.display_name,bd.organization_name,
+  $sql = $dbh->prepare("SELECT bd.id as billing_id, bd.event_id,bd.participant_id,cc.sort_name,cc.display_name,bd.organization_name,
                         bd.fee_amount, bd.subtotal,bd.vat,bd.billing_no,bd.bill_date,bd.post_bill, cps.name as status
                         FROM billing_details bd, civicrm_participant cp, civicrm_participant_status_type cps,civicrm_contact cc
                         WHERE cp.id = bd.participant_id
@@ -60,6 +60,7 @@ function displayIndividualBillingsByEvent(array $bills){
     $billingNo = $field["billing_no"];
     $billDate = date("F j, Y",strtotime($field["bill_date"]));
     $postBill = $field["post_bill"];
+    $eventId = $field["event_id"];
 
     
     $enabled = $postBill == '0' && $status == 'Attended' ? "class='checkbox'" : "disabled";
@@ -76,7 +77,8 @@ function displayIndividualBillingsByEvent(array $bills){
           . "<td>$vat</td>"
           . "<td>$billingNo</td>"
           . "<td>$billDate</td>"
-          . "<td></td>";
+          . "<td><a href='../webapp/pire/individualBillingReference.php?billingRef=$billingNo&eventId=$eventId' target='_blank'>"
+          . "<img src='images/printer-icon.png' width='30' height='30'></a></td>";
   }
 
   $html = $html."</tbody></table>";

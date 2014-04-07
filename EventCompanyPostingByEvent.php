@@ -177,6 +177,15 @@ $(function() {
 
    }
 
+   elseif(isset($_POST["search"])){
+     $searchParameters = array();
+     $searchParameters["billing_no"] = $_POST["billing_no"];
+     $searchParameters["org"] = $_POST["org"];
+     $billings =  searchCompanyBillingsByEvent($dbh,$eventId,$searchParameters);
+     $display = displayCompanyBillingsByEvent($billings);
+     echo $display;
+   }
+
    else{
      $billings = getCompanyBillingByEvent($dbh,$eventId);
      $display = displayCompanyBillingsByEvent($billings);

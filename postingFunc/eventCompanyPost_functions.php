@@ -14,6 +14,28 @@ function getCompanyBillingByEvent($dbh,$eventId){
    return $result;
 }
 
+function searchCompanyBillingsByEvent($dbh,$eventId,$searchParameters){
+
+   $billingNo = $searchParameters["billing_no"];
+   $org = $searchParameters["org"];
+
+   $sql = $dbh->prepare("SELECT cbid as billing_id, organization_name, event_id,org_contact_id,billing_no,
+                         total_amount,subtotal,vat,bill_date,post_bill
+                         FROM billing_company
+                         WHERE event_id = ?
+                         AND billing_no LIKE ?
+                         AND organization_name LIKE ?
+                         AND total_amount != '0'");
+   $sql->bindValue(1,$eventId,PDO::PARAM_INT);
+   $sql->bindValue(2,"%".$billingNo."%",PDO::PARAM_STR);
+   $sql->bindValue(3,"%".$org."%",PDO::PARAM_STR);
+   $sql->execute();
+   $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+   return $result;
+   
+}
+
 function displayCompanyBillingsByEvent(array $billings){
 
   $html = "<table width='100%' id='billings'>"

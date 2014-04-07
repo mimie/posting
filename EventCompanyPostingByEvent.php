@@ -109,10 +109,6 @@ $(function() {
          <td><input type='text' name='name' placeholder='Type search organization here...'></td>
         </tr>
         <tr>
-         <td><b>Search bill date:</b>&nbsp;</td>
-         <td><input type='text' name='startDate' placeholder='From..' id='datepickerStart'><input type='text' name='endDate' placeholder='To..' id='datepickerEnd'></td>
-        </tr>
-        <tr>
          <td><b>Billing Number:</b>&nbsp;<br></td>
          <td><input type='text' name='billing_no'></td>
         </tr>

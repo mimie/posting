@@ -15,7 +15,6 @@ function getCompanyBillingByEvent($dbh,$eventId){
 }
 
 function searchCompanyBillingsByEvent($dbh,$eventId,$searchParameters){
-
    $billingNo = $searchParameters["billing_no"];
    $org = $searchParameters["org"];
 

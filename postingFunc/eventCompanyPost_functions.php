@@ -6,6 +6,7 @@ function getCompanyBillingByEvent($dbh,$eventId){
                          total_amount,subtotal,vat,bill_date,post_bill
                          FROM billing_company
                          WHERE event_id = ?
+                         AND EXISTS (SELECT * FROM billing_details WHERE billing_details.billing_no = billing_company.billing_no)
                          AND total_amount != '0'");
    $sql->bindValue(1,$eventId,PDO::PARAM_INT);
    $sql->execute();
@@ -24,6 +25,7 @@ function searchCompanyBillingsByEvent($dbh,$eventId,$searchParameters){
                          WHERE event_id = ?
                          AND billing_no LIKE ?
                          AND organization_name LIKE ?
+                         AND EXISTS (SELECT * FROM billing_details WHERE billing_details.billing_no = billing_company.billing_no)
                          AND total_amount != '0'");
    $sql->bindValue(1,$eventId,PDO::PARAM_INT);
    $sql->bindValue(2,"%".$billingNo."%",PDO::PARAM_STR);

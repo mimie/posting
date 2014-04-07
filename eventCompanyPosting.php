@@ -63,7 +63,7 @@ $(function() {
         . "</tr>"
         . "</table><br><br>";
 
-   echo "<div style='padding:9px;width:50%;margin:0 auto;'>";
+/**   echo "<div style='padding:9px;width:50%;margin:0 auto;'>";
    echo "<form action='' method='POST'>";
    echo "<fieldset>";
    echo "<legend>Search Company Event Billing</legend>";
@@ -82,7 +82,7 @@ $(function() {
    echo "<input type='submit' value='SEARCH EVENT DATE' name='searchDate'>";
    echo "<br><br>";
    echo "</fieldset>";
-   echo "</div>";
+   echo "</div>";**/
 
   if(isset($_POST["search"])){
      $category = $_POST["category"];

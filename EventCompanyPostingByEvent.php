@@ -106,7 +106,7 @@ $(function() {
        <table align='center'>
         <tr>
          <td><b>Organization:</b>&nbsp;</td>
-         <td><input type='text' name='name' placeholder='Type search organization here...'></td>
+         <td><input type='text' name='org' placeholder='Type search organization here...'></td>
         </tr>
         <tr>
          <td><b>Billing Number:</b>&nbsp;<br></td>

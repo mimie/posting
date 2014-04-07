@@ -95,8 +95,39 @@ $(function() {
    echo "<th>Event Location</th><td><i>$eventLocation</i></td>";
    echo "</tr>";
    echo "</table><br>";
-
    echo "<form action='' method='POST'>";
+
+?>
+   <center>
+    <div style='width:50%;'>
+     <fieldset>
+      <legend>Search Participant</legend>
+         <!--<div>
+           <div align='left'>
+             <b>Name:</b>&nbsp;
+             <input type='text' name='name' placeholder='Type search name here...'>
+           </div>
+         <div>
+          <div><b>Organization:</b>&nbsp;</td></div>
+          <div><input type='text' name='org' placeholder='Type search organization here...'></div>
+         </div>
+         <div>
+         <td colspan='2' align='right'><input type='submit' value='SEARCH' name='search'></td>
+         </div>-->
+       <div style='float:left;'>
+        <b>Name:</b>&nbsp;<br>
+        <b>Organization:</b>&nbsp;
+       </div>
+       <div style='float:left;'>
+        <input type='text' name='name' placeholder='Type search name here...'><br>
+        <input type='text' name='org' placeholder='Type search organization here...'>
+       </div>
+     </fieldset>
+    </div>
+   </center>
+
+<?php
+
 
    if(isset($_POST["post"])){
      $ids = $_POST["billingIds"];

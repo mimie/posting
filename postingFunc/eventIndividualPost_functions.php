@@ -18,6 +18,37 @@ function getIndividualBillingsByEvent($dbh,$eventId){
   return $result;
 }
 
+function searchIndividualBillingsByEvent($dbh,$eventId,$searchParameters){
+
+  $name = $searchParameters["name"];
+  $org = $searchParameters["org"];
+  $billingNo = $searchParameters["billing_no"];
+
+  $sql = $dbh->prepare("SELECT bd.id as billing_id, bd.event_id,bd.participant_id,cc.sort_name,cc.display_name,bd.organization_name,
+                        bd.fee_amount, bd.subtotal,bd.vat,bd.billing_no,bd.bill_date,bd.post_bill, cps.name as status
+                        FROM billing_details bd, civicrm_participant cp, civicrm_participant_status_type cps,civicrm_contact cc
+                        WHERE cp.id = bd.participant_id
+                        AND cp.status_id = cps.id
+                        AND bd.billing_type = 'Individual'
+                        AND cp.contact_id = cc.id
+                        AND bd.event_id = ?
+                        AND cc.sort_name LIKE ?
+                        AND bd.billing_no LIKE ?
+                        AND bd.organization_name LIKE ?
+                       ");
+  $sql->bindValue(1,$eventId,PDO::PARAM_INT);
+  $sql->bindValue(2,"%".$name."%",PDO::PARAM_STR);
+  $sql->bindValue(3,"%".$billingNo."%",PDO::PARAM_STR);
+  $sql->bindValue(4,"%".$org."%",PDO::PARAM_STR);
+  $sql->execute();
+
+  $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+  return $result;
+
+
+}
+
 function displayIndividualBillingsByEvent(array $bills){
 
   $prefixes = array("Dr.","Mrs.","Mr.","Ms.","Dr.","Sr.","Jr.");

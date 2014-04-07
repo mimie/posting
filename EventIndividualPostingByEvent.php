@@ -109,11 +109,7 @@ $(function() {
         </tr>
         <tr>
          <td><b>Organization:</b>&nbsp;</td>
-         <td><input type='text' name='name' placeholder='Type search organization here...'></td>
-        </tr>
-        <tr>
-         <td><b>Search bill date:</b>&nbsp;</td>
-         <td><input type='text' name='startDate' placeholder='From..' id='datepickerStart'><input type='text' name='endDate' placeholder='To..' id='datepickerEnd'></td>
+         <td><input type='text' name='org' placeholder='Type search organization here...'></td>
         </tr>
         <tr>
          <td><b>Billing Number:</b>&nbsp;<br></td>
@@ -183,6 +179,18 @@ $(function() {
           echo'</div>';
 
      $bills = getIndividualBillingsByEvent($dbh,$eventId);
+     $display = displayIndividualBillingsByEvent($bills);
+     echo $display;
+
+   }
+
+   elseif(isset($_POST["search"])){
+     $searchParameters = array();
+     $searchParameters["name"] = $_POST["name"];  
+     $searchParameters["org"] =  $_POST["org"];
+     $searchParameters["billing_no"] = $_POST["billing_no"];
+
+     $bills = searchIndividualBillingsByEvent($dbh,$eventId,$searchParameters);
      $display = displayIndividualBillingsByEvent($bills);
      echo $display;
 

@@ -154,7 +154,8 @@ function getCompanyNonPostedBillings($dbh){
                          FROM billing_company, civicrm_event
                          WHERE post_bill = '0'
                          AND billing_company.event_id = civicrm_event.id
-                         AND total_amount != '0'");
+                         AND total_amount != '0'
+                         AND EXISTS (SELECT * FROM billing_details WHERE billing_details.billing_no = billing_company.billing_no)");
    $sql->execute();
    $result = $sql->fetchAll(PDO::FETCH_ASSOC);
 
@@ -183,6 +184,7 @@ function searchCompanyNonPostedBillings($dbh,$category,$value){
                          WHERE post_bill = '0'
                          AND total_amount != '0'
                          AND bc.event_id = ce.id
+                         AND EXISTS (SELECT * FROM billing_details WHERE billing_details.billing_no = billing_company.billing_no)
                          $searchQuery");
    $sql->bindValue(1,"%".$value."%",PDO::PARAM_STR);
    $sql->execute();
@@ -201,6 +203,7 @@ function searchCompanyNonPostedBillingsByDate($dbh,$startDate,$endDate){
                          WHERE post_bill = '0'
                          AND total_amount != '0'
                          AND bc.event_id = ce.id
+                         AND EXISTS (SELECT * FROM billing_details WHERE billing_details.billing_no = billing_company.billing_no)
                          AND ce.start_date >= STR_TO_DATE('$startDate','%Y-%m-%d') AND ce.end_date < STR_TO_DATE('$endDate', '%Y-%m-%d') + INTERVAL 1 DAY");
   $sql->execute();
   $result = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -235,12 +238,11 @@ function displayCompanyEventBillings(array $companyBillings){
     $html = $html."<tbody>";
 
     foreach($companyBillings as $key => $field){
-
+      $billingNo = $field["billing_no"];
       $billingId = $field["cbid"];
       $eventName = $field["event_name"];
       $orgId = $field["org_contact_id"];
       $orgName = $field["organization_name"];
-      $billingNo = $field["billing_no"];
       $totalAmount = number_format($field["total_amount"], 2, '.',',');
       $subtotal = number_format($field["subtotal"], 2, '.',',');
       $vat = number_format($field["vat"], 2, '.',',');
@@ -277,6 +279,7 @@ function displayCompanyEventBillings(array $companyBillings){
    return $html;
 }
 
+
 function updateIndividualEventPost($dbh,$billingId){
 
     $sql = $dbh->prepare("UPDATE billing_details SET post_bill = '1'
@@ -285,6 +288,7 @@ function updateIndividualEventPost($dbh,$billingId){
     $sql->bindValue(1,$billingId,PDO::PARAM_INT);
     $sql->execute();
 }
+
 
 function getParticipantInfoBilling($dbh,$billingId){
 

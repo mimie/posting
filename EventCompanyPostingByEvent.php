@@ -99,6 +99,31 @@ $(function() {
    echo "</div>";
 
    echo "<form action='' method='POST'>";
+?>
+    <div style='width:50%;padding:8px;top:0;bottom: 0;left: 0;right:0;margin: auto;'>
+     <fieldset>
+      <legend>Search Participant</legend>
+       <table align='center'>
+        <tr>
+         <td><b>Organization:</b>&nbsp;</td>
+         <td><input type='text' name='name' placeholder='Type search organization here...'></td>
+        </tr>
+        <tr>
+         <td><b>Search bill date:</b>&nbsp;</td>
+         <td><input type='text' name='startDate' placeholder='From..' id='datepickerStart'><input type='text' name='endDate' placeholder='To..' id='datepickerEnd'></td>
+        </tr>
+        <tr>
+         <td><b>Billing Number:</b>&nbsp;<br></td>
+         <td><input type='text' name='billing_no'></td>
+        </tr>
+        <tr>
+         <td colspan='2' align='right'><input type='submit' value='SEARCH' name='search'></td>
+        </tr>
+      </table>
+     </fieldset>
+    </div>
+
+<?php
 
    if(isset($_POST["post"])){
      $ids = $_POST["billingIds"];

@@ -98,21 +98,34 @@ $(function() {
    echo "<form action='' method='POST'>";
 
 ?>
-   <!--<center>
-    <div style='width:50%;'>
+   
+    <div style='width:50%;padding:8px;top:0;bottom: 0;left: 0;right:0;margin: auto;'>
      <fieldset>
       <legend>Search Participant</legend>
-       <div style='float:left;'>
-        <b>Name:</b>&nbsp;<br>
-        <b>Organization:</b>&nbsp;
-       </div>
-       <div style='float:left;'>
-        <input type='text' name='name' placeholder='Type search name here...'><br>
-        <input type='text' name='org' placeholder='Type search organization here...'>
-       </div>
+       <table align='center'>
+        <tr> 
+         <td><b>Name:</b>&nbsp;</td>
+         <td><input type='text' name='name' placeholder='Type search name here...'></td>
+        </tr>
+        <tr>
+         <td><b>Organization:</b>&nbsp;</td>
+         <td><input type='text' name='name' placeholder='Type search organization here...'></td>
+        </tr>
+        <tr>
+         <td><b>Search bill date:</b>&nbsp;</td>
+         <td><input type='text' name='startDate' placeholder='From..' id='datepickerStart'><input type='text' name='endDate' placeholder='To..' id='datepickerEnd'></td>
+        </tr>
+        <tr>
+         <td><b>Billing Number:</b>&nbsp;<br></td>
+         <td><input type='text' name='billing_no'></td>
+        </tr>
+        <tr>
+         <td colspan='2' align='right'><input type='submit' value='SEARCH' name='search'></td>
+        </tr>
+      </table>
      </fieldset>
     </div>
-   </center>-->
+   
 
 <?php
 

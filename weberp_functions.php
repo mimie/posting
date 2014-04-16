@@ -21,6 +21,7 @@ function displayEvents($eventIds){
   $html = "<table id='eventInfo' align='center' border='1'>"
         . "<thead>"
         . "<tr>"
+        . "<th>Event Id</th>"
         . "<th>Event Title</th>"
         . "<th>Event Date</th>"
         //. "<th>Participant List</th>"
@@ -37,6 +38,7 @@ function displayEvents($eventIds){
     $date = $eventInfo["start_date"];
 
     $html = $html."<tr>"
+          ."<td>$id</td>" 
           ."<td><a href='participantListing.php?eventId=".$id."' style='text-decoration:none;' title='Click event name to view participants'>$title</a></td>"
           ."<td>".formatDate($date)."</td>"
           //."<td align='center'><a href='participantListing.php?eventId=".$id."'><img src='participants.png' height='50' width='50'></a></td>"

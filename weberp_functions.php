@@ -147,7 +147,7 @@ function getParticipantByEvent($dbh,$eventId){
   $contactId = $field["contact_id"];
   $email = $allEmails[$contactId];
   $feeAmount = $field["fee_amount"];
-  $feeAmount = number_format($feeAmount, 2, '.',','); 
+  $feeAmount = number_format($feeAmount, 2, '.',',');
   $firstWord = strtok($displayName, " ");
   $prefix = in_array($firstWord,$prefixes) ? $firstWord : '';
   $eventId = $field["event_id"];
@@ -160,16 +160,27 @@ function getParticipantByEvent($dbh,$eventId){
   $billingType = $result["billing_type"];
   $billingNo = $result["billing_no"];
 
+  if($statusName == 'Void'){
+    $feeAmount = '';
+    $strike = '<strike>';
+    $endstrike = '</strike>';
+
+  }else{
+    $feeAmount = $feeAmount;
+    $strike = '';
+    $endstrike = '';
+  }
+
   $html = $html."<tr>"
-        . "<td>$prefix</td>"
-        . "<td>$name</td>"
-        . "<td>$org</td>"
-        . "<td>$email</td>"
-        . "<td align='center'>$statusName</td>"
+        . "<td>$strike $prefix $endstrike</td>"
+        . "<td>$strike $name $endstrike</td>"
+        . "<td>$strike $org $endstrike</td>"
+        . "<td>$strike $email $endstrike</td>"
+        . "<td align='center'>$strike $statusName $endstrike</td>"
         . "<td align='center' style='width:3%;'><input type='checkbox' name='contactIds[]' value='$contactId' class='checkbox'></td>"
-        . "<td align='center'>$feeAmount</td>"
-        . "<td>$billingType</td>"
-        . "<td>$billingNo</td>"
+        . "<td align='center'>$strike $feeAmount $endstrike</td>"
+        . "<td>$strike $billingType $endstrike</td>"
+        . "<td>$strike $billingNo $endstrike</td>"
         . "</tr>";
   }
 

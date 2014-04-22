@@ -93,21 +93,31 @@ function displayIndividualBillingsByEvent(array $bills){
     $postBill = $field["post_bill"];
     $eventId = $field["event_id"];
 
+    if($status == 'Void'){
+      $feeAmount = '';
+      $strike = '<strike>';
+      $endstrike = '</strike>';
+    }else{
+      $feeAmount = $feeAmount;
+      $strike = '';
+      $endstrike = '';
+    }
+
     
     $enabled = $postBill == '0' && $status == 'Attended' ? "class='checkbox'" : "disabled";
 
     $html = $html."<tr>"
           . "<td><input type='checkbox' name='billingIds[]' value='$billingId' $enabled></td>"
-          . "<td>$participantId</td>"
-          . "<td>$prefix</td>"
-          . "<td>$name</td>"
-          . "<td>$orgName</td>"
-          . "<td>$status</td>"
+          . "<td>$strike $participantId $endstrike</td>"
+          . "<td>$strike $prefix $endstrike</td>"
+          . "<td>$strike $name $endstrike</td>"
+          . "<td>$strike $orgName $endstrike</td>"
+          . "<td>$strike $status $endstrike</td>"
           . "<td>$feeAmount</td>"
-          . "<td>$subtotal</td>"
-          . "<td>$vat</td>"
-          . "<td>$billingNo</td>"
-          . "<td>$billDate</td>"
+          . "<td>$strike $subtotal $endstrike</td>"
+          . "<td>$strike $vat $endstrike</td>"
+          . "<td>$strike $billingNo $endstrike</td>"
+          . "<td>$strike $billDate $endstrike</td>"
           . "<td><a href='../webapp/pire/individualBillingReference.php?billingRef=$billingNo&eventId=$eventId' target='_blank'>"
           . "<img src='images/printer-icon.png' width='30' height='30'></a></td>";
   }

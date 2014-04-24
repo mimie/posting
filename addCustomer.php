@@ -71,7 +71,7 @@ $(function() {
        $exist = checkContactRecordExist($weberp,$contactId);
        if($exist == 0){
          $details = getCustomerById($dbh,$contactId);
-         $name  = $details["display_name"];
+         $name  = $details["sort_name"];
          $email = $details["email"];
          $address = getAddressDetails($dbh,$contactId);
          $street = $address["street"];

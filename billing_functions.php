@@ -567,14 +567,16 @@ function insertCustomer(PDO $weberpConn,array $customerDetails){
 
   $sqlDebtor = $weberpConn->prepare("INSERT INTO debtorsmaster
                                (debtorno,name,address1,address3,address6,currcode,clientsince,holdreason,paymentterms,discount,creditlimit,salestype,invaddrbranch,customerpoline,typeid,memberid)
-                               VALUES ('$debtorno','$name','$street','$city','Philippines','PHP','$dateToday','1','CA','0','1000','02','1','0','1','$memberId')
+                               VALUES ('$debtorno','$name',?,'$city','Philippines','PHP','$dateToday','1','CA','0','1000','02','1','0','1','$memberId')
                               ");
+  $sqlDebtor->bindValue(1,$street,PDO::PARAM_STR);
   $sqlDebtor->execute();
 
   $sqlBranch = $weberpConn->prepare("INSERT INTO custbranch
                                      (branchcode,debtorno,brname,braddress1,braddress3,braddress6,lat,lng,estdeliverydays,fwddate,salesman,area,defaultlocation,disabletrans,deliverblind,email)
-                                     VALUES('$debtorno','$debtorno','$name','$street','$city','Philippines','0','0','0','0','001','001','MKT','0','1','$email')
+                                     VALUES('$debtorno','$debtorno','$name',?,'$city','Philippines','0','0','0','0','001','001','MKT','0','1','$email')
                                     ");
+ $sqlBranch->bindValue(1,$street,PDO::PARAM_STR);
  $sqlBranch->execute();
 
 }
@@ -593,14 +595,16 @@ function insertCompanyCustomer(PDO $weberpConn, array $customerDetails){
 
   $sqlDebtor = $weberpConn->prepare("INSERT INTO debtorsmaster
                                (debtorno,name,address1,address3,address6,currcode,clientsince,holdreason,paymentterms,discount,creditlimit,salestype,invaddrbranch,customerpoline,typeid)
-                               VALUES ('$debtorno','$name','$street','$city','Philippines','PHP','$dateToday','1','CA','0','1000','02','1','0','1')
+                               VALUES ('$debtorno','$name',?,'$city','Philippines','PHP','$dateToday','1','CA','0','1000','02','1','0','1')
                               ");
+  $sqlDebtor->bindValue(1,$street,PDO::PARAM_STR);
   $sqlDebtor->execute();
 
   $sqlBranch = $weberpConn->prepare("INSERT INTO custbranch
                                      (branchcode,debtorno,brname,braddress1,braddress3,braddress6,lat,lng,estdeliverydays,fwddate,salesman,area,defaultlocation,disabletrans,deliverblind)
-                                     VALUES('$debtorno','$debtorno','$name','$street','$city','Philippines','0','0','0','0','745','001','MKT','0','1')
+                                     VALUES('$debtorno','$debtorno','$name',?,'$city','Philippines','0','0','0','0','745','001','MKT','0','1')
                                     ");
+  $sqlBranch->bindValue(1,$street,PDO::PARAM_STR);
  $sqlBranch->execute();
 
 }

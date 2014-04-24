@@ -110,6 +110,7 @@ function getParticipantByEvent($dbh,$eventId){
                        AND cp.status_id = cs.id 
                        AND cp.event_id = ?
                        AND cp.fee_amount != '0'
+                       AND cc.is_deleted = '0'
                        ORDER BY cc.sort_name");
 
  $sql->bindParam(1,$eventId,PDO::PARAM_INT);

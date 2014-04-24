@@ -1,9 +1,9 @@
 <?php
 
 function getCustomerDetails(PDO $dbh){
-  $sql = $dbh->prepare("SELECT em.id,cc.id as contact_id, cc.display_name, em.email, em.is_primary
+  $sql = $dbh->prepare("SELECT em.id,cc.id as contact_id, cc.sort_name, em.email, em.is_primary
                         FROM civicrm_contact cc LEFT JOIN civicrm_email em ON cc.id = em.contact_id AND em.is_primary = '1'  
-                        WHERE cc.is_deleted = '0' AND cc.contact_type ='Individual' ORDER by cc.display_name");
+                        WHERE cc.is_deleted = '0' AND cc.contact_type ='Individual' ORDER by cc.sort_name");
   $sql->execute();
   $result = $sql->fetchAll(PDO::FETCH_ASSOC);                                                         
                                                                                                       
@@ -27,7 +27,7 @@ function displayCustomerContacts(array $customer){
 
   foreach($customer as $key => $field){
     $contactId = $field["contact_id"];
-    $name = $field["display_name"];
+    $name = $field["sort_name"];
     $email = $field["email"];
     $html = $html."<tr>"
           . "<td><input type='checkbox' name='contactIds[]' value='$contactId' class='checkbox'></td>"
@@ -42,11 +42,11 @@ function displayCustomerContacts(array $customer){
 }
                                                                  
 function getCustomerByName(PDO $dbh,$name){
-  $sql = $dbh->prepare("SELECT em.id,cc.id as contact_id, cc.display_name, em.email, em.is_primary
+  $sql = $dbh->prepare("SELECT em.id,cc.id as contact_id, cc.sort_name, em.email, em.is_primary
                         FROM civicrm_contact cc LEFT JOIN civicrm_email em ON cc.id = em.contact_id AND em.is_primary = '1'  
                         WHERE cc.is_deleted = '0' AND cc.contact_type ='Individual' 
-                        AND display_name LIKE ?
-                        ORDER by cc.display_name");
+                        AND sort_name LIKE ?
+                        ORDER by cc.sort_name");
   $sql->bindValue(1,"%".$name."%",PDO::PARAM_STR);
   $sql->execute();
   $result = $sql->fetchAll(PDO::FETCH_ASSOC);                                                         
@@ -55,11 +55,11 @@ function getCustomerByName(PDO $dbh,$name){
 
 
 function getCustomerById(PDO $dbh,$contactId){
-  $sql = $dbh->prepare("SELECT em.id,cc.id as contact_id, cc.display_name, em.email, em.is_primary
+  $sql = $dbh->prepare("SELECT em.id,cc.id as contact_id, cc.sort_name, em.email, em.is_primary
                         FROM civicrm_contact cc LEFT JOIN civicrm_email em ON cc.id = em.contact_id AND em.is_primary = '1'  
                         WHERE cc.is_deleted = '0' AND cc.contact_type ='Individual' 
                         AND cc.id = ?
-                        ORDER by cc.display_name");
+                        ORDER by cc.sort_name");
   $sql->bindValue(1,$contactId,PDO::PARAM_INT);
   $sql->execute();
   $result = $sql->fetch(PDO::FETCH_ASSOC);                                                         

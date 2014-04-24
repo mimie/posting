@@ -28,6 +28,7 @@ function displayCustomerContacts(array $customer){
   foreach($customer as $key => $field){
     $contactId = $field["contact_id"];
     $name = $field["sort_name"];
+    $name = mb_convert_encoding($name,"UTF-8");
     $email = $field["email"];
     $html = $html."<tr>"
           . "<td><input type='checkbox' name='contactIds[]' value='$contactId' class='checkbox'></td>"

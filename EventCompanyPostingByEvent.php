@@ -172,7 +172,7 @@ $(function() {
           echo'</div>';
 
      $billings = getCompanyBillingByEvent($dbh,$eventId);
-     $display = displayCompanyBillingsByEvent($billings);
+     $display = displayCompanyBillingsByEvent($weberp,$billings,$eventTypeName);
      echo $display;
 
    }
@@ -182,13 +182,13 @@ $(function() {
      $searchParameters["billing_no"] = $_POST["billing_no"];
      $searchParameters["org"] = $_POST["org"];
      $billings =  searchCompanyBillingsByEvent($dbh,$eventId,$searchParameters);
-     $display = displayCompanyBillingsByEvent($billings);
+     $display = displayCompanyBillingsByEvent($weberp,$billings,$eventTypeName);
      echo $display;
    }
 
    else{
      $billings = getCompanyBillingByEvent($dbh,$eventId);
-     $display = displayCompanyBillingsByEvent($billings);
+     $display = displayCompanyBillingsByEvent($weberp,$billings,$eventTypeName);
      echo $display;
    }
 

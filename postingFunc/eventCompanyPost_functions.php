@@ -37,13 +37,40 @@ function searchCompanyBillingsByEvent($dbh,$eventId,$searchParameters){
    
 }
 
-function displayCompanyBillingsByEvent(array $billings){
+function getOTHDebitAcct($weberp){
+	$sql = $weberp->prepare("SELECT accountcode, glacode, accountname FROM chartmaster WHERE group_ = 'Receipts/Revenue'");
+	$sql->execute();
+        $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+      
+}
+function displayCompanyBillingsByEvent($weberp,array $billings,$eventType){
+   $accts = getOTHDebitAcct($weberp);
+
+  if($eventType == 'OTH'){
+    $oth = "<select name='acct_code'>"
+           . "<option value='select'>-Select account code-</option>"
+           . "<option>---------------------------------------</option>";
+    foreach($accts as $key=>$field){
+       $selected = $field['glacode'] == '4-850-PDC' ? 'selected' : '';
+       $oth = $oth."<option value='".$field['accountcode']."' $selected>".$field['glacode']." - ".$field['accountname']."</option>";
+    }
+
+    $oth = $oth. "</select>";
+  }
+
+  else{
+    $oth = '';
+  }
 
   $html = "<table width='100%' id='billings'>"
         . "<thead>"
         . "<tr><td colspan='13' bgcolor='#2c4f85'>"
         . "<input type='text' name='postdate' id='postDate' placeholder='Select post date..'>"
-        . "<input type='submit' value='Post to Weberp' name='post'></td></tr>"
+        . "$oth";
+
+  $html = $html. "<input type='submit' value='Post to Weberp' name='post'></td></tr>"
         . "<tr>"
         . "<th><input type='checkbox' id='check'>Select bill</th>"
         . "<th>Organization</th>"

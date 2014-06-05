@@ -128,7 +128,7 @@ $(function() {
      
 
       foreach($ids as $billingId){
-        //updateCompanyEventPost($dbh,$billingId);
+        updateCompanyEventPost($dbh,$billingId);
         $details = getCompanyInfoBilling($dbh,$billingId);
         $orgId = $details["org_contact_id"];
         $custId = "IIAP".$orgId;

@@ -124,10 +124,11 @@ $(function() {
    if(isset($_POST["post"])){
      $ids = $_POST["billingIds"];
      $postDate = $_POST["postdate"];
+     $acct = $_POST["acct_code"];
+     
 
       foreach($ids as $billingId){
-        
-        updateCompanyEventPost($dbh,$billingId);
+        //updateCompanyEventPost($dbh,$billingId);
         $details = getCompanyInfoBilling($dbh,$billingId);
         $orgId = $details["org_contact_id"];
         $custId = "IIAP".$orgId;
@@ -139,6 +140,8 @@ $(function() {
         $billingNo = $details["billing_no"];
         $email = $details["email"];
         $billingDate = $details["bill_date"];
+        $vat = $details["vat"];
+        $withVat = $vat == 0 ? 0 : 1;
       
    
         $eventType = substr($billingNo,0,3);
@@ -159,11 +162,11 @@ $(function() {
 
         if($exist == 0){
           insertCustomer($weberp,$customer);
-          myPost($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate,$postDate);
+          $eventTypeName == 'OTH' ? postOTH($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate,$postDate,$withVat,$acct) : myPost($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate,$postDate);
         }   
         
         else{
-          myPost($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate,$postDate);
+          $eventTypeName == 'OTH' ? postOTH($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate,$postDate,$withVat,$acct) : myPost($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate,$postDate);
         }
       }
           echo'<div id="confirmation" title="Confirmation">';

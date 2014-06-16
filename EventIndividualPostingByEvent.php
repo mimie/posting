@@ -46,6 +46,7 @@ $(function() {
   include 'pdo_conn.php';
   include 'login_functions.php';
   include 'postingFunc/eventIndividualPost_functions.php';
+  include 'postingFunc/eventCompanyPost_functions.php';
   include "postingFunc/eventpost_functions.php";
   include "billing_functions.php";
   include "../weberp/postFunction.php";
@@ -179,7 +180,7 @@ $(function() {
           echo'</div>';
 
      $bills = getIndividualBillingsByEvent($dbh,$eventId);
-     $display = displayIndividualBillingsByEvent($bills);
+     $display = displayIndividualBillingsByEvent($weberp,$bills,$eventTypeName);
      echo $display;
 
    }
@@ -191,7 +192,7 @@ $(function() {
      $searchParameters["billing_no"] = $_POST["billing_no"];
 
      $bills = searchIndividualBillingsByEvent($dbh,$eventId,$searchParameters);
-     $display = displayIndividualBillingsByEvent($bills);
+     $display = displayIndividualBillingsByEvent($weberp,$bills,$eventTypeName);
      echo $display;
 
    }
@@ -199,7 +200,7 @@ $(function() {
    else{
 
    $bills = getIndividualBillingsByEvent($dbh,$eventId);
-   $display = displayIndividualBillingsByEvent($bills);
+   $display = displayIndividualBillingsByEvent($weberp,$bills,$eventTypeName);
    echo $display;
   }
   

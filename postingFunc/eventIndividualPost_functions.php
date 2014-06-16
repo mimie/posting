@@ -49,7 +49,26 @@ function searchIndividualBillingsByEvent($dbh,$eventId,$searchParameters){
 
 }
 
-function displayIndividualBillingsByEvent(array $bills){
+function displayIndividualBillingsByEvent(PDO $weberp,array $bills,$eventType){
+
+  $accts = getOTHDebitAcct($weberp);
+
+  if($eventType == 'OTH'){
+    $oth = "<select name='acct_code'>"
+           . "<option value='select'>-Select account code-</option>"
+           . "<option>---------------------------------------</option>";
+    foreach($accts as $key=>$field){
+       $selected = $field['glacode'] == '4-850-PDC' ? 'selected' : '';
+       $oth = $oth."<option value='".$field['accountcode']."' $selected>".$field['glacode']." - ".$field['accountname']."</option>";
+    }
+
+    $oth = $oth. "</select>";
+  }
+
+  else{
+    $oth = '';
+  }
+
 
   $prefixes = array("Dr.","Mrs.","Mr.","Ms.","Dr.","Sr.","Jr.");
 
@@ -57,6 +76,7 @@ function displayIndividualBillingsByEvent(array $bills){
         . "<thead>"
         . "<tr><td colspan='13' bgcolor='#2c4f85'>"
         . "<input type='text' name='postdate' id='postDate' placeholder='Select post date..'>"
+        . "$oth"
         . "<input type='submit' value='Post to Weberp' name='post'></td></tr>"
         . "<tr>"
         . "<th><input type='checkbox' id='check'>Select Bill</th>"

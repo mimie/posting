@@ -292,7 +292,7 @@ function updateIndividualEventPost($dbh,$billingId){
 
 function getParticipantInfoBilling($dbh,$billingId){
 
-   $sql = $dbh->prepare("SELECT billing_no,bill_date,participant_name,contact_id,email,event_type,event_id,event_name,fee_amount FROM billing_details
+   $sql = $dbh->prepare("SELECT billing_no,bill_date,participant_name,contact_id,email,event_type,event_id,event_name,fee_amount,vat FROM billing_details
                          WHERE id = ? ");
    $sql->bindValue(1,$billingId,PDO::PARAM_INT);
    $sql->execute();

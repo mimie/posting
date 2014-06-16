@@ -129,6 +129,7 @@ $(function() {
 
    if(isset($_POST["post"])){
      $ids = $_POST["billingIds"];
+     $acct = $_POST["acct_code"];
       foreach($ids as $billingId){
         updateIndividualEventPost($dbh,$billingId);
         //you can get name, contactId, & email
@@ -144,6 +145,7 @@ $(function() {
         $feeAmount = $details["fee_amount"];
         $billingNo = $details["billing_no"];
         $billDate = $details["bill_date"];
+        $withVat = $details["vat"] == 0 ? 0 : 1;
 
         $address = getAddressDetails($dbh,$contactId);
         $street = $address["street"];
@@ -164,12 +166,12 @@ $(function() {
 
         if($exist == 0){
           insertCustomer($weberp,$customer);
-          myPost($eventType,$eventDescription,$feeAmount,$name,$custId,$billingNo,$billDate,$postDate);
+          $eventTypeName == 'OTH' ? postOTH($eventType,$eventDescription,$feeAmount,$name,$custId,$billingNo,$billDate,$postDate,$withVat,$acct) : myPost($eventType,$eventDescription,$feeAmount,$name,$custId,$billingNo,$billDate,$postDate);
 
         }
 
         else{
-          myPost($eventType,$eventDescription,$feeAmount,$name,$custId,$billingNo,$billDate,$postDate);
+          $eventTypeName == 'OTH' ? postOTH($eventType,$eventDescription,$feeAmount,$name,$custId,$billingNo,$billDate,$postDate,$withVat,$acct) : myPost($eventType,$eventDescription,$feeAmount,$name,$custId,$billingNo,$billDate,$postDate);
 
         }
     }

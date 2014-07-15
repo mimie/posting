@@ -45,7 +45,7 @@ function displayCustomerContacts(array $customer){
 function getCustomerByName(PDO $dbh,$name){
   $sql = $dbh->prepare("SELECT em.id,cc.id as contact_id, cc.sort_name, em.email, em.is_primary
                         FROM civicrm_contact cc LEFT JOIN civicrm_email em ON cc.id = em.contact_id AND em.is_primary = '1'  
-                        WHERE cc.is_deleted = '0' AND cc.contact_type ='Individual' 
+                        WHERE cc.is_deleted = '0' AND (cc.contact_type ='Individual' OR cc.contact_type = 'Organization')
                         AND sort_name LIKE ?
                         ORDER by cc.sort_name");
   $sql->bindValue(1,"%".$name."%",PDO::PARAM_STR);

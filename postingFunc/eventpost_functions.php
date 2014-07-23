@@ -282,11 +282,20 @@ function displayCompanyEventBillings(array $companyBillings){
 
 function updateIndividualEventPost($dbh,$billingId){
 
-    $sql = $dbh->prepare("UPDATE billing_details SET post_bill = '1'
-                          WHERE id = ?
-                         ");
-    $sql->bindValue(1,$billingId,PDO::PARAM_INT);
-    $sql->execute();
+   try{
+
+	    $sql = $dbh->prepare("UPDATE billing_details SET post_bill = '1'
+				  WHERE id = ?
+				 ");
+	    $sql->bindValue(1,$billingId,PDO::PARAM_INT);
+	    $sql->execute();
+   }
+
+   catch(PDOException $error){
+           echo "<div id='confirmation'>";
+           echo $error->getMessage();
+           echo "</div>";
+   }
 }
 
 

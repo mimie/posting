@@ -563,21 +563,46 @@ function insertCustomer(PDO $weberpConn,array $customerDetails){
   $memberId = $customerDetails["member_id"];
   $email = $customerDetails["email"];
   $dateToday = date("Y-m-d");
- 
 
-  $sqlDebtor = $weberpConn->prepare("INSERT INTO debtorsmaster
-                               (debtorno,name,address1,address3,address6,currcode,clientsince,holdreason,paymentterms,discount,creditlimit,salestype,invaddrbranch,customerpoline,typeid,memberid)
-                               VALUES ('$debtorno','$name',?,'$city','Philippines','PHP','$dateToday','1','CA','0','1000','02','1','0','1','$memberId')
-                              ");
-  $sqlDebtor->bindValue(1,$street,PDO::PARAM_STR);
-  $sqlDebtor->execute();
+  try{ 
 
-  $sqlBranch = $weberpConn->prepare("INSERT INTO custbranch
-                                     (branchcode,debtorno,brname,braddress1,braddress3,braddress6,lat,lng,estdeliverydays,fwddate,salesman,area,defaultlocation,disabletrans,deliverblind,email)
-                                     VALUES('$debtorno','$debtorno','$name',?,'$city','Philippines','0','0','0','0','001','001','MKT','0','1','$email')
-                                    ");
- $sqlBranch->bindValue(1,$street,PDO::PARAM_STR);
- $sqlBranch->execute();
+	  $sqlDebtor = $weberpConn->prepare("INSERT INTO debtorsmaster
+				       (debtorno,name,address1,address3,address6,currcode,clientsince,holdreason,paymentterms,discount,creditlimit,salestype,invaddrbranch,customerpoline,typeid,memberid)
+				       VALUES ('$debtorno',?,?,?,'Philippines','PHP','$dateToday','1','CA','0','1000','02','1','0','1','$memberId')
+				      ");
+	  $sqlDebtor->bindValue(1,$name,PDO::PARAM_STR);
+	  $sqlDebtor->bindValue(2,$street,PDO::PARAM_STR);
+	  $sqlDebtor->bindValue(3,$city,PDO::PARAM_STR);
+	  $sqlDebtor->execute();
+  }
+
+  catch(PDOException $error){
+       
+          echo'<div id="confirmation" title="Confirmation">';
+          echo "<img src='../webapp/pire/images/error.png' alt='confirm' style='float:left;padding:5px;'i width='42' height='42'/>";
+          echo "<p>Error in inserting debtorsmaster.</br>".$error->getMessage()."</p>";
+          echo'</div>';
+  }
+
+   try{
+
+	  $sqlBranch = $weberpConn->prepare("INSERT INTO custbranch
+					     (branchcode,debtorno,brname,braddress1,braddress3,braddress6,lat,lng,estdeliverydays,fwddate,salesman,area,defaultlocation,disabletrans,deliverblind,email)
+					     VALUES('$debtorno','$debtorno',?,?,?,'Philippines','0','0','0','0','001','001','MKT','0','1','$email')
+					    ");
+	 $sqlBranch->bindValue(1,$name,PDO::PARAM_STR);
+	 $sqlBranch->bindValue(2,$street,PDO::PARAM_STR);
+	 $sqlBranch->bindValue(3,$city,PDO::PARAM_STR);
+	 $sqlBranch->execute();
+    }
+
+    catch(PDOException $error){
+          echo'<div id="confirmation" title="Confirmation">';
+          echo "<img src='../webapp/pire/images/error.png' alt='confirm' style='float:left;padding:5px;'i width='42' height='42'/>";
+          echo "<p>Error in inserting custbranch.</br>".$error->getMessage()."</p>";
+          echo'</div>';
+
+     }
 
 }
 

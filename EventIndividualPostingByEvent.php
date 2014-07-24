@@ -19,6 +19,9 @@ $(function() {
         });
 //        $("table").tablesorter( {sortList: [[0,0], [1,0]]} ); 
 });
+function reloadPage(){
+    window.location=window.location;
+}
 
 $(function() {
     $( "#confirmation" ).dialog({
@@ -27,7 +30,8 @@ $(function() {
       modal: true,
       buttons: {
         "OK": function() {
-          $( this ).dialog( "close" );
+          //$( this ).dialog( "close" );
+          reloadPage();
         }
       }
     });

@@ -154,7 +154,7 @@ $(function() {
     $displayParticipants = getParticipantByEvent($dbh,$eventId);
     echo $displayParticipants;
   }
-  
+
 ?>
 </body>
 <script type="text/javascript">                                                                

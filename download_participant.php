@@ -49,8 +49,11 @@
     if(strstr($str, '"')) $str = '"' . str_replace('"', '""', $str) . '"';
   }
 
+  
+
+  $file_event = implode('_', explode(' ', $eventName));
   // filename for download
-  $filename = "website_data_" . date('Ymd') . ".csv";
+  $filename = $file_event."_". date('Ymd') . ".csv";
 
   header("Content-Disposition: attachment; filename=\"$filename\"");
   header("Content-Type: text/csv");

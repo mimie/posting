@@ -26,9 +26,11 @@
  echo "Event Type: \t$eventTypeName\n";
  echo "Location: \t$eventLocation\n\n";
 
- $sql = $dbh->prepare("SELECT cp.id as participant_id,cp.contact_id, cc.sort_name,cc.organization_name, cs.name as status, cp.fee_amount
-                       FROM civicrm_participant cp,civicrm_contact cc, civicrm_participant_status_type cs
+ $sql = $dbh->prepare("SELECT cp.id as participant_id,cp.contact_id, cc.sort_name,cc.organization_name, cs.name as status, cp.fee_amount,billtype.billing_45 as billing_type
+                       FROM civicrm_participant cp,civicrm_contact cc, civicrm_participant_status_type cs, civicrm_value_billing_17 billtype
+                       
                        WHERE cp.contact_id = cc.id
+                       AND billtype.entity_id = cp.id
                        AND cp.status_id = cs.id 
                        AND cp.event_id = ?
                        AND cp.fee_amount != '0'
@@ -65,10 +67,18 @@
     if(!$flag) {
       // display field/column names as first row
       //fputcsv($out, array_keys($row), ',', '"');
-      $labels = array("Participant No.","CIVICRM ID","Participant Name","Organization","Status","Fee Amount");
+      $labels = array("Participant No.","CIVICRM ID","Participant Name","Organization","Status","Fee Amount","Billing Type","Billing Number");
       fputcsv($out,$labels, ',', '"');
       $flag = true;
     }
+
+    $participant_id = $row['participant_id'];
+    $sql_billing = $dbh->prepare("SELECT billing_no FROM billing_details bd WHERE bd.participant_id = ? AND is_cancelled='0'");
+    $sql_billing->bindValue(1,$participant_id,PDO::PARAM_INT);
+    $sql_billing->execute();
+    $result = $sql_billing->fetch(PDO::FETCH_ASSOC);
+    $billing_no = $result['billing_no'];
+    $row[] = $billing_no;
     array_walk($row, 'cleanData');
     fputcsv($out, array_values($row), ',', '"');
   }

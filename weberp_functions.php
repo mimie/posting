@@ -123,7 +123,7 @@ function getParticipantByEvent($dbh,$eventId){
  
  $html = $html."<table border='1' align='center' id='billings'>"
        . "<thead>"
-       . "<tr><th colspan='9'><div align='right' width='100%'><input type=\"button\" onclick=\"parent.location='download_participant.php?eventId=$eventId'\" value=\"Download\"></div></th></tr>"
+       . "<tr><th colspan='9'><div align='right' width='100%'><a href='download_participant.php?eventId=$eventId' download='csv'><img src='../webapp/pire/images/csv-icon.png'></div></th></tr>"
        . "<tr>"
        . "<th>Prefix</th>"
        . "<th>Participant Name</th>"

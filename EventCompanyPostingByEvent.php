@@ -51,7 +51,7 @@ $(function() {
    include 'postingFunc/eventCompanyPost_functions.php';
    include 'billing_functions.php';
    include "postingFunc/eventpost_functions.php";
-   include "../webapp/pire/company_functions.php";
+   include "../webapp/pirev2/company_functions.php";
    include "../weberp/postFunction.php";
 
    $dbh = civicrmConnect();

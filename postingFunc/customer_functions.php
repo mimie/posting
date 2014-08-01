@@ -56,9 +56,9 @@ function getCustomerByName(PDO $dbh,$name){
 
 
 function getCustomerById(PDO $dbh,$contactId){
-  $sql = $dbh->prepare("SELECT em.id,cc.id as contact_id, cc.sort_name, em.email, em.is_primary
+  $sql = $dbh->prepare("SELECT em.id,cc.id as contact_id, cc.contact_type,cc.sort_name, em.email, em.is_primary
                         FROM civicrm_contact cc LEFT JOIN civicrm_email em ON cc.id = em.contact_id AND em.is_primary = '1'  
-                        WHERE cc.is_deleted = '0' AND cc.contact_type ='Individual' 
+                        WHERE cc.is_deleted = '0' AND (cc.contact_type ='Individual' OR cc.contact_type = 'Organization')
                         AND cc.id = ?
                         ORDER by cc.sort_name");
   $sql->bindValue(1,$contactId,PDO::PARAM_INT);

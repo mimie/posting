@@ -41,6 +41,7 @@ $(function() {
   include "billing_functions.php";
   include "postingFunc/eventpost_functions.php";
   include "login_functions.php";
+  include "../webapp/pirev2/company_functions.php";
 
   $dbh = civicrmConnect();
   $weberp = weberpConnect();
@@ -73,7 +74,7 @@ $(function() {
          $details = getCustomerById($dbh,$contactId);
          $name  = $details["sort_name"];
          $email = $details["email"];
-         $address = getAddressDetails($dbh,$contactId);
+         $address = $details["contact_type"] == 'Individual' ? getAddressDetails($dbh,$contactId) : getCompanyAddress($dbh,$contactId);
          $street = $address["street"];
          $city = $address["city"];
          $memberId = getMemberId($dbh,$contactId);

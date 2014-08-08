@@ -2,7 +2,7 @@
 
 function getIndividualBillingsByEvent($dbh,$eventId){
 
-  $sql = $dbh->prepare("SELECT bd.id as billing_id, bd.event_id,bd.participant_id,cc.sort_name,cc.display_name,bd.organization_name,
+  $sql = $dbh->prepare("SELECT bd.id as billing_id,bd.bir_no, bd.event_id,bd.participant_id,cc.sort_name,cc.display_name,bd.organization_name,
                         bd.fee_amount, bd.subtotal,bd.vat,bd.billing_no,bd.bill_date,bd.post_bill, cps.name as status
                         FROM billing_details bd, civicrm_participant cp, civicrm_participant_status_type cps,civicrm_contact cc
                         WHERE cp.id = bd.participant_id
@@ -88,7 +88,8 @@ function displayIndividualBillingsByEvent(PDO $weberp,array $bills,$eventType){
         . "<th>Fee Amount</th>"
         . "<th>Subtotal</th>"
         . "<th>VAT</th>"
-        . "<th>Billing Number</th>"
+        . "<th>Registration No.</th>"
+        . "<th>ATP</th>"
         . "<th>Billing Date</th>"
         . "<th>Print Bill</th>"
         . "<tr>"
@@ -137,6 +138,7 @@ function displayIndividualBillingsByEvent(PDO $weberp,array $bills,$eventType){
           . "<td>$strike $subtotal $endstrike</td>"
           . "<td>$strike $vat $endstrike</td>"
           . "<td>$strike $billingNo $endstrike</td>"
+          . "<td>$strike ".$field['bir_no']." $endstrike</td>"
           . "<td>$strike $billDate $endstrike</td>"
           . "<td><a href='../webapp/pire/individualBillingReference.php?billingRef=$billingNo&eventId=$eventId' target='_blank'>"
           . "<img src='images/printer-icon.png' width='30' height='30'></a></td>";

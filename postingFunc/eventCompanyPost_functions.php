@@ -2,7 +2,7 @@
 
 function getCompanyBillingByEvent($dbh,$eventId){
 
-   $sql = $dbh->prepare("SELECT cbid as billing_id, organization_name, event_id,org_contact_id,billing_no,
+   $sql = $dbh->prepare("SELECT cbid as billing_id, organization_name, event_id,org_contact_id,billing_no, bir_no,
                          total_amount,subtotal,vat,bill_date,post_bill
                          FROM billing_company
                          WHERE event_id = ?
@@ -74,7 +74,8 @@ function displayCompanyBillingsByEvent($weberp,array $billings,$eventType){
         . "<tr>"
         . "<th><input type='checkbox' id='check'>Select bill</th>"
         . "<th>Organization</th>"
-        . "<th>Billing Number</th>"
+        . "<th>Registration No.</th>"
+        . "<th>ATP</th>"
         . "<th>Total Amount</th>"
         . "<th>Subtotal</th>"
         . "<th>VAT</th>"
@@ -110,6 +111,7 @@ function displayCompanyBillingsByEvent($weberp,array $billings,$eventType){
            . "<td><input type='checkbox' name='billingIds[]' value='$billingId' $disabled></td>"
            . "<td>$orgName</td>"
            . "<td>$billingNo</td>"
+           . "<td>".$field['bir_no']."</td>"
            . "<td>$totalAmount</td>"
            . "<td>$subtotal</td>"
            . "<td>$vat</td>"

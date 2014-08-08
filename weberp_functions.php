@@ -123,7 +123,7 @@ function getParticipantByEvent($dbh,$eventId){
  
  $html = $html."<table border='1' align='center' id='billings'>"
        . "<thead>"
-       . "<tr><th colspan='9'><div align='right' width='100%'><a href='download_participant.php?eventId=$eventId' download='csv'><img src='../webapp/pire/images/csv-icon.png'></div></th></tr>"
+       . "<tr><th colspan='10'><div align='right' width='100%'><a href='download_participant.php?eventId=$eventId' download='csv'><img src='../webapp/pire/images/csv-icon.png'></div></th></tr>"
        . "<tr>"
        . "<th>Prefix</th>"
        . "<th>Participant Name</th>"
@@ -134,6 +134,7 @@ function getParticipantByEvent($dbh,$eventId){
        . "<th>Fee Amount</th>"
        . "<th>Billing Type</th>"
        . "<th>Billing No.</th>"
+       . "<th>ATP</th>"
        . "<tr>"
        . "</thead>";
 
@@ -154,13 +155,14 @@ function getParticipantByEvent($dbh,$eventId){
   $prefix = in_array($firstWord,$prefixes) ? $firstWord : '';
   $eventId = $field["event_id"];
 
-  $sql = $dbh->prepare("SELECT billing_type,billing_no FROM billing_details WHERE contact_id = ? AND event_id = ?");
+  $sql = $dbh->prepare("SELECT billing_type,billing_no,bir_no FROM billing_details WHERE contact_id = ? AND event_id = ? AND is_cancelled='0'");
   $sql->bindValue(1,$contactId,PDO::PARAM_INT);
   $sql->bindValue(2,$eventId,PDO::PARAM_INT);
   $sql->execute();
   $result = $sql->fetch(PDO::FETCH_ASSOC);
   $billingType = $result["billing_type"];
   $billingNo = $result["billing_no"];
+  $bs_no = $result['bir_no'];
 
   if($statusName == 'Void'){
     $feeAmount = '';
@@ -183,6 +185,7 @@ function getParticipantByEvent($dbh,$eventId){
         . "<td align='center'>$strike $feeAmount $endstrike</td>"
         . "<td>$strike $billingType $endstrike</td>"
         . "<td>$strike $billingNo $endstrike</td>"
+        . "<td>$strike $bs_no $endstrike</td>"
         . "</tr>";
   }
 

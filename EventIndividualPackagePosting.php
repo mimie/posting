@@ -53,6 +53,7 @@ $(function() {
   include '../webapp/pirev2/shared_functions.php';
   include '../webapp/pirev2/packages/packagebill_functions.php';
   include 'postingFunc/eventCompanyPost_functions.php';
+  include "../weberp/postFunction.php";
 
   $dbh = civicrmConnect();
   $weberp = weberpConnect();
@@ -102,6 +103,7 @@ $(function() {
     $oth = $oth. "</select>";
 
   $bills = getBillByPackageId($pid,"Individual");
+  echo "<form action='' method='POST'>";
   $display = "<table width='100%' align='center' id='packages'>"
            . "<thead>"
            . "<tr><td  bgcolor='#084B8A' colspan='12'>"
@@ -123,8 +125,10 @@ $(function() {
            . "</thead><tbody>";
 
    $preview_img = "<img src='../webapp/pirev2/images/preview.png' height='30' width='30'>";
+   $all_contacts = array();
 
     foreach($bills as $key=>$field){
+         $all_contacts[$field['contact_id']] = $field;
 
          $post_bill = $field['post_bill'];
      
@@ -157,8 +161,59 @@ $(function() {
 
   $display = $display."</tbody></table>";
   echo $display;
+  echo "</form>";
 
+  if($_POST['post']){
+        $acct =  $_POST["acct_code"];
+	$ids = $_POST['contact_ids'];
+	foreach($ids as $contact_id){
+		$info = $all_contacts[$contact_id];
+                $custId = "IIAP".$contact_id;
+                $name = $info["sort_name"];
+                $eventType = substr($info['billing_no'],0,3);
+                $eventName = $package_name;
+                $eventDescription = $pid."/".$eventName;
+                $feeAmount = $info["total_amount"];
+                $billingNo = $info["billing_no"];
+                $billDate = $info["bill_date"];
+                $withVat = $info["vat"] == 0 ? 0 : 1;
 
+                $address = getAddressDetails($dbh,$contactId); 
+                $street = $address["street"];
+                $city = $address["city"];
+
+                $memberId = getMemberId($dbh,$contactId);
+
+                $customer = array();
+                $customer["contact_id"] = $contact_id;
+                $customer["participant_name"] = $name;
+                $customer["street"] = $street;
+                $customer["city"] = $city;
+                $customer["email"] = $email;
+                $customer["member_id"] = $memberId;
+
+                $postDate = $_POST["postdate"];
+                $exist = checkContactRecordExist($weberp,$contact_id);
+
+                if($exist == 0){
+                	insertCustomer($weberp,$customer);
+          		$eventType == 'OTH' ? postOTH($eventType,$eventDescription,$feeAmount,$name,$custId,$billingNo,$billDate,$postDate,$withVat,$acct) : myPost($eventType,$eventDescription,$feeAmount,$name,$custId,$billingNo,$billDate,$postDate);
+
+                }
+
+                else{
+                       $eventType == 'OTH' ? postOTH($eventType,$eventDescription,$feeAmount,$name,$custId,$billingNo,$billDate,$postDate,$withVat,$acct) : myPost($eventType,$eventDescription,$feeAmount,$name,$custId,$billingNo,$billDate,$postDate);
+
+              }
+
+        }
+
+        echo'<div id="confirmation" title="Confirmation">';
+        echo "<img src='../webapp/pirev2/images/confirm.png' alt='confirm' style='float:left;padding:5px;'i width='42' height='42'/>";
+        echo'<p>Billing is already posted.</p>';
+        echo'</div>';
+
+  }
 ?>
 </body>
 </html>

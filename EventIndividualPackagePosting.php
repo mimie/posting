@@ -60,18 +60,17 @@ $(function() {
   $logout = logoutDiv($dbh);
   echo $logout;
   echo "<br>";
+  @$pid = $_GET['pid'];
+
+  $events = getEventsPerPackage($pid);
+  $package_name = getPackageName($pid);
 
    echo "<table width='100%'>";
    echo "<tr>";
-   echo "<td><a href='EventIndividualPackagePosting.php'>INDIVIDUAL PACKAGE POSTING</a></td>";
-   echo "<td bgcolor='#084B8A'><a href='EventCompanyPackagePosting.php'>COMPANY PACKAGE POSTING</a></td>";
+   echo "<td><a href='EventIndividualPackagePosting.php?pid=$pid'>INDIVIDUAL PACKAGE POSTING</a></td>";
+   echo "<td bgcolor='#084B8A'><a href='EventCompanyPackagePosting.php?pid=$pid'>COMPANY PACKAGE POSTING</a></td>";
    echo "</tr>";
    echo "</table></br>";
-
-    @$pid = $_GET['pid'];
-
-    $events = getEventsPerPackage($pid);
-    $package_name = getPackageName($pid);
 
     $display = "<table align='center'>"
            . "<tr><th colspan='4'>$package_name</th></tr>"

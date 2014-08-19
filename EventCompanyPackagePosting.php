@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Individual Package Posting</title>
+<title>Company Package Posting</title>
  <link rel="stylesheet" type="text/css" href="billingStyle.css">
  <link rel="stylesheet" type="text/css" href="menu.css">
  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
@@ -136,15 +136,15 @@ $(function() {
          $bir_no = $field['bir_no'];
          $billing_no = $field['billing_no'];
          $billing_id = $field['bid'];
-         $print_img = $bir_no == NULL || $field['edit_bill'] == 0 ? '' : "<a href='../webapp/pirev2/BIRForm/print_package_individual.php?billing_no=".$billing_no."&uid=".$uid."' target='_blank'><img src='../webapp/pirev2/printer-icon.png' width='30' height='30'></a>";
-        $img_link = "<a href='../webapp/pirev2/edit_individual_package.php?pid=$pid&billing_no=$billing_no&billing_id=$billing_id&bir_no=$bir_no&uid=$uid' onclick=\"window.open(this.href,'edit_individual.php?pid=$pid&billing_no=$billing_no&billing_id=$billing_id&bir_no=$bir_no&uid=$uid','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=900,height=900');return false;\"><img src='../webapp/pirev2/images/edit_bill.png'></a>";
+         $print_img = $bir_no == NULL || $field['edit_bill'] == 0 ? '' : "<a href='../webapp/pirev2/BIRForm/birform_package_company.php?billing_no=".$billing_no."&uid=".$uid."' target='_blank'><img src='../webapp/pirev2/printer-icon.png' width='30' height='30'></a>";
+        $img_link = "<a href='../webapp/pirev2/edit_individual_package.php?pid=$pid&billing_no=$billing_no&billing_id=$billing_id&bir_no=$bir_no&uid=$uid&orgId=".$field['contact_id']."' onclick=\"window.open(this.href,'edit_individual.php?pid=$pid&billing_no=$billing_no&billing_id=$billing_id&bir_no=$bir_no&uid=$uid','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=900,height=900');return false;\"><img src='../webapp/pirev2/images/edit_bill.png'></a>";
          $display = $display."<tr>"
                   . "<td><input type='checkbox' name='contact_ids[]' value='".$field['contact_id']."'>".$field['sort_name']."</td>"
                   . "<td>".$field['organization_name']."</td>"
                   . "<td>".number_format($field['total_amount'],2)."</td>"
                   . "<td>".number_format($field['subtotal'],2)."</td>"
                   . "<td>".number_format($field['vat'],2)."</td>"
-                  . "<td><a href='../webapp/pirev2/BIRForm/birform_package_individual.php?billing_no=".$billing_no."&uid=".$uid."' target='_blank'>$preview_img</a>"
+                  . "<td><a href='../webapp/pirev2/BIRForm/birform_package_company.php?billing_no=".$billing_no."&uid=".$uid."' target='_blank'>$preview_img</a>"
                   . "$print_img"
                   . "</td>"
                   . "<td>".number_format($field['amount_paid'],2)."</td>"

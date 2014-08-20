@@ -5,8 +5,8 @@ function getAllPostedBillings(){
                           FROM civicrm_contact cc, billing_details_package bdp, billing_package bp
                           WHERE bdp.contact_id = cc.id
                           AND bdp.pid = bp.pid
-                          ORDER BY cc.sort_name
                           AND bdp.post_bill = '1'
+                          ORDER BY cc.sort_name
                         ");
         $sql->execute();
         $result = $sql->fetchAll(PDO::FETCH_ASSOC);

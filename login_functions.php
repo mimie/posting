@@ -116,6 +116,7 @@ function logoutDiv($dbh){
            . "<ul><li><a href='eventIndividualPosting.php'>Event Posting</a></li>"
            . "<li><a href='individualPostedBillings.php'>Posted Billings</a></li>"
            . "<li><a href='PackagePosting.php'>Package Posting</a></li>"
+           . "<li><a href='#'>Package Posted Billings</a></li>"
            . "</ul></li>"
            . "<li><a href='#'>Membership</a>"
            . "<ul><li><a href='membershipBillingView.php'>Membership Billing</a></li></ul>"

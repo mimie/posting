@@ -6,6 +6,7 @@ function getAllPostedBillings(){
                           WHERE bdp.contact_id = cc.id
                           AND bdp.pid = bp.pid
                           ORDER BY cc.sort_name
+                          AND bdp.post_bill = '1'
                         ");
         $sql->execute();
         $result = $sql->fetchAll(PDO::FETCH_ASSOC);

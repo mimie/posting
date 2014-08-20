@@ -36,7 +36,7 @@ function displayIndividualPostedBilings($weberp,array $billingDetails){
         . "<th>Organization Name</th>"
         . "<th>Participant Status</th>"
         . "<th>Fee Amount</th>"
-        . "<th>Billing Number</th>"
+        . "<th>Registration No.</th>"
         . "<th>Billing Date</th>"
         . "<th>Post Date</th>"
         . "<th>Print Bill</th>"

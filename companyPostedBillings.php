@@ -69,7 +69,7 @@ $(function() {
    echo "<select name='category'>"
         . "<option value='org_name'>Organization Name</option>"
         . "<option value='event_name'>Event Name</option>"
-        . "<option value='billing_no'>Billing No</option>"
+        . "<option value='billing_no'>Registration No</option>"
         . "</select>";
    echo "&nbsp;<input type='text' name='searchText' placeholder='Enter search text here.....'>";
    echo "<input type='submit' name='search' value='SEARCH'>";

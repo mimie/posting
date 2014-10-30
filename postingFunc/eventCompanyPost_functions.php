@@ -128,4 +128,18 @@ function displayCompanyBillingsByEvent($weberp,array $billings,$eventType){
 
 }
 
+function getPostAccountCode($weberp,$eventType){
+
+        $sql = $weberp->prepare("SELECT glCode FROM postAccount WHERE glcode <> '1101' AND '2109'
+                                 AND transtype=?");
+        $sql->bindParam(1,$eventType,PDO::PARAM_STR);
+        $sql->execute();
+        $result = $sql->fetch(PDO::FETCH_ASSOC);
+
+        $glcode = $result["glCode"];
+
+        return $glcode;
+}
+
+
 ?>

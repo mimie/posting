@@ -68,6 +68,7 @@ $(function() {
    $eventTypeName = getEventTypeName($dbh,$eventId);
    $locationDetails = getEventLocation($dbh,$eventId);
    $eventLocation = formatEventLocation($locationDetails);
+   $glcode = getPostAccountCode($weberp,$eventTypeName);
 
    echo "<div id = 'navigation'>";
    echo "<a href='events2.php'><b>Event List</b></a>";
@@ -128,7 +129,8 @@ $(function() {
    if(isset($_POST["post"])){
      $ids = $_POST["billingIds"];
      $postDate = $_POST["postdate"];
-     $acct = $_POST["acct_code"];
+     $acct = $eventTypeName == 'OTH' ? $_POST["acct_code"] : $glcode;
+    
      
 
       foreach($ids as $billingId){
@@ -165,11 +167,11 @@ $(function() {
 
         if($exist == 0){
           insertCustomer($weberp,$customer);
-          $eventTypeName == 'OTH' ? postOTH($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate,$postDate,$withVat,$acct) : myPost($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate,$postDate);
+          postOTH($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate,$postDate,$withVat,$acct);
         }   
         
         else{
-          $eventTypeName == 'OTH' ? postOTH($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate,$postDate,$withVat,$acct) : myPost($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate,$postDate);
+         postOTH($eventType,$eventDescription,$totalAmount,$orgName,$custId,$billingNo,$billingDate,$postDate,$withVat,$acct);
         }
 
         updateCompanyEventPost($dbh,$billingId);

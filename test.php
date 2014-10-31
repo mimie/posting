@@ -2,8 +2,12 @@
 
   include 'pdo_conn.php';
   include 'weberp_functions.php';
+  include 'postingFunc/eventCompanyPost_functions.php';
 
   $dbh = civicrmConnect();
+  $weberp = weberpConnect();
+
+  
 ?>
 <html>
 <head>
@@ -11,9 +15,12 @@
 </head>
 <body>
 <?php
+	$result = checkBillTotallyCancelled($dbh,"SPR-14-01799");
+        echo $result;
 
-  $result = searchEventName($dbh,"tools & tech");
-  var_dump($result);
+
+
+
 ?>
 </body>
 </html>

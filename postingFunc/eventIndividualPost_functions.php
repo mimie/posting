@@ -125,7 +125,7 @@ function displayIndividualBillingsByEvent(PDO $weberp,array $bills,$eventType){
     }
 
     
-    $enabled = $postBill == '0' && $status == 'Attended' ? "class='checkbox'" : "disabled";
+    $enabled = $postBill == '0' && ($status == 'Attended' || $status == 'No-show') ? "class='checkbox'" : "disabled";
 
     $html = $html."<tr>"
           . "<td><input type='checkbox' name='billingIds[]' value='$billingId' $enabled></td>"
